@@ -67,3 +67,22 @@ Rebuilt all 11 concept screens with compact app navigation, four numeric KPI car
 All names, amounts, dates, scores and activity are explicitly fictional design fixtures. This supersedes earlier empty-state/no-chart design notes above. No live accounts, academy records, bookings, payment service or message service are connected. Only the outer 11-screen selector is interactive; the inner app controls are labelled decorative. Backend remains inquiry-only, with no seeded demo records.
 
 Verification: strict client/server typechecks and production build pass; 10/10 API and geometry tests pass. Visual suite passes at 1440px, 390px and 320px across all tabs, including KPI and record-cell overflow checks, keyboard tab navigation, mobile navigation, reduced motion, inquiry prefilling and failed-save input retention. Parent concept is checked for no staff review rail. Latest bundle: JS 414.54 kB / gzip 136.78 kB; CSS 75.97 kB / gzip 14.59 kB. All 33 full concept windows captured; desktop and phone top sections plus phone lower table/wizard/rail sections inspected as pixels. No merge, deployment or paid service used.
+
+## Sport-specific scoring, tournament formats and demo admin entry
+
+Latest iteration, 2026-10-15. This section supersedes earlier descriptions of login availability and tour interactivity.
+
+- Four match concepts: football goal/clock/pitch/stats; badminton doubles with best-of-three 21-point games, deuce/cap and four-player court; table tennis best-of-five with 11-point games, 10-all deuce and service state; cricket T20 chase, run rates, batting/bowling figures and field diagram. All data is fictional.
+- Six selectable format concepts: four-team round robin with mirrored result matrix; eight-seed single elimination and third place; four groups of four feeding eight-team knockout; four-player double elimination with conditional reset; eight-player Swiss with round history, no repeat pairings and verified Buchholz values; league plus top-four playoffs. Rules, rankings and advancement are shown, not executed by a draw engine.
+- Demo admin screen has public fictional pre-filled values. Enter opens the existing academy workspace concepts; Exit returns to the screen. Nothing is sent, checked or persisted. There is no real authentication or account access.
+- Base path derives from Vite BASE_URL. At non-root bases, internal page links use base-prefixed hash routes so static GitHub Pages does not need SPA fallback. Root/server route aliases remain available. Header/footer and inquiry privacy links stay within the base.
+- `npm run test:static` builds with `/Accadon/`, serves the actual production files through a Python file-only HTTP server, tests `/Accadon` redirect and `/Accadon/`, base-scoped links, Member login, prefilled demo credentials, entry/exit, workspace tabs, no auth POST, inquiry query prefilling and privacy at 1440/390/320. It restores the ordinary root build afterward.
+- Strict build/typecheck passed. API/geometry tests: 10/10. Visual browser suite passed at 1440/390/320, including four sport concepts and all six format switches, internal overflow checks and no page errors. Full login and responsive lower knockout/cricket screenshots inspected directly. A phone final-stage spacing issue found in pixel inspection was corrected and recaptured.
+- Inquiry storage is still not available on a static host. The existing API needs a configured server/database, never fake client success. Demo admin does not change that limitation.
+
+Scoring references checked:
+- BWF Laws: https://system.bwfbadminton.com/documents/folder_1_81/Statutes/CHAPTER-4---RULES-OF-THE-GAME/SECTION%204.1-%20Laws%20of%20Badminton.pdf
+- ITTF Laws 2.11/2.12/2.13: https://ttleagues-api.azurewebsites.net/download/peterborough/ITTF%20Statutes%202024%20-%202.%20The%20Laws%20of%20Table%20Tennis.pdf (downloaded and text checked for 11-point games, two-point lead, odd-game matches and deuce service).
+- MCC overs: https://www.lords.org/mcc/the-laws/the-over
+
+No paid service provisioned, no Firebase billing, no push/merge/deployment performed in this workspace.

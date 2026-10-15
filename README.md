@@ -81,3 +81,13 @@ The landing includes 11 tabbed product screen concepts covering events/registrat
 
 ### Dense product concept windows
 All 11 product-tour screens now show populated, explicitly fictional fixtures with compact navigation, KPI cards, detailed records and screen-specific widgets. Parent view omits staff review activity. The 11 outer tabs are interactive; inner search, filters, exports, publishing and payment controls are illustrative. These are design concepts, not implemented academy-management features. The production API remains limited to inquiry persistence.
+
+## Demo admin and static subpath previews
+
+Member login opens a clearly labelled demo with public pre-filled fictional credentials. One click opens the academy workspace concepts. No real authentication, live account, data write or credential submission occurs. Exit returns to the demo entry screen. Sport and tournament-format selectors and the outer tour tabs work; other inner workflow controls remain illustrative.
+
+For a GitHub Pages-style preview, run `npx vite build --base=/Accadon/`. Vite's BASE_URL is used for routing and links. Subpath builds use `#/login`, `#/inquiry` and `#/privacy` under the configured base, so page refreshes do not require a server-side SPA fallback. A normal root build keeps the existing server routes, with the demo entry also available at `/#/login`.
+
+`npm run test:static` verifies the production subpath build on a file-only server and restores the root build. It does not deploy anything. The static preview has no inquiry API: real persistence still requires the Express server and configured Postgres database.
+
+The match desk now has separate football, badminton doubles, table tennis and cricket concepts. Leagues & standings has six detailed format choices: round robin, seeded elimination, groups + elimination, double elimination, Swiss and league + playoffs. Fixtures, people and results are fictional design data, not an operational tournament engine.

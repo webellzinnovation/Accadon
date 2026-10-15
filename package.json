@@ -13,7 +13,8 @@
     "start": "node dist-server/index.js",
     "db:migrate": "tsx server/migrate.ts",
     "test": "tsx --test tests/*.test.ts",
-    "test:visual": "tsx tests/visual.ts"
+    "test:visual": "tsx tests/visual.ts",
+    "test:static": "tsx tests/static-preview.ts"
   },
   "dependencies": {
     "dotenv": "^16.6.1",

@@ -36,7 +36,7 @@ export function InquiryForm({ interest = 'tournaments', full = false }: { intere
     {full && <label>Email <span>(optional)</span><input name="email" type="email" autoComplete="email" maxLength={254}/></label>}
     <label>Anything else? <span>(optional)</span><textarea name="message" rows={3} maxLength={2000} placeholder="Tell us what you want to manage."/></label>
     <div className="honey" aria-hidden="true"><label>Leave blank<input name="website" tabIndex={-1} autoComplete="off"/></label></div>
-    <label className="consent"><input name="consent" type="checkbox" required/><span>I agree that Accadon may use these details to contact me about this inquiry. <a href="/privacy">How we use your details</a></span></label>
+    <label className="consent"><input name="consent" type="checkbox" required/><span>I agree that Accadon may use these details to contact me about this inquiry. <a href={`${import.meta.env.BASE_URL}${import.meta.env.BASE_URL==='/'?'':'#/'}privacy`}>How we use your details</a></span></label>
     {error && <div className="form-error" role="alert">{error}</div>}
     <button className="button primary submit" type="submit" disabled={busy}>{busy ? 'Saving your inquiry…' : 'Send inquiry'}<span aria-hidden="true">↗</span></button>
     <p className="form-note">An inquiry is not an account signup or paid subscription.</p>

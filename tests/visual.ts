@@ -38,6 +38,21 @@ try {
         assert(await page.locator('.football-detail').isVisible());
         assert(await page.locator('.lineup-pitch').isVisible());
         assert.equal(await page.locator('.stat-comparison').count(),4);
+        for(const sport of ['Badminton','Table tennis','Cricket']) {
+          await page.getByRole('button',{name:new RegExp(sport)}).click();
+          assert(await page.locator('.sport-match-detail').isVisible());
+          for(const el of await page.locator('.sport-match-detail *').all()) assert(await el.evaluate(e=>e.scrollWidth<=e.clientWidth+1),`${sport} internal overflow`);
+          assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+        }
+        await page.getByRole('button',{name:/Football/}).click();
+      }
+      if(tab==='Leagues & standings') {
+        for(const format of ['Round robin','Single elimination','Groups + elimination','Double elimination','Swiss system','League + playoffs']) {
+          await page.getByRole('group',{name:'Tournament format',exact:true}).getByRole('button',{name:new RegExp(format.replace('+','\\+'))}).click();
+          assert(await page.locator('.format-canvas').isVisible());
+          for(const el of await page.locator('.format-canvas *').all()) assert(await el.evaluate(e=>e.scrollWidth<=e.clientWidth+1),`${format} internal overflow: ${await el.evaluate(e=>e.className)}`);
+          assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+        }
       }
       if(tab==='Create & register') assert(await page.locator('.create-wizard').isVisible());
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
