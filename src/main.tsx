@@ -1,3 +1,4 @@
+import {Brand} from './Brand';
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import gsap from 'gsap';
@@ -23,9 +24,9 @@ const programs = [
 ];
 function Header() {
   const [open, setOpen] = useState(false);
-  return <header className="header"><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><span className="brand-symbol">A<span>•</span></span>accadon</a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span>{open ? '−' : '+'}</span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/#tournaments')} onClick={() => setOpen(false)}>Free tournaments</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/#/login')}>Demo login <span>↗</span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/workflows')}>Workflows <span>↗</span></a></nav></header>;
+  return <header className="header"><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><Brand/></a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span>{open ? '−' : '+'}</span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/#tournaments')} onClick={() => setOpen(false)}>Free tournaments</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/#/login')}>Demo login <span>↗</span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/workflows')}>Workflows <span>↗</span></a></nav></header>;
 }
-function Footer() { return <footer><a className="wordmark" href={appUrl('/')}>accadon</a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/#tournaments')}>Free tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a><a href={appUrl('/#/login')}>Demo login</a><a href={appUrl('/workflows')}>Workflows</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
+function Footer() { return <footer><a className="wordmark" href={appUrl('/')}><Brand/></a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/#tournaments')}>Free tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a><a href={appUrl('/#/login')}>Demo login</a><a href={appUrl('/workflows')}>Workflows</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
 function Landing() {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
