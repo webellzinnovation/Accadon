@@ -1,6 +1,7 @@
+import { TABLE_LENGTH_CM as L, TABLE_WIDTH_CM as W, TABLE_HEIGHT_CM as H, NET_HEIGHT_CM as N, tablePath as path } from './tableGeometry';
 export function Court() {
   return <svg className="court-art" viewBox="0 0 1000 760" role="img" aria-labelledby="court-title">
-    <title id="court-title">Illustrated table tennis court, net, paddle and ball</title>
+    <title id="court-title">Illustrated table tennis table with a 274 by 152.5 centimetre playing surface, net, paddle and ball</title>
     <defs>
       <linearGradient id="floor" x2="0" y2="1"><stop stopColor="#202b22"/><stop offset="1" stopColor="#101511"/></linearGradient>
       <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#537d5e"/><stop offset="1" stopColor="#284a37"/></linearGradient>
@@ -18,16 +19,18 @@ export function Court() {
       <ellipse cx="510" cy="555" rx="290" ry="70" fill="#000" opacity=".5" filter="url(#shadow)"/>
     </g>
     <g className="court-table">
-      <path d="m324 472 4 118 20 8 7-118M699 479l-8 112-20 8-5-108M456 535l2 99 21 9 5-103M565 386l6 126 17 1-1-128" stroke="#99a295" strokeWidth="9" fill="none"/>
-      <path d="m338 568 123 57M685 566l-208 59M343 543l335-12" stroke="#5f6b5b" strokeWidth="5"/>
-      <path d="m235 443 325-161 246 154-326 166Z" fill="#172c22"/>
-      <path d="M235 431 560 270l246 154-326 166Z" fill="url(#top)" stroke="#e1e6d4" strokeWidth="5"/>
-      <path d="m250 431 310-153 232 146-312 158Z" fill="url(#grain)"/>
-      <path d="m397 350 247 155M355 507l326-162" stroke="#e6e6d9" strokeWidth="2" opacity=".8"/>
-      <path d="M355 507v-81l325-162v81Z" fill="#182c25" fillOpacity=".7"/>
-      <path d="M355 507v-81l325-162v81Z" fill="url(#net)" stroke="#dbe3d3" strokeWidth="2"/>
-      <path d="m347 426 341-169" stroke="#fff5dd" strokeWidth="5"/>
-      <path d="M347 425v93m341-260v96" stroke="#b6c1b2" strokeWidth="6"/>
+      {/* Equal-scale isometric axes preserve the physical 274:152.5 length/width ratio. */}
+      {[[22,18],[L-22,18],[L-22,W-18],[22,W-18]].map(([l,w]) => <path key={`${l}-${w}`} d={path([[l,w,0],[l,w,-H]])} stroke="#99a295" strokeWidth="8" fill="none"/>)}
+      <path d={path([[22,18,-H+20],[L-22,18,-H+20],[L-22,W-18,-H+20],[22,W-18,-H+20]],true)} stroke="#5f6b5b" strokeWidth="5" fill="none"/>
+      <path d={path([[0,0,-7],[L,0,-7],[L,W,-7],[0,W,-7]],true)} fill="#172c22" stroke="#172c22" strokeWidth="5"/>
+      <path d={path([[0,0],[L,0],[L,W],[0,W]],true)} fill="url(#top)" stroke="#e1e6d4" strokeWidth="4"/>
+      <path d={path([[0,0],[L,0],[L,W],[0,W]],true)} fill="url(#grain)"/>
+      {/* Doubles centre line runs along the length, not along the net. */}
+      <path d={path([[0,W/2],[L,W/2]])} stroke="#e6e6d9" strokeWidth="1.5" opacity=".8"/>
+      <path d={path([[L/2,0],[L/2,0,N],[L/2,W,N],[L/2,W]],true)} fill="#182c25" fillOpacity=".75"/>
+      <path d={path([[L/2,0],[L/2,0,N],[L/2,W,N],[L/2,W]],true)} fill="url(#net)" stroke="#dbe3d3" strokeWidth="1.5"/>
+      <path d={path([[L/2,-7,N],[L/2,W+7,N]])} stroke="#fff5dd" strokeWidth="3"/>
+      <path d={`${path([[L/2,-7,-5],[L/2,-7,N]])} ${path([[L/2,W+7,-5],[L/2,W+7,N]])}`} stroke="#b6c1b2" strokeWidth="4"/>
     </g>
     <g className="court-paddle" transform="translate(760 270) rotate(30)">
       <ellipse cx="0" cy="12" rx="64" ry="77" fill="#e6c397"/>
@@ -39,6 +42,5 @@ export function Court() {
     </g>
     <path d="M260 300Q480 70 656 228" fill="none" stroke="#d5bd8b" strokeWidth="1.5" strokeDasharray="4 9" opacity=".45"/>
     <g className="court-ball"><ellipse cx="459" cy="385" rx="22" ry="10" fill="#101e16" opacity=".3"/><circle cx="454" cy="202" r="18" fill="#f4ead0"/><circle cx="449" cy="196" r="6" fill="#fffdf3" opacity=".8"/></g>
-    <g fill="#a5b39b" fontFamily="monospace" fontSize="11" letterSpacing="3"><text x="173" y="658">PLAN. PRACTICE. PROGRESS.</text></g>
   </svg>;
 }

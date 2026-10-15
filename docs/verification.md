@@ -13,3 +13,11 @@ Run date: 2026-10-15. These are local checks, not production verification.
 ## Limits
 
 No live inquiry was sent to the academy and no real personal data was collected. Browser failure-path tests intentionally run with database disconnected. Successful saves are verified at the API/repository layer against embedded Postgres, not an end-to-end live deployment. Email/WhatsApp delivery, authentication/permissions and all future app modules are not implemented. No dedicated lint configuration or lint run is claimed. Screen-reader testing and production TLS/proxy checks remain to do.
+
+## Table-proportion correction
+
+The original drawing placed the net along the visibly longer side and made the table read short. Rebuilt the table from explicit 274 cm length, 152.5 cm width, 76 cm height and 15.25 cm net height using equal-scale isometric axes. Net now crosses the short width halfway along the length; doubles line runs lengthways. Geometry regression tests verify the 274:152.5 projected ratio and net midpoint. Removed the artwork caption where it collided with the scene footer after lengthening the table.
+
+Source for dimensions and net orientation: https://ttleagues-api.azurewebsites.net/download/peterborough/ITTF%20Statutes%202024%20-%202.%20The%20Laws%20of%20Table%20Tennis.pdf
+
+Build/typechecks pass; 10/10 API and geometry tests pass; browser checks pass at 1440, 390 and 320px. Desktop and mobile hero pixels inspected again after correction.
