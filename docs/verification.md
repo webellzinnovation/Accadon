@@ -49,3 +49,13 @@ Replaced the three simple previews with 11 richer screen concepts: event setup/e
 Screenshots of every concept at 1440/390/320px were captured (33 images). All were inspected in side-by-side proof sheets, with the actual mobile layouts recomposed as labelled records, not clipped tables. No clipping/overlap was observed; every concept retains its fictional-content notice. Browser suite switches through all 11 screens at each width and checks no overflow and keyboard screen navigation.
 
 Build/typechecks pass; no backend changes. API/geometry tests 10/10 remain green. Latest output: 39 modules; JS 386.13 kB / gzip 129.59 kB, CSS 33.04 kB / gzip 7.58 kB. No external assets or chart dependencies. Only one concept panel is mounted at a time.
+
+## Light theme and organizer reference adaptation
+
+Whole-site conversion to warm paper/white/light sage surfaces, green ink, burnt-orange display accents and orange calls to action. Hero illustration grounds, navigation including mobile menu, cards, forms/errors, all 11 preview windows, footer, simple pages, favicon and browser theme color converted. Existing section motion/reduced-motion support retained.
+
+Tournament concepts now have an internal sport/event tree, central event banner/tables, timed match rows and right-hand review/notice rail. Entry screen includes an original four-step creation concept, sport grid and participant cards. Draw screen adds a separate clearly fictional football match detail: 72-minute clock, goal/card timeline, event feed, five-a-side pitch, numbered squad and measured-layout comparison bars with invented values explicitly labelled. Badminton scorecard remains separate. Standings comparison bars use the same fictional points as its table. Players/teams includes a sample squad view.
+
+Phone layout stacks full cards, score hero, timeline, line-up and stats, with a labelled decorative bottom-navigation concept; internal navigation/rails reflow, not squeeze. Existing controls remain only the outer screen selector and real site/form navigation. No private modules became functional.
+
+Final light/reference pass: strict build/typechecks, 10/10 API/geometry tests and all-width browser suite passed. Suite also asserts light page/form/window/footer surfaces and presence of create wizard, football line-up and four comparison bars. Final bundle: JS 402.36 kB / gzip 133.11 kB; CSS 53.07 kB / gzip 10.44 kB, 40 modules. Added original inline SVG only, no image downloads in shipped site. Public Tourney product screenshots inspected for flow evidence; not included in site assets.

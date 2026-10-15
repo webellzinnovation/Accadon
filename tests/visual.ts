@@ -17,10 +17,21 @@ try {
     assert(await page.locator('h1').innerText().then(s=>s.includes('Your academy')));
     for (const sport of ['BADMINTON','FOOTBALL','CRICKET','TABLE TENNIS']) assert(await page.locator('.sport-caption').filter({hasText:sport}).isVisible());
     assert.equal(await page.locator('.sport-tile').count(),4);
+    // All page/app surfaces remain light, including responsive navigation and form.
+    for(const selector of ['body','.product-preview','.preview-window','.form-panel','footer']) {
+      const bg = await page.locator(selector).first().evaluate(el=>getComputedStyle(el).backgroundColor);
+      if(bg !== 'rgba(0, 0, 0, 0)') assert(bg.match(/\d+/g)!.slice(0,3).map(Number).every(v=>v>175),`${selector} is not light: ${bg}`);
+    }
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${label} has overflow`);
     for (const tab of ['Create & register','Draws & scoring','Leagues & standings','Players & teams','Courts & schedule','Batches & attendance','Courses & assessment','Fees & subscriptions','Notices & updates','Parent & player view','Reports & oversight']) {
       await page.getByRole('tab',{name:tab}).click();
       assert(await page.getByRole('tabpanel').isVisible());
+      if(tab==='Draws & scoring') {
+        assert(await page.locator('.football-detail').isVisible());
+        assert(await page.locator('.lineup-pitch').isVisible());
+        assert.equal(await page.locator('.stat-comparison').count(),4);
+      }
+      if(tab==='Create & register') assert(await page.locator('.create-wizard').isVisible());
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     }
     await page.getByRole('tab',{name:'Create & register'}).click();

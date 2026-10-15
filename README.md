@@ -53,7 +53,7 @@ Before real data intake: owner must review the draft `/privacy` notice, supply a
 
 ## Implemented
 
-- Dark premium public landing: layered original court/net/paddle/ball, desktop parallax, staggered program cards, connected process path, conceptual coaching loop, coaches and contact.
+- Premium light public landing: warm paper/white/sage surfaces, orange/green accents, four original multi-sport scenes, desktop parallax, staggered program cards, connected process path, conceptual coaching loop, coaches and contact.
 - Native scroll/anchors, mobile navigation, focus styles, semantic labels and reduced-motion static layout.
 - Software-interest links prefill `/inquiry?interest=…`; compact form on landing and full form on `/inquiry`.
 - Real `POST /api/inquiries`: name/mobile/optional email, academy/club, sport, city, role, software interest and optional message and explicit contact consent.
@@ -64,7 +64,7 @@ Before real data intake: owner must review the draft `/privacy` notice, supply a
 
 ## Product concept previews
 
-The landing includes 11 tabbed product screen concepts covering events/registrations, draws/scoring, leagues, players/teams, schedules, coaching, assessment, fees, announcements, families and reports. The Playinga public feature benchmark and deliberate exclusions are in `docs/playinga-benchmark.md`. All are clearly labelled and contain fictional sample data, never real academy records. They are explanatory UI previews only, not operational dashboards.
+The landing includes 11 tabbed product screen concepts covering events/registrations, draws/scoring, leagues, players/teams, schedules, coaching, assessment, fees, announcements, families and reports. The Playinga public feature benchmark and deliberate exclusions are in `docs/playinga-benchmark.md`. All are clearly labelled and contain fictional sample data, never real academy records. They are explanatory UI previews only, not operational dashboards. The light organizer concepts include an internal sport/event tree, creation wizard, participant states, central data tables, review rail, football timeline/feed/pitch/stat comparisons, badminton scorecard, and team squad cards. Mobile stacks these blocks with labelled record cards. Owner-supplied layout references and public Tourney screenshots informed the layout only; no copied assets, betting content, paid services or deployment.
 
 ## Explicitly unfinished
 

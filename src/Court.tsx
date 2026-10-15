@@ -3,7 +3,7 @@ export function Court() {
   return <svg className="court-art" viewBox="0 0 1000 760" role="img" aria-labelledby="court-title">
     <title id="court-title">Illustrated table tennis table with a 274 by 152.5 centimetre playing surface, net, paddle and ball</title>
     <defs>
-      <linearGradient id="floor" x2="0" y2="1"><stop stopColor="#202b22"/><stop offset="1" stopColor="#101511"/></linearGradient>
+      <linearGradient id="floor" x2="0" y2="1"><stop stopColor="#e2ebd5"/><stop offset="1" stopColor="#cbd9ba"/></linearGradient>
       <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#537d5e"/><stop offset="1" stopColor="#284a37"/></linearGradient>
       <linearGradient id="rubber" x2="1" y2="1"><stop stopColor="#ff9561"/><stop offset="1" stopColor="#be472c"/></linearGradient>
       <radialGradient id="light"><stop stopColor="#c9deb0" stopOpacity=".2"/><stop offset="1" stopColor="#c9deb0" stopOpacity="0"/></radialGradient>
@@ -16,7 +16,7 @@ export function Court() {
       <path d="m40 480 480-240 450 240-480 230Z" fill="url(#floor)"/>
       <path d="m75 484 446-222 413 221-445 225Z M160 485l359-177 323 177-353 177Z" fill="none" stroke="#66805c" strokeWidth="1.5" opacity=".3"/>
       <path d="m510 275-8 405M120 483l770 0" stroke="#65805d" opacity=".16"/>
-      <ellipse cx="510" cy="555" rx="290" ry="70" fill="#000" opacity=".5" filter="url(#shadow)"/>
+      <ellipse cx="510" cy="555" rx="290" ry="70" fill="#000" opacity=".14" filter="url(#shadow)"/>
     </g>
     <g className="court-table">
       {/* Equal-scale isometric axes preserve the physical 274:152.5 length/width ratio. */}
