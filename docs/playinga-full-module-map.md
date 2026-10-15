@@ -35,3 +35,27 @@ See `playinga-organizer-reference.md` and `organizer-settings-progress.md`. Crea
 ## Implementation rule
 
 For each module deliver a usable local start → configure/act → review → state change → correction/revoke/reset workflow, with honest empty states, mobile verification and no false live effects. A visible tab alone is not feature completion. Remaining screenshots refine details without discarding existing Accadon family, membership, sport or allocation rules. Real authentication/backend/collection/sending stays paused pending requirement review.
+
+## Additional settings detail: batches 4–5
+
+- Academy Forms & Controls: membership/staff/team membership form templates, view/edit/new; system fields (gender, DOB, nationality, address, phone and guardian fields), custom fields, photo, guardian application mode; configurable terms and waivers. Team-wide consistent registration-form toggle. Template IDs in screenshots are competitor records, not Accadon identifiers.
+- Members & Plans: create/edit membership plan, active/default states and pause new membership registration. Enforce one active default in Accadon; pausing new applications must not retire existing members. Fee cadence, renewal and paid-plan editor details are not shown.
+- Academy roles: Administrator/Coach/Staff list, new/edit; role-to-form binding. Permission groups cover organization information/branding/pages/navigation/sponsors/roles/sports/fields/templates; finance credits/payments; members view/manage/plans/assignment; teams create/manage/view/apply/add people; matches schedule/manage/view/apply/add; tournaments create/manage/view/apply/add; statistics; chat/news CRUD; venues/courts CRUD and bookings. Academy rights remain separate from event match allocations and financial authority.
+- Sports Configuration: selected academy sports, add dropdown, remove and save. Removal with existing memberships/events needs dependency handling, never silent data loss.
+- Plans & Payments: academy's own platform subscription with dates/status/upgrade and invoices. Lower implementation priority than core workflows. Not the academy's member plans, event fees or credit ledger; no competitor prices, 9999 dates or entitlements become Accadon promises.
+
+## Tournament detail: batches 6a–7b
+
+Required screenshot-driven workflow coverage (sample screenshot people/contact details are not seed data):
+- Create: name, rich about, start/end/registration deadline, contact, address, multi-sport selector. Per-category name/gender/born-after/participant type/team-play switch/add/remove. Championship contingent mode with published-and-applications lock. Wider sport catalog shown; existing five sports are not full catalog parity.
+- Workspace header branding/organizer/message; Home, Participants, Schedule, Standings, Winners, Statistics, Gallery, Settings and Finance. Home information cards, add card, posts. Draft/publish state.
+- Participants: add/import, division filter, club/contingent grouping, applied-by/date/status/unpaid, details, actions, exports and email composer preview. Finalize gate before saved fixture. No real sends or paid statuses.
+- Schedule setup: single/double knockout, groups/playoffs, round robin, custom fixture; participant count; venue/courts; standings and participant-score configuration. Sample-vs-finalized schedule distinction.
+- Points settings: variable convincing/normal/marginal victory points, win/loss, custom points, draw/no-result; table column toggles for matches/played/wins/losses/ties/no-result/sets/points/sub-points/recent form/difference; extra metric name/short-name. Save/cancel and resulting standings should demonstrate the workflow. No federation compliance implied.
+- Match view: timezone, date/time/resource, per-set scores/winner, actions; card/list, player filter/grouping; configurations, schedule export/embed.
+- Standings/winners: empty and completed states, winner podium/banner, division ranking and manual reorder with review, contingent medal counts, CSV export/embed previews; winner/runner/third by division/sport/format. No arbitrary third place when format does not establish it.
+- Basic Settings: information/about; created/start/end/deadline date+time; contact; structured address; extra title/name/detail rows; website and social URLs; banner add/remove; color controls; tournament type, admin-chat toggle, review/save. Preserve canonical Accadon logo despite event branding controls.
+- Events: sport team-play; division name/format/capacity/gender/participant-type/birth cutoff/hide; statistics, player-score submissions, public participant visibility with finalization gate; championship mode/title sequence and irreversible-state rehearsal. Competitor paid-feature note is not an Accadon price/entitlement.
+- Remaining settings sidebar: venues, payments, sponsors, roles, forms and publish/share. Existing local fee/role/form panels are partial slices, not all system completion.
+
+Source batch inventory totals 42 unique screens per parent; two original screens are not available. Unseen editors, menus and exact business rules remain explicitly unverified, not inferred competitor behavior.

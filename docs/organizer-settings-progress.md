@@ -22,3 +22,6 @@ The remaining tabs are visibly labeled next build slices, not working editors or
 ## Verification
 
 Build/typecheck; 31 unit/API tests; fee configuration interaction test at 1440, 390 and 320 pixels; organizer regression at the same widths. No API requests in either demo interaction test. Actual form and total pixels inspected on desktop and mobile, with no cropped text or overlapping controls. Existing Vite large-chunk advisory remains.
+
+### Forms & waivers delivered as local rehearsal
+Common/contingent and independent sample division fields, text/number/yes-no, required controls, reorder/remove, guardian separation, simulated signup enforcement, optional draft terms/waiver with versioned consent reset, required-field submission gating, fictional completion and reset. Browser memory only; reload clears all. Not integrated into the public sample registration/creation draft, not an identity verifier, not a stored legal consent record. Academy membership/role forms remain a separate module.
