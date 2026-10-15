@@ -64,7 +64,7 @@ Before real data intake: owner must review the draft `/privacy` notice, supply a
 
 ## Product concept previews
 
-The landing includes tabbed tournament, coaching-workspace and assessment screen concepts. All are clearly labelled and contain fictional sample data, never real academy records. They are explanatory UI previews only, not operational dashboards.
+The landing includes 11 tabbed product screen concepts covering events/registrations, draws/scoring, leagues, players/teams, schedules, coaching, assessment, fees, announcements, families and reports. The Playinga public feature benchmark and deliberate exclusions are in `docs/playinga-benchmark.md`. All are clearly labelled and contain fictional sample data, never real academy records. They are explanatory UI previews only, not operational dashboards.
 
 ## Explicitly unfinished
 

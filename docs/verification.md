@@ -41,3 +41,11 @@ Build/typechecks pass; API/geometry 10/10 and browser suite pass. Latest output:
 Added switchable dashboard concept previews: tournament draw/scoring, coaching batches/attendance, and player courses/assessment. Every window is labelled Concept Preview / Design Preview Only, with fictional Player A/B/C data, no connected account or live records. Sample scoring is explicitly illustrative; assessment rubric remains unconfigured with no fabricated player score. UI chrome/sidebar are illustrative, not non-working buttons masquerading as real tools. Only the outer screen tabs are interactive, including arrow-key/Home/End navigation.
 
 Browser suite checks all three previews and keyboard switching at 1440/390/320px without overflow. Actual desktop previews and phone tournament/assessment/coaching captures inspected; mobile stacks brackets and course panels, hides decorative sidebar and keeps all content within the viewport. Build/typechecks pass; 10 API/geometry tests remain unchanged. Latest output: 38 modules; JS 376.18 kB / gzip 125.71 kB, CSS 26.24 kB / gzip 6.39 kB. These previews add no working dashboard backend.
+
+## Expanded product tour
+
+Replaced the three simple previews with 11 richer screen concepts: event setup/entries, draws/scoring, leagues/standings, players/teams, court scheduling, coaching/attendance, courses/assessment/match journal, fees/subscriptions, notices, family view and reporting/oversight. Each has contextual summary states, multi-column records, state differences and detailed side panels. Draw, calendar and family screens add distinct visual structures. See `playinga-benchmark.md` for observed sources, adopted scope and exclusions.
+
+Screenshots of every concept at 1440/390/320px were captured (33 images). All were inspected in side-by-side proof sheets, with the actual mobile layouts recomposed as labelled records, not clipped tables. No clipping/overlap was observed; every concept retains its fictional-content notice. Browser suite switches through all 11 screens at each width and checks no overflow and keyboard screen navigation.
+
+Build/typechecks pass; no backend changes. API/geometry tests 10/10 remain green. Latest output: 39 modules; JS 386.13 kB / gzip 129.59 kB, CSS 33.04 kB / gzip 7.58 kB. No external assets or chart dependencies. Only one concept panel is mounted at a time.

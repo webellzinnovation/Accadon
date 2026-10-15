@@ -18,15 +18,15 @@ try {
     for (const sport of ['BADMINTON','FOOTBALL','CRICKET','TABLE TENNIS']) assert(await page.locator('.sport-caption').filter({hasText:sport}).isVisible());
     assert.equal(await page.locator('.sport-tile').count(),4);
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${label} has overflow`);
-    for (const tab of ['Tournament page','Coaching workspace','Player assessment']) {
+    for (const tab of ['Create & register','Draws & scoring','Leagues & standings','Players & teams','Courts & schedule','Batches & attendance','Courses & assessment','Fees & subscriptions','Notices & updates','Parent & player view','Reports & oversight']) {
       await page.getByRole('tab',{name:tab}).click();
       assert(await page.getByRole('tabpanel').isVisible());
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     }
-    await page.getByRole('tab',{name:'Tournament page'}).click();
-    await page.getByRole('tab',{name:'Tournament page'}).press('ArrowRight');
-    assert.equal(await page.getByRole('tab',{name:'Coaching workspace'}).getAttribute('aria-selected'),'true');
-    await page.getByRole('tab',{name:'Tournament page'}).click();
+    await page.getByRole('tab',{name:'Create & register'}).click();
+    await page.getByRole('tab',{name:'Create & register'}).press('ArrowRight');
+    assert.equal(await page.getByRole('tab',{name:'Draws & scoring'}).getAttribute('aria-selected'),'true');
+    await page.getByRole('tab',{name:'Create & register'}).click();
     if(label!=='small') await page.screenshot({path:`artifacts/${label}.png`,fullPage:true});
     if(label==='mobile') {
       await page.getByRole('button',{name:'Menu'}).click();
