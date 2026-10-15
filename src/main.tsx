@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TournamentHome } from './TournamentHome';
+import { TournamentsPage } from './TournamentsPage';
 import { DashboardPreviews } from './DashboardPreviews';
 import { InquiryForm } from './InquiryForm';
 import './styles.css';
@@ -24,9 +25,9 @@ const programs = [
 ];
 function Header() {
   const [open, setOpen] = useState(false);
-  return <header className="header"><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><Brand/></a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span>{open ? '−' : '+'}</span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/#tournaments')} onClick={() => setOpen(false)}>Free tournaments</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/#/login')}>Demo login <span>↗</span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/workflows')}>Workflows <span>↗</span></a></nav></header>;
+  return <header className="header"><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><Brand/></a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span>{open ? '−' : '+'}</span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/tournaments')} onClick={() => setOpen(false)}>Tournaments</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/#/login')}>Demo login <span>↗</span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/workflows')}>Workflows <span>↗</span></a></nav></header>;
 }
-function Footer() { return <footer><a className="wordmark" href={appUrl('/')}><Brand/></a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/#tournaments')}>Free tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a><a href={appUrl('/#/login')}>Demo login</a><a href={appUrl('/workflows')}>Workflows</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
+function Footer() { return <footer><a className="wordmark" href={appUrl('/')}><Brand/></a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/tournaments')}>Tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a><a href={appUrl('/#/login')}>Demo login</a><a href={appUrl('/workflows')}>Workflows</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
 function Landing() {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -43,7 +44,7 @@ function Landing() {
     return () => mm.revert();
   }, []);
   return <div ref={root}>
-    <TournamentHome workflowUrl={appUrl('/workflows')}/>
+    <TournamentHome workflowUrl={appUrl('/workflows')} tournamentsUrl={appUrl('/tournaments')}/>
     <div className="manifesto"><span>Tournaments free forever.</span><span>Coaching management when you're ready.</span><span className="manifesto-ball" aria-hidden="true">●</span></div>
     <div className="build-notice">Platform in development. These are the planned product features. Tournament creation and academy accounts are not open yet.</div>
     <section className="section programs" id="tournaments"><div className="section-heading reveal"><div className="eyebrow">01 / YOUR FREE WAY IN</div><div className="heading-row"><h2>Make the tournament<br/><em>yours.</em></h2><p>Your academy. Your event. A public tournament page that brings your sporting community together.</p></div></div><div className="program-grid">{programs.map((p,i) => <a key={i} className="program-card" href={appUrl('/inquiry?interest=tournaments')}><div className="card-top"><span>{p.number}</span><span className="program-icon" aria-hidden="true">{p.icon}</span></div><h3>{p.title}</h3><p>{p.text}</p><div className="card-bottom"><span>Explore tournaments</span><span className="circle-arrow">↗</span></div></a>)}</div><p className="small-print">Free tournament tools are the entry point. Coaching management is a separate paid subscription. Pricing has not been announced.</p></section>
@@ -66,6 +67,7 @@ function App() {
   const validInterest = ['tournaments','coaching','both'].includes(interest || '') ? interest! : 'tournaments';
   let content;
   if (route === '/') content = <main id="main"><Landing/></main>;
+  else if (route === '/tournaments') content = <TournamentsPage workflowUrl={appUrl('/workflows')}/>;
   else if (route === '/inquiry') content = <SimplePage><div className="eyebrow">LET'S TALK ABOUT YOUR ACADEMY</div><h1>Start with<br/><em>a conversation.</em></h1><p>Tell us about your academy or sports club, the sports you offer and what you need from Accadon.</p><div className="form-panel"><h2>Academy software inquiry</h2><InquiryForm interest={validInterest} full/></div></SimplePage>;
   else if (route === '/privacy') content = <SimplePage><div className="eyebrow">DRAFT NOTICE / OWNER REVIEW REQUIRED</div><h1>Your inquiry<br/><em>details.</em></h1><p>This notice describes the phase-one inquiry form. It needs owner review before accepting real inquiries.</p><h2>What the form collects</h2><p>Your name, mobile number, academy or club name, sport or sports, city, role, software interest, consent and any optional email or message.</p><h2>Why it is collected</h2><p>To save your inquiry for Accadon to review and contact you about the academy software. An inquiry does not create an academy account, enroll a player or process payment. Do not include medical details, identity documents or payment information.</p><h2>Where it goes</h2><p>Inquiry details and a record of contact consent are stored in the configured Postgres database. This form does not send automatic email or WhatsApp messages. The website host handles network requests as part of serving this website.</p><h2>Before public launch</h2><p>The owner must approve this notice, configure a contact for privacy requests and decide retention and deletion practices. Those details are not yet configured. The site must not accept real personal information until that review is complete.</p></SimplePage>;
   else if (['/app','/app/login','/workflows'].includes(route)) content = <WorkflowReview/>;
