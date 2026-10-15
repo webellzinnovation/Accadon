@@ -29,3 +29,9 @@ Landing and inquiry are now for academy owners/clubs, not coaching customers. Fo
 Build/typechecks and all 10 tests pass. Browser checks repeated at 1440/390/320px; actual desktop/full-page and both phone hero screenshots inspected. The corrected table is explicitly one sport illustrated, not the product boundary. Software is clearly marked in development; tournaments, academy claiming, paid coaching, gateways and account access are not falsely presented as available. Product pricing is not invented.
 
 Latest build: 36 modules, JS 362.62 kB (gzip 122.46 kB), CSS 17.12 kB (gzip 4.56 kB), HTML 0.89 kB (gzip 0.47 kB).
+
+## Multi-sport hero artwork
+
+Replaced the standalone table-tennis hero with four equal original SVG scenes: badminton rackets/shuttlecock, football/pitch, cricket bat/ball/wickets, and the corrected table-tennis table. Matched dark green/orange/cream art direction, staggered panels and scroll layers. All four sport labels are browser-asserted visible at 1440, 390 and 320px. Actual desktop hero, full-page mobile and readable 320px artwork detail inspected: every sport recognizable; no clipping or collision with copy/controls. Reduced-motion view keeps the complete static composition.
+
+Build/typechecks pass; API/geometry 10/10 and browser suite pass. Latest output: 37 modules, JS 368.47 kB / gzip 123.98 kB, CSS 18.90 kB / gzip 4.95 kB. No external assets added.

@@ -15,6 +15,8 @@ try {
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto('http://127.0.0.1:5173');await page.waitForTimeout(200);
     assert(await page.locator('h1').innerText().then(s=>s.includes('Your academy')));
+    for (const sport of ['BADMINTON','FOOTBALL','CRICKET','TABLE TENNIS']) assert(await page.locator('.sport-caption').filter({hasText:sport}).isVisible());
+    assert.equal(await page.locator('.sport-tile').count(),4);
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${label} has overflow`);
     if(label!=='small') await page.screenshot({path:`artifacts/${label}.png`,fullPage:true});
     if(label==='mobile') {
