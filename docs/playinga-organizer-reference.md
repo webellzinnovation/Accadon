@@ -13,17 +13,19 @@ Screenshot review, 15 October 2026. Seven screenshots supplied through the user'
 | Communication | Post/delete/view feeds; chat with participants | Audience-specific communication permissions independent of scoring | Moderation, guardian safeguards, consent, delivery or deletion behavior |
 | Advanced forms | Contingent and division forms; category eligibility label; View & Edit Form; waiver/terms rich text; signup-to-register toggle | Tournament/common information plus category-specific fields; versioned consent and explicit registration policy | Actual form schema, validation, signatures, legal sufficiency, guardian authority or guest identity handling |
 
-One entry-fee field visibly contains 250 and one donation field 1.0. These are screenshot settings only, not Playinga prices or proposed Accadon defaults. A visible age/birthdate label is event-specific, not an age-cutoff rule to reuse. A populated text editor does not establish enforceable consent.
+One entry-fee field visibly contains 250 and one donation field 1,000. These are screenshot settings only, not Playinga prices or proposed Accadon defaults. A visible age/birthdate label is event-specific, not an age-cutoff rule to reuse. A populated text editor does not establish enforceable consent.
 
-## Priorities for Accadon
+## Required scope for Accadon
 
-### Next requirements discussion
+User correction after the screenshot handoff: "i have give entire system how i needed". Payments, roles, forms/waivers, registration enforcement and sponsors are required organizer scope. The priorities below are sequencing, not optional recommendations.
+
+### First implementation slices
 
 1. **Entry fee model per category.** Keep platform tournament tooling being free separate from an organizer charging an entrant fee. Model tournament fee, selected category fees, optional add-ons, discount eligibility/deadline, tax and final total as distinct lines. Decide multi-category caps, double-charging prevention, withdrawal/refund rules and online/offline reconciliation before any real collection. An offline payment declaration is not a paid receipt. Do not add a donations default or assume a tax treatment.
 2. **Explicit role capabilities.** Existing umpire design already limits score entry to accepted match allocations. Extend the proposed capability map to entries, schedule, resource allocation, score entry, score submission, result certification, event settings, finance and communication. Keep edit, publish, certify and delete separate; no shared match-password model. Deny by default and recheck permissions server-side before live use. A custom role name alone grants nothing.
 3. **Registration and consent requirements.** Reuse common parent contact and distinct child identity, then category-specific questions. State eligibility rules/cutoff dates independently of category names. Minimize data collection, version waiver/terms text and track guardian agreement for minors. Event-organizer legal review is required; do not copy competitor waiver wording. Guest registration vs account-required entry is a product choice still to confirm, not inherited from a screenshot.
 
-### Later organizer settings
+### Following required settings
 
 - Optional sponsor identity/logo/link plus owner preview and a clear placement policy. Do not push scores or match actions below advertising, imply endorsements or publish another party's logo without approval.
 - Communication settings with a reviewed audience, guardian boundaries, delivery state and moderation/reporting rules. Scoring access never implies unrestricted chat with children or their parents.
@@ -37,7 +39,7 @@ Avoid copying the dark skin, dense long modal, tiny text, shared match-password 
 
 ## Relationship to the current build
 
-Current demo already covers sport-specific venue inventory, independent/shared category structures, complete match lists and draws, and optional allocation-scoped officials. No new runtime UI was added from this reference-only handoff. Fees, custom roles, forms/waivers and sponsors are requirements candidates, not approved implementation scope. Backend, real payment, messaging and account changes remain paused.
+Current demo already covers sport-specific venue inventory, independent/shared category structures, complete match lists and draws, and optional allocation-scoped officials. At the initial reference checkpoint no runtime UI was added. The subsequent user correction makes fees, custom roles, forms/waivers, registration enforcement and sponsors required scope. The first fee-configuration demo is now implemented; the others remain queued, not silently dropped. Backend, real payment, messaging and account changes remain paused.
 
 ## Evidence map
 

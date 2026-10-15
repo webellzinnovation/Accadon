@@ -1,3 +1,4 @@
+import {OrganizerSettings} from './OrganizerSettings';
 import {OrganizerBuilder} from './OrganizerBuilder';
 import {Brand} from './Brand';
 import React, { useEffect, useRef, useState } from 'react';
@@ -68,6 +69,7 @@ function App() {
   const validInterest = ['tournaments','coaching','both'].includes(interest || '') ? interest! : 'tournaments';
   let content;
   if (route === '/') content = <main id="main"><Landing/></main>;
+  else if (route === '/organizer/settings') content = <OrganizerSettings/>;
   else if (route === '/organizer') content = <OrganizerBuilder/>;
   else if (route === '/tournaments') content = <TournamentsPage workflowUrl={appUrl('/workflows')}/>;
   else if (route === '/inquiry') content = <SimplePage><div className="eyebrow">LET'S TALK ABOUT YOUR ACADEMY</div><h1>Start with<br/><em>a conversation.</em></h1><p>Tell us about your academy or sports club, the sports you offer and what you need from Accadon.</p><div className="form-panel"><h2>Academy software inquiry</h2><InquiryForm interest={validInterest} full/></div></SimplePage>;
