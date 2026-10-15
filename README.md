@@ -91,3 +91,9 @@ For a GitHub Pages-style preview, run `npx vite build --base=/Accadon/`. Vite's 
 `npm run test:static` verifies the production subpath build on a file-only server and restores the root build. It does not deploy anything. The static preview has no inquiry API: real persistence still requires the Express server and configured Postgres database.
 
 The match desk now has separate football, badminton doubles, table tennis and cricket concepts. Leagues & standings has six detailed format choices: round robin, seeded elimination, groups + elimination, double elimination, Swiss and league + playoffs. Fixtures, people and results are fictional design data, not an operational tournament engine.
+
+## Live product stage 1
+
+`/app` now contains the first real database-backed product stage, separate from the fictional demo. Auth, superadmin academy/account provisioning, academy/organizer tournament CRUD, independent player self-signup, open-event entry/review/withdrawal and personal registration history are implemented. Production seeds no fake data and has no default password. Global player identity is separate from academy membership; mobile/email verification and parent-child linking are not enabled yet.
+
+Read `docs/live-stage-1.md` before hosting. It lists the exact enabled flows, security boundaries, missing features, free-tier deployment setup and verification limits. `render.yaml` targets a free web service but no account or service has been created. The complete requested app is not finished. Coaching, draw/scoring/results, payments and academy membership consent screens are future stages. `npm run test:live` exercises actual UI/API with an isolated synthetic embedded Postgres database; it does not verify Neon or Render.

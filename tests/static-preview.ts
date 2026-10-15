@@ -16,7 +16,7 @@ try{
   await page.goto('http://127.0.0.1:4189/Accadon');assert(await page.locator('h1').innerText().then(t=>t.includes('Your academy')));
   for(const href of await page.locator('a[href]').evaluateAll(els=>els.map(el=>el.getAttribute('href')!)))assert(!href.startsWith('/')||href.startsWith('/Accadon/'),`Escaping base: ${href}`);
   if(width<800)await page.getByRole('button',{name:'Menu',exact:false}).click();
-  await page.locator('header .login-link').click();assert.equal(await page.locator('input[type=email]').inputValue(),'admin@sample.accadon.test');assert.equal(await page.locator('#demo-password-note').count(),1);
+  await page.locator('header .login-link').first().click();assert.equal(await page.locator('input[type=email]').inputValue(),'admin@sample.accadon.test');assert.equal(await page.locator('#demo-password-note').count(),1);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`artifacts/demo-login-${label}.png`,fullPage:true});
   await page.getByRole('button',{name:'Enter demo workspace'}).click();assert(await page.locator('.workspace-demo-notice').isVisible());assert.equal(posts,0);
   for(const tab of ['Draws & scoring','Leagues & standings','Batches & attendance']){await page.getByRole('tab',{name:tab}).click();assert(await page.getByRole('tabpanel').isVisible())}

@@ -1,0 +1,17 @@
+# No database is provisioned by this blueprint. Supply an existing Neon free URL.
+# Inspect Render's current confirmation screen: proceed only if total cost is $0.
+services:
+  - type: web
+    name: accadon
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm run db:migrate && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: PUBLIC_ORIGIN
+        sync: false

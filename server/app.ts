@@ -1,10 +1,12 @@
 import express from 'express';
+import type pg from 'pg';
+import {liveRouter} from './live.js';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
 import { z } from 'zod';
 import { inquirySchema } from './validation.js';
 import { IdempotencyConflict, type InquiryRepository } from './db.js';
-export function createApp(repository?: InquiryRepository) {
+export function createApp(repository?: InquiryRepository, pool?:pg.Pool) {
   const app = express();
   app.disable('x-powered-by');
   // Deliberately not trusting arbitrary forwarding headers. Configure a trusted proxy at deployment.
@@ -33,6 +35,7 @@ export function createApp(repository?: InquiryRepository) {
       res.status(503).json({ error: 'We could not confirm your inquiry was saved. Your details are still here. Please retry.' });
     }
   });
+  app.use('/api/live',liveRouter(pool));
   app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found.' }));
   app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     const status = typeof err === 'object' && err && 'status' in err ? Number(err.status) : 500;

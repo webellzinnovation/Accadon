@@ -4,7 +4,7 @@ import path from 'node:path';
 import { createApp } from './app.js';
 import { createPool, PostgresInquiries } from './db.js';
 const pool = process.env.DATABASE_URL ? createPool(process.env.DATABASE_URL) : undefined;
-const app = createApp(pool ? new PostgresInquiries(pool) : undefined);
+const app = createApp(pool ? new PostgresInquiries(pool) : undefined,pool);
 if (!pool) console.warn('DATABASE_URL is missing. Inquiry submissions will return 503, never false success.');
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve('dist')));

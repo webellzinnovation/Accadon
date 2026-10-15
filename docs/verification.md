@@ -86,3 +86,7 @@ Scoring references checked:
 - MCC overs: https://www.lords.org/mcc/the-laws/the-over
 
 No paid service provisioned, no Firebase billing, no push/merge/deployment performed in this workspace.
+
+## Live foundation checkpoint
+
+Added real auth, scoped academy/account administration, tournament CRUD, independent player signup, event entries/review/withdrawal, personal participation and global profile/membership/guardian schema. See docs/live-stage-1.md for exact scope and deployment caveats. Local strict build passed; API/geometry tests 17/17; browser/API/embedded-Postgres workflow at 1440/390/320 passed; public visual and static-base regression passed. Inspected real screenshot pixels for live login, parent-independent player participation, academy-admin tournament and owner account management. These are synthetic records in an isolated test-only Postgres engine, not production data. No Neon/Render service provisioned or verified. No paid service or deployment performed.
