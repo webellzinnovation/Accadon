@@ -1,3 +1,5 @@
+import {DesignSystem} from './DesignSystem';
+import './design-system.css';
 import {AcademyWorkspace} from './AcademyWorkspace';
 import {OrganizerSettings} from './OrganizerSettings';
 import {OrganizerBuilder} from './OrganizerBuilder';
@@ -70,6 +72,7 @@ function App() {
   const validInterest = ['tournaments','coaching','both'].includes(interest || '') ? interest! : 'tournaments';
   let content;
   if (route === '/') content = <main id="main"><Landing/></main>;
+  else if (route === '/design-system') content = <DesignSystem/>;
   else if (route === '/academy') content = <AcademyWorkspace/>;
   else if (route === '/organizer/settings') content = <OrganizerSettings/>;
   else if (route === '/organizer') content = <OrganizerBuilder/>;
