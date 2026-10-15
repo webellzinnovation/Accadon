@@ -1,3 +1,4 @@
+import {AcademyWorkspace} from './AcademyWorkspace';
 import {OrganizerSettings} from './OrganizerSettings';
 import {OrganizerBuilder} from './OrganizerBuilder';
 import {Brand} from './Brand';
@@ -29,7 +30,7 @@ function Header() {
   const [open, setOpen] = useState(false);
   return <header className="header"><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><Brand/></a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span>{open ? '−' : '+'}</span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/tournaments')} onClick={() => setOpen(false)}>Tournaments</a><a href={appUrl('/organizer')} onClick={() => setOpen(false)}>Organize</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/#/login')}>Demo login <span>↗</span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/workflows')}>Workflows <span>↗</span></a></nav></header>;
 }
-function Footer() { return <footer><a className="wordmark" href={appUrl('/')}><Brand/></a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/tournaments')}>Tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a><a href={appUrl('/#/login')}>Demo login</a><a href={appUrl('/workflows')}>Workflows</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
+function Footer() { return <footer><a className="wordmark" href={appUrl('/')}><Brand/></a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/tournaments')}>Tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a><a href={appUrl('/#/login')}>Demo login</a><a href={appUrl('/academy')}>Academy demo</a><a href={appUrl('/workflows')}>Workflows</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
 function Landing() {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -69,6 +70,7 @@ function App() {
   const validInterest = ['tournaments','coaching','both'].includes(interest || '') ? interest! : 'tournaments';
   let content;
   if (route === '/') content = <main id="main"><Landing/></main>;
+  else if (route === '/academy') content = <AcademyWorkspace/>;
   else if (route === '/organizer/settings') content = <OrganizerSettings/>;
   else if (route === '/organizer') content = <OrganizerBuilder/>;
   else if (route === '/tournaments') content = <TournamentsPage workflowUrl={appUrl('/workflows')}/>;
