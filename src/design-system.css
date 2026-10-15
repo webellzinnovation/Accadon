@@ -50,3 +50,6 @@ html.kit-scroll-theme{--kit-scroll-track:#f1e9f8;--kit-scroll-thumb:#ba9bd2;--ki
 .kit-select-menu{max-height:240px;overflow-y:auto}
 /* Match result meaning covers the full pairing cell, with matching legend. */
 .kit .kit-crosstable td.kit-cross-result.is-win,.kit .kit-cross-key>span.cross-win{background:#e6f3e8;color:#4c7b5b}.kit .kit-crosstable td.kit-cross-result.is-loss,.kit .kit-cross-key>span.cross-loss{background:#f9e6e9;color:#a15b6b}.kit .kit-cross-result.is-win strong.cross-win{color:#4c7b5b}.kit .kit-cross-result.is-loss strong.cross-loss{color:#a15b6b}
+/* Icon-only circles use explicit centering, not inherited button line boxes. */
+.kit-score-close,.kit-calendar-header button,.kit-toast button,.kit button.kit-icon,.kit .kit-icon{display:inline-flex;align-items:center;justify-content:center;line-height:1;padding:0;text-indent:0;letter-spacing:0;flex-shrink:0}
+.kit-score-close{position:relative;font-size:0}.kit-score-close::before,.kit-score-close::after{content:'';position:absolute;left:50%;top:50%;width:13px;height:1.5px;background:currentColor;border-radius:2px;transform:translate(-50%,-50%) rotate(45deg)}.kit-score-close::after{transform:translate(-50%,-50%) rotate(-45deg)}
