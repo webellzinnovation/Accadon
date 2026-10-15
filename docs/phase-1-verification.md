@@ -13,3 +13,16 @@
 Remaining advisory: Vite reports a roughly 727KB JS chunk (about 221KB gzip), above its 500KB advisory threshold. Code splitting is not part of this increment.
 
 This is a branch handoff only. No merge, deployment, paid service, Firebase billing or live impersonation. See `phase-1-foundation.md` for remaining Phase 1 work and role-preview limits.
+
+## Approved compact home live strip
+
+15 October 2026. Supersedes only the home board layout above, not the separate tournament listing.
+
+- Preview approved on desktop and mobile before this handoff. Five fictional running tournaments stay in one horizontal row, with three full cards and a next-card edge on desktop, one card and a next-card edge on small mobile. Upcoming events are excluded from this live strip.
+- Smaller cards retain sport icon, tournament name, venue/city, live/demo state, sample start date, progress, ongoing categories and the green outside glow. No match scores appear in these cards. Demo/no-live-feed labels remain visible.
+- Scroll snapping, previous/next controls, keyboard-focusable rail and the All tournaments link preserve access to the full listing. Sport filters scroll on one line on mobile.
+- Two complete regression passes: all 26 browser/component scripts listed above, build/typecheck twice and 40/40 unit/API tests twice. Updated home assertions from six events to five running events. Board tests additionally check single-row layout, rail overflow, next-arrow scrolling and offscreen-card focus at 1440/768/390/320. Existing tests cover filters, popup/focus return, pause/reduced motion, no viewport overflow, no API access and no runtime errors.
+- Final actual-pixel inspection of board-1440.png (1440x758) and board-320.png (320x807): coherent spacing, visible next-card peek, readable compact content and green glow, no scoreboards or clipped first-card content. Desktop cards are about 365px high; the small-mobile card is about 386px high.
+- Existing Vite size advisory remains. Live authentication, real-time tournament data and the remaining Phase 1 work remain outside this increment.
+
+Branch handoff only. No main merge or deployment performed by this task.

@@ -14,7 +14,7 @@ try{
  const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});const errors:string[]=[];const api:string[]=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.url().includes('/api/')||r.method()!=='GET')api.push(r.url())});
  await page.goto('http://127.0.0.1:4193/Accadon/');await page.locator('.home-event-card').last().waitFor();
- assert.equal(await page.locator('.home-event-card').count(),6);assert.equal(await page.locator('.academy-network-grid a').count(),6);
+ assert.equal(await page.locator('.home-event-card').count(),5);assert.equal(await page.locator('.academy-network-grid a').count(),6);
  assert(await page.locator('.home-concept-note').innerText().then(t=>t.includes('Fictional')));
  assert.equal(await page.locator('.ribbon-track').evaluate(e=>getComputedStyle(e).animationName),'none');
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
@@ -24,7 +24,7 @@ try{
  for(const event of ['City Circuit Open','Shuttle Weekend','Academy Youth League','Weekend T20 Cup','Courtside Doubles','Junior Rising Stars']){await page.getByRole('button',{name:`Feature ${event}`}).click();assert.equal(await page.locator('.score-event h2').innerText(),event)}
  await page.getByRole('button',{name:'Feature Weekend T20 Cup'}).click();assert.equal(await page.locator('.score-event h2').innerText(),'Weekend T20 Cup');
  await page.getByRole('group',{name:'Filter tournament examples'}).getByRole('button',{name:'Badminton',exact:true}).click();assert.equal(await page.locator('.home-event-card').count(),1);
- await page.getByRole('button',{name:'Explore tournament preview',exact:false}).click();assert(await page.locator('.event-preview').isVisible());
+ await page.getByRole('button',{name:'Tournament preview',exact:false}).click();assert(await page.locator('.event-preview').isVisible());
  await page.getByRole('button',{name:'Show in match centre'}).click();assert.equal(await page.locator('.score-event h2').innerText(),'Shuttle Weekend');
  await page.locator('.arena-hero').screenshot({path:`artifacts/home/selected-${width}.png`});
  await page.getByRole('button',{name:'Pause tournament ribbon'}).click();assert(await page.locator('.ribbon-track').evaluate(e=>e.classList.contains('is-paused')));
