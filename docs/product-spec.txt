@@ -1,0 +1,211 @@
+ACCADON: COMPLETE WEBSITE + ACADEMY MANAGEMENT SYSTEM
+SELF-CONTAINED ARENA AI BUILD PROMPT
+
+Build the working product below in one connected project. This is a full website and private academy management app, not only a landing page. Implement the phases in order. Preserve working modules between phases. Do not replace real backend work with dummy records, mock authentication or localStorage persistence.
+
+1. BUSINESS AND BRAND
+
+Accadon is Nishchithh D's own table tennis coaching company in Bangalore, India. It provides coaching through apartment communities, academies, schools and one-to-one sessions. Communities are the initial focus; schools, academies and individual players also need clear entry points.
+
+Brand line: "Talent needs structure".
+Positioning: planned coaching sessions, individual player profiles, attendance and coach-led progress tracking in the academy's own software. Sell the structure, not invented results.
+
+One brand, two connected areas: public website and private operations. Public navigation includes Member Login. Admin screens never appear as sections of the landing page. Shared login routes authenticated people according to their authorized roles.
+
+2. HONEST CONTENT AND CONFIGURATION
+
+No invented student counts, locations, years of experience, fees, rankings, wins, testimonials, customer/partner logos, success rates or performance promises. No fake players, inquiries, sessions, payments or progress charts in the live app. Test fixtures belong only in isolated tests.
+
+Private setup placeholders:
+[COACH_2_NAME_TO_BE_PROVIDED]
+[CONTACT_PHONE_TO_BE_PROVIDED]
+[CONTACT_EMAIL_TO_BE_PROVIDED]
+[COACH_SCORING_FORMAT_TO_BE_PROVIDED]
+[PLANS_AND_FEES_TO_BE_CONFIGURED]
+[LOCATIONS_AND_BATCHES_TO_BE_CONFIGURED]
+
+Never show placeholder strings as public contact details. Hide missing phone/email/WhatsApp links. Inquiry remains usable without these settings. Do not fabricate a physical headquarters, map pin or owned domain.
+
+Coaches:
+- Nishchithh D: Founder & Table Tennis Coach. No added credentials or biography claims.
+- Supporting credit: "Supported by an ITTF Level 2 coach". Name remains unfilled until supplied. Do not attribute that credential to Nishchithh or invent a portrait/name/biography.
+- Use typography or neutral table tennis artwork until approved team photos exist. No stock portraits presented as our team.
+
+The exact scoring format has not been supplied. Build the configurable assessment structure but NO default active rubric, invented scale, pass mark, curriculum, course levels or automatic promotion rules. Owner configures these later.
+
+Provide a private setup checklist and editable settings. Keep draft content separate from published public content. Draft a privacy notice describing actual collection/use for owner review before real enrollment; do not invent liability waivers or legal assurances.
+
+3. DARK PREMIUM DESIGN AND SCROLL MOTION
+
+Build a cinematic, illustrated table tennis website, not a generic SaaS template. Near-black/charcoal background, warm off-white text, restrained orange accent, bold spacious headlines and short readable copy. Parents should skim easily.
+
+Create detailed original table tennis scenes: recognizable table and net, paddle, ball, court/floor markings, lighting, soft shadows and layered depth. Do not repeat the failure of flat circles and rectangles suggesting a table. Use original SVG/CSS illustration or lightweight 3D. No external reference is required; do not depend on inaccessible Pinterest assets.
+
+Every major section has deliberate motion:
+- Hero: layered court/table/paddle/ball with different parallax speeds; ball follows a subtle rally-like path; scene and headline transform together as scroll progresses.
+- Programs: staggered card reveals and subtle layered movement; restrained hover/tap feedback.
+- How it works: connected path reveals with separate visual beats for each step.
+- Coaching system: animated conceptual session/profile/attendance diagram, clearly not an actual player's data.
+- Coaches: gentle depth and card reveal, no fake animated portrait.
+- Contact: scene settles while form becomes the focus.
+
+Prefer GSAP + ScrollTrigger if compatible. Use scroll-driven timelines and GPU-friendly transforms/opacity. Use a compatible smooth-scroll layer only when it improves the result. Preserve native scroll semantics, anchors, keyboard access and browser history. No scroll hijacking or blocking loading intro.
+
+Respect prefers-reduced-motion with a complete static layout. Simplify motion/pinning on mobile. Keep all text and CTAs readable during movement. Lazy-load expensive scenes, pause offscreen rendering, clean up listeners/timelines and provide a static fallback if WebGL fails. Private app screens must be fast, calm and practical rather than cinematic.
+
+4. PUBLIC WEBSITE
+
+Routes: /, /inquiry, /onboarding, /login, /member, /admin, /coach or equivalent clean paths.
+Navigation: Programs, How It Works, Coaches, Contact, Member Login.
+Primary CTA: Enquire about coaching.
+Secondary CTA: Explore our programs.
+A quieter Start onboarding link explains that submission does not confirm a place or payment.
+
+Landing sections:
+A. Hero: "Talent needs structure".
+Supporting line: "Structured table tennis coaching across Bangalore communities, schools, academies and one-to-one sessions."
+B. Who we serve: four cards, each prefilling inquiry interest:
+Apartment communities - Structured coaching, close to home.
+Schools - Organized table tennis programs for students.
+Academies - Planned sessions and individual progress tracking.
+One-to-one coaching - Focused practice built around the player.
+Do not promise availability at every location.
+C. How it works: Enquire -> Find the right program -> Train with a plan -> Track progress. Brief descriptions, no long paragraphs.
+D. Coaching system: planned sessions, attendance and coach-led assessment. Neutral conceptual visuals, no fabricated outcomes.
+E. Coaches: only the content in section 2.
+F. Contact: compact inquiry form plus full form link. Bangalore is the service city, not an invented office address.
+Footer: brand line, navigation and configured contacts only.
+
+Use semantic headings, strong contrast, labeled forms, clear focus states and helpful validation. Responsive from phones to desktop, no horizontal overflow. Add basic metadata/share support without fabricated ratings or addresses.
+
+5. REAL BACKEND AND SECURITY
+
+Inspect Arena's available runtime first. Use its supported persistent database/authentication and one compatible stack. Prefer typed React; use Next.js if supported, but do not force an incompatible framework or competing second backend.
+
+No mock login, hardcoded shared access code, public admin password or in-memory persistence. Enforce permissions server-side/database-side, including file access, not just by hiding buttons. Migrations/schema must include relational constraints, indexes and transaction-safe writes. Secrets stay server-side; .env.example contains placeholders only.
+
+First owner uses a protected platform-supported bootstrap/invitation process. Public signup can never grant staff roles. Members claim securely invited/verified accounts; entering a player ID or matching an unverified phone must never grant child access. Implement supported login recovery. Do not claim a notification/invite was delivered without a configured integration and successful send.
+
+If this environment lacks DB/auth, prepare safe UI/schema and report the exact setup needed. Never disguise missing infrastructure as functional backend. Success messages follow confirmed persistence only.
+
+Timezone Asia/Kolkata. Store time instants consistently, render local time clearly, use date-only fields where appropriate. Currency INR; store money in integer paise.
+
+6. ROLES
+
+Owner/admin: CRM, onboarding review, players/guardians, coaches, locations/batches, sessions/attendance, courses/rubrics/assessments, subscriptions/manual payments, invitations and settings. Owner controls staff/finance permissions.
+Coach: only assigned players, batches, locations and sessions; record attendance/plans/assessments there. No unrelated families, staff administration or finance management. Removed assignment revokes access.
+Parent: one login, multiple linked children; only their schedule, attendance, subscription/payment summary and published progress. Parent may also be a player using the same account.
+Adult player: only their own approved data.
+Visitor: public content and validated submission endpoints only; cannot list/read submissions or private data.
+
+Internal CRM/coach notes are separate from member-visible notes. Assessments stay private drafts until published. Test permissions with direct API requests and altered IDs, not just UI navigation.
+
+7. REQUIRED DATA MODEL
+
+Adapt names to the supported stack. Use unique IDs, created/updated timestamps, relational references, actor attribution and archive/history preservation. Do not delete linked financial/attendance history.
+
+accounts: auth identity, name, verified contact details, status.
+roles: account_id, role, active status; owner-only privilege assignment.
+players: name, optional DOB, minor/adult classification, status, contact if appropriate, onboarding_request_id; login optional.
+guardians: name, phone/email, optional verified account_id.
+player_guardians: player_id, guardian_id, relationship and verified account linkage.
+coaches: account_id, display_name, approved bio/credential, active status.
+locations: name, type, actual address if supplied, active status.
+batches: location_id, name, program type, configured capacity, active status.
+coach_assignments: coach_id, location_id/batch_id, effective dates.
+batch_memberships: player_id, batch_id, effective dates/status.
+
+inquiries: requester/contact, program interest, area, optional learner/institution details, message, source, consent record, pipeline status, assigned staff, follow_up_at.
+crm_activities: inquiry_id, actor, type, private note, timestamp, follow-up.
+onboarding_requests: submitted player/guardian data, preferences, consent, review state, linked inquiry, reviewer/date, linked_player_id.
+
+sessions: location, optional batch, group/one-to-one type, starts_at/ends_at, capacity, status, training plan, internal notes.
+session_coaches: session_id, coach_id.
+session_allocations: session_id, player_id, state; unique session/player.
+attendance: session_id, player_id, unmarked/present/absent/late/excused, actor/time, appropriate note; unique session/player.
+
+courses: title, description, draft/published/archived.
+course_levels: course_id, title, order.
+lessons: level_id, title, objectives, order.
+player_course_enrollments: player_id, course_id, current level, state.
+lesson_progress: player_id, lesson_id, state, coach, note, timestamp.
+rubric_versions: name/version, draft/active/retired, configured format.
+rubric_criteria: version_id, criterion, input type, allowed range/options, units, optional configured weight, order.
+assessments: player, rubric_version, optional session/course/lesson, coach/date, draft/published, summary, publication time.
+assessment_scores: assessment_id, criterion_id, typed value, comment.
+
+subscription_plans: name, scope, duration rule, optional allowance, price_paise, active status. No seeded fees.
+subscriptions: player/plan, starts_on/ends_on, draft/active/paused/expired/cancelled, agreed price and allowance snapshots, note.
+subscription_usage: subscription/player/session, deduction/reversal, actor/reason; idempotent.
+charges: player/subscription, amount_paise, due date, description, state.
+payments: player/charge, amount_paise, method, reference, received date, recorder, posted/reversed state, correction reference. Never store card details.
+settings: public content settings separated from private operational configuration.
+audit_log: actor/action/entity/time and safe change summary; no secrets/tokens.
+
+8. INQUIRY AND ONBOARDING WORKFLOW
+
+Inquiry: name, phone, optional email, interest, locality, optional learner name/age group, institution/community name when relevant, message and clear contact consent. Server validation, length limits, contact normalization, honeypot/rate limiting, duplicate-submit protection. Insert inquiry plus CRM activity; success only after save. No automatic messages unless configured.
+
+CRM stages: New, Contacted, Trial/Discussion, Onboarding, Enrolled, Closed. Search/filters, staff assignment, notes and follow-up dates. Stage changes alone do not create a subscription or payment.
+
+Onboarding: learner name, adult/minor, optional DOB, guardian required for minors, adult contact for adults, program and location/batch preference, optional relevant coaching notes and consent. No unnecessary medical/identity-document collection. If no real location exists, accept locality text, not fake options.
+
+Submission creates Pending review request, not active enrollment. Admin approval transactionally creates or links player/guardian and preserves source. Flag possible duplicates for review, never auto-merge different people. Approval retries must not create duplicate players.
+
+Admin then selects actual plan and batch/session allocation. No invented plan, automatic fee activation or promised slot. Approved but unallocated/unsubscribed players show Needs setup. Member invitation is optional, secure and honest about delivery status.
+
+9. APP SCREENS AND BEHAVIOR
+
+Admin navigation: Overview, Inquiries, Onboarding, Players, Parents, Coaches, Locations, Batches, Sessions, Attendance, Courses, Assessments, Subscriptions, Payments, Settings.
+
+Overview: real pending requests, follow-ups, today's sessions, subscriptions needing review and unpaid recorded charges. Empty means zero and useful setup actions. Query failure is an error, not zero.
+
+Players: search/filter by status/location/batch. Detail tabs: Profile, Subscription, Schedule & Attendance, Skills/Progress, Payments. Courses must also have a separate navigation screen.
+Parents: linked children and verified account linkage; review changed child links explicitly. Parent-as-player works without duplicate login.
+Coaches/locations/batches: create/edit/archive and manage assignments; archives retain historical records but disallow new allocations.
+
+Sessions: calendar/list, group/one-to-one, coach/location/batch, capacity, allocations and written plan. Validate end after start, duplicates, capacity and coach/player time conflicts. Recurrence creates identifiable instances without duplicates; distinguish editing one instance from future instances. Cancellations stay in history and do not consume session allowance.
+Attendance: quick mobile roster; bulk mark plus per-player correction. Default Unmarked, not Present. Only allocated players unless admin adds allocation. Persist pending/saved/error states and audit changes.
+
+Courses: owner creates courses/levels/lessons, orders/publishes them, assigns players; coach records progress. Start empty. No invented curriculum or promotion thresholds.
+Assessments: select assigned player, date, optional session/course/lesson and configured active rubric. Render typed inputs from configuration. With no rubric, show Scoring format needs configuration; disable scored publishing but allow draft notes. Owner-only rubric builder configures criteria/types/ranges/options/optional weights. Version rubrics; past scores keep original meaning. Charts/totals only when comparable records and defined calculation rules exist. Never average unrelated scales. Members see published results only.
+
+Subscriptions: owner configures plans and assigns actual dates/fee/allowance. Lifecycle is separate from payment state. No automatic renewal/billing. No supplied deduction policy: default to no automatic deductions; provide owner configuration for scheduled/present-session consumption or other explicit rule. Deduction/reversal must be traceable and idempotent. Do not invent no-show fees, grace periods or refunds.
+Payments: implement manual records first (cash/bank transfer/UPI/other), amount/date/reference and linked player/charge. Compute due/paid/partial balances from posted records. Correct with reversal/adjustment, not erased history. A screenshot or payment intent is not verified gateway settlement.
+Online gateway: prepare integration boundary, disabled until an actual provider is configured. No fake checkout success. Future integration uses server-side secrets, signature-validated webhooks and idempotent settlement updates.
+
+Settings: contacts, approved biographies/images, public content, setup checklist, plans, attendance/usage rules and rubrics. Staff login emails are not automatically public contacts.
+Member portal: child-switcher or own profile, upcoming allocated sessions, attendance, subscription/payment summary, published progress. No private notes, unpublished assessments or other families. No public player pages.
+
+10. PHASES IN ORDER
+
+Phase 1: real DB/schema, authentication, protected owner provisioning, permissions, app shell, settings and empty states.
+Phase 2: complete dark animated public website, responsive/reduced-motion behavior, inquiry persistence and CRM.
+Phase 3: onboarding review, idempotent player/guardian linking, coaches, locations and batches.
+Phase 4: sessions/plans, allocation, scheduling conflicts, mobile attendance and audit history.
+Phase 5: courses/progress, rubric configuration/versioning, coach assessments and publishing. Scoring stays unconfigured until supplied.
+Phase 6: plans/subscriptions, charges/manual payments, balances and explicit usage rules; unconfigured gateway disabled.
+Phase 7: secure member claims/child-switching, own-data views, full workflow validation and final visual/accessibility/performance polish.
+
+11. ACCEPTANCE AND HANDOFF
+
+Loading/empty/saved/error states everywhere. Forms validate server-side. Search/filter/pagination work on real records. Multi-step writes are transactional/retry-safe. Sensitive exports are authorized only, never public links.
+
+Test and report:
+- Fresh DB has no fake records; failed reads do not masquerade as empty.
+- Inquiry survives refresh/login; failed saves retain inputs and show an error.
+- Onboarding stays pending; approval retry creates exactly one correct player/guardian link.
+- Parent sees only linked children and their own player record; altered IDs cannot expose others.
+- Coach sees assigned data only; public signup cannot grant staff access.
+- Sessions respect capacity/conflicts; attendance persists with correction history.
+- Cancelled sessions do not consume allowance; retries cannot double-deduct.
+- Missing rubric yields no invented score; configured scores validate and preserve version history.
+- Members cannot view draft assessments/internal notes.
+- Charges/payments/partial balances/reversals derive from actual records.
+- Missing contacts produce no broken/fake links.
+- Missing DB/auth/gateway is explicitly reported, never simulated.
+- Inspect rendered desktop and mobile pages: no clipping/overlap, unreadable text, admin block on landing, scroll trap or controls blocked by motion. Keyboard and reduced-motion experience remain complete.
+
+Deliver working source, schema/migrations, setup instructions, implementation checklist and actual test results. State working, unconfigured and unfinished items honestly. Owner still supplies second coach name/photos, public contacts, actual locations/batches, plans/fees, scoring format, usage rules and gateway setup. Explain how to enter them in Settings.
+
+Start building, not only explaining a plan. Continue through phases as the environment permits; if interrupted, retain the full checklist and completed modules. The finished product connects the public Accadon website to real academy operations under one brand.
