@@ -1,3 +1,4 @@
+import {KitIcon} from './KitIcon';
 import {DesignSystem} from './DesignSystem';
 import './design-system.css';
 import {AcademyWorkspace} from './AcademyWorkspace';
@@ -28,9 +29,9 @@ const programs = [
   { id: 'tournaments', number: '03', icon: '↗', title: 'Live match scoring', text: 'Keep the tournament moving, match by match.' },
   { id: 'tournaments', number: '04', icon: '◎', title: 'A way into Accadon', text: 'Every free event page introduces the academy platform.' },
 ];
-function Header() {
+function Header({kit=false}:{kit?:boolean}) {
   const [open, setOpen] = useState(false);
-  return <header className="header"><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><Brand/></a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span>{open ? '−' : '+'}</span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/tournaments')} onClick={() => setOpen(false)}>Tournaments</a><a href={appUrl('/organizer')} onClick={() => setOpen(false)}>Organize</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/#/login')}>Demo login <span>↗</span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/workflows')}>Workflows <span>↗</span></a></nav></header>;
+  return <header className="header" data-kit-header={kit||undefined}><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><Brand/></a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span>{kit?<KitIcon name={open?'close':'plus'}/>:open?'−':'+'}</span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/tournaments')} onClick={() => setOpen(false)}>Tournaments</a><a href={appUrl('/organizer')} onClick={() => setOpen(false)}>Organize</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/#/login')}>Demo login <span>{kit?<KitIcon name="arrow"/>:'↗'}</span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/workflows')}>Workflows <span>{kit?<KitIcon name="arrow"/>:'↗'}</span></a></nav></header>;
 }
 function Footer() { return <footer><a className="wordmark" href={appUrl('/')}><Brand/></a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/tournaments')}>Tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a><a href={appUrl('/#/login')}>Demo login</a><a href={appUrl('/academy')}>Academy demo</a><a href={appUrl('/workflows')}>Workflows</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
 function Landing() {
@@ -84,6 +85,6 @@ function App() {
   else if (['/login','/member','/admin','/coach'].includes(route)) content = <DemoAccess/>;
   else if (['/onboarding'].includes(route)) content = <SimplePage><div className="eyebrow">COMING IN THE NEXT BUILD PHASE</div><h1>{route === '/onboarding' ? 'Onboarding' : 'Member & staff access'}<br/><em>is not open yet.</em></h1><p>{route === '/onboarding' ? 'The secure onboarding and review workflow is not available in this phase. No enrollment details have been collected here.' : 'Secure login and private academy tools are still being built. No demo login or shared access code is enabled.'}</p><a className="button primary" href={appUrl('/inquiry')}>Enquire about Accadon ↗</a></SimplePage>;
   else content = <SimplePage><h1>Page not found.</h1><p>Use the link above to return to Accadon.</p></SimplePage>;
-  return <><a href="#main" className="skip-link">Skip to content</a><Header/>{route === '/' ? content : <div>{content}</div>}<Footer/></>;
+  return <><a href="#main" className="skip-link">Skip to content</a><Header kit={route==='/design-system'}/>{route === '/' ? content : <div>{content}</div>}<Footer/></>;
 }
 createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);

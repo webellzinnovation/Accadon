@@ -52,7 +52,7 @@ html.kit-scroll-theme{--kit-scroll-track:#f1e9f8;--kit-scroll-thumb:#ba9bd2;--ki
 .kit .kit-crosstable td.kit-cross-result.is-win,.kit .kit-cross-key>span.cross-win{background:#e6f3e8;color:#4c7b5b}.kit .kit-crosstable td.kit-cross-result.is-loss,.kit .kit-cross-key>span.cross-loss{background:#f9e6e9;color:#a15b6b}.kit .kit-cross-result.is-win strong.cross-win{color:#4c7b5b}.kit .kit-cross-result.is-loss strong.cross-loss{color:#a15b6b}
 /* Icon-only circles use explicit centering, not inherited button line boxes. */
 .kit-score-close,.kit-calendar-header button,.kit-toast button,.kit button.kit-icon,.kit .kit-icon{display:inline-flex;align-items:center;justify-content:center;line-height:1;padding:0;text-indent:0;letter-spacing:0;flex-shrink:0}
-.kit-score-close{position:relative;font-size:0}.kit-score-close::before,.kit-score-close::after{content:'';position:absolute;left:50%;top:50%;width:13px;height:1.5px;background:currentColor;border-radius:2px;transform:translate(-50%,-50%) rotate(45deg)}.kit-score-close::after{transform:translate(-50%,-50%) rotate(-45deg)}
+.kit-score-close::after{transform:translate(-50%,-50%) rotate(-45deg)}
 /* Quiet frosted layer: opaque fallback first, translucent only with blur support. */
 .kit .kit-card,.kit .kit-glass{border-color:#ffffffbd;box-shadow:inset 0 1px 0 #ffffffb3,0 12px 30px #68498a0c}
 .kit-picker-dialog,.kit-match-dialog,.kit .kit-select-menu{background:#f8f2fc;border-color:#ffffffcc;box-shadow:inset 0 1px 0 #fff,0 22px 65px #37214e26,0 3px 12px #70508c14}
@@ -65,3 +65,13 @@ html.kit-scroll-theme{--kit-scroll-track:#f1e9f8;--kit-scroll-thumb:#ba9bd2;--ki
 .kit .kit-toast{background:#674385ed;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 }
 @media(prefers-reduced-transparency:reduce){.kit .kit-card:not(.kit-banner),.kit .kit-glass,.kit-picker-dialog,.kit-match-dialog,.kit .kit-select-menu{background:#f8f2fc;backdrop-filter:none;-webkit-backdrop-filter:none}.kit .kit-cross-dialog .kit-cross-section{background:transparent}}
+
+/* ICON DESIGN RULE: square centered host + block SVG, no font baselines/pseudo-glyphs. */
+.kit .kit-icon,.kit .kit-circle-control,.kit .kit-score-close,.kit .kit-calendar-header button,.kit .kit-toast button{display:inline-flex;align-items:center;justify-content:center;padding:0;line-height:1;text-indent:0;letter-spacing:0;flex:0 0 auto;aspect-ratio:1;box-sizing:border-box}
+.kit .kit-icon{width:38px;height:38px}.kit .kit-score-close{width:36px;height:36px}.kit .kit-calendar-header button{width:32px;height:32px}.kit .kit-toast button{width:28px;height:28px}
+.kit .kit-icon-art{display:block;flex:0 0 auto;width:18px;height:18px;overflow:visible;pointer-events:none;margin:0;transform:none}
+.kit .kit-score-close .kit-icon-art,.kit .kit-toast .kit-icon-art{width:16px;height:16px}
+.kit .kit-calendar-grid button{display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
+.kit .kit-button .kit-icon-art{width:16px;height:16px}.kit .kit-select-trigger .kit-icon-art,.kit .kit-date-trigger .kit-icon-art{width:18px;height:18px}.kit .kit-select-menu button>span{display:flex;align-items:center;justify-content:center}
+/* Shared site header keeps the same rule only while reviewing the kit route. */
+.header[data-kit-header] .kit-icon-art{display:block;width:16px;height:16px;flex:0 0 auto}.header[data-kit-header] .menu-toggle,.header[data-kit-header] .menu-toggle>span,.header[data-kit-header] .login-link>span{display:inline-flex;align-items:center;justify-content:center}.header[data-kit-header] .menu-toggle>span{width:18px;height:18px;padding:0;line-height:1}
