@@ -14,7 +14,7 @@ async function setup() {
   await db.exec(readFileSync('db/migrations/002_academy_inquiries.sql','utf8'));
   const query = async (sql: string, params?: unknown[]) => {
     const r = await db.query(sql, params);
-    return { rows: r.rows, rowCount: r.affectedRows ?? r.rows.length };
+    return { rows: r.rows, rowCount: r.rows.length || r.affectedRows || 0 };
   };
   const pool = { query, connect: async () => ({query,release() {}}) } as unknown as pg.Pool;
   return { pool, app: createApp(new PostgresInquiries(pool)) };

@@ -1,3 +1,5 @@
+> Superseded for current sequencing: workflow review comes first. Do not deploy until owner satisfaction review. Backend work is retained and paused. Public navigation uses /workflows; the unlinked local real-auth preview is /live-preview. Parent/global sport groundwork added afterward is not approved for launch.
+
 # Live product foundation - stage 1
 
 This is a deployable preview, not a claim of production readiness. Public concept screens remain separate. The live app is `/app`; the fictional demo is `/#/login`.

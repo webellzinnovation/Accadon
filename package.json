@@ -16,7 +16,9 @@
     "test:visual": "tsx tests/visual.ts",
     "test:static": "tsx tests/static-preview.ts",
     "test:live": "tsx tests/live-visual.ts",
-    "admin:bootstrap": "tsx server/bootstrap.ts"
+    "admin:bootstrap": "tsx server/bootstrap.ts",
+    "test:parent": "tsx tests/parent-visual.ts",
+    "test:workflows": "tsx tests/workflow-visual.ts"
   },
   "dependencies": {
     "dotenv": "^16.6.1",
