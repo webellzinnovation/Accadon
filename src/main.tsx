@@ -1,3 +1,4 @@
+import {RehearsalSession} from './RehearsalSession';
 import {SuperAdminWorkspace} from './SuperAdminWorkspace';
 import {KitIcon} from './KitIcon';
 import {DesignSystem} from './DesignSystem';
@@ -90,4 +91,4 @@ function App() {
   else content = <SimplePage><h1>Page not found.</h1><p>Use the link above to return to Accadon.</p></SimplePage>;
   return <><a href="#main" className="skip-link">Skip to content</a><Header kit={route==='/design-system'}/>{route === '/' ? content : <div>{content}</div>}<Footer/></>;
 }
-createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
+createRoot(document.getElementById('root')!).render(<React.StrictMode><RehearsalSession><App/></RehearsalSession></React.StrictMode>);

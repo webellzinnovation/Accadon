@@ -26,3 +26,13 @@ This is a branch handoff only. No merge, deployment, paid service, Firebase bill
 - Existing Vite size advisory remains. Live authentication, real-time tournament data and the remaining Phase 1 work remain outside this increment.
 
 Branch handoff only. No main merge or deployment performed by this task.
+
+## Shared-session and family increment verification
+
+15 October 2026. Functional branch excludes the unapproved software landing-page redesign.
+
+- Two complete passes of all 28 browser/component scripts: the prior 26 plus shared-session-visual and family-preview-visual. Build/typecheck twice; 42/42 unit/API tests twice.
+- Shared-session checks cover two independent owner drafts, name synchronization, Basic/Events/Payments navigation, exit/return, route unmount/return, reload reset, and no API/runtime/page-overflow at 1440/390/320.
+- Family checks cover disabled consent before selection, child/sport reset, review/cancel/confirm, independent sport scopes and revoke at 1440/390/320. Unit checks additionally cover unknown child, wrong sport, other academy, another child and wording-version mismatch.
+- Pixel-inspected: owner-opened organizer desktop, family scope selector/context at 390px, consent review dialog at 320px, and timestamped consent result at 320px. Scope text, child/sport identity and confirm/cancel fit; the mobile owner-return banner remains visible. Captures are local fictional data only.
+- Existing 727KB Vite advisory remains. No real authentication, legal consent, membership activation, communication, payment, publishing, merge or deployment.
