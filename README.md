@@ -60,7 +60,7 @@ Before real data intake: owner must review the draft `/privacy` notice, supply a
 - Server normalization/validation, strict input shape, body/field size limits, honeypot, same-origin checks, rate limiting and UUID idempotency keys.
 - Inquiry + CRM receipt activity committed in a single transaction. Same-key retries return the original ID; conflicting retry payloads return 409. No automatic email/WhatsApp sends.
 - Success only after confirmed persistence; database/network errors preserve form data, never become fake empty/saved states.
-- No public list/read endpoint for inquiries. No fabricated counts, fees, players, team photos, testimonials, contact details or credentials. Founder context names Nishchithh as a table tennis coach without making Accadon table-tennis-only.
+- No public list/read endpoint for inquiries. No real-record claims, copied team photos, testimonials, contact details or credentials. Product previews contain explicitly labelled fictional counts, fees and player fixtures for design review. Founder context names Nishchithh as a table tennis coach without making Accadon table-tennis-only.
 
 ## Product concept previews
 
@@ -78,3 +78,6 @@ The landing includes 11 tabbed product screen concepts covering events/registrat
 4. Remaining workflows in `docs/implementation-checklist.md`.
 
 `docs/product-spec.txt` is the archived coaching-service spec, not the current SaaS positioning. `docs/saas-positioning.md` supersedes it wherever audience, business model, tenant scope or product copy differ. This repository uses custom code only.
+
+### Dense product concept windows
+All 11 product-tour screens now show populated, explicitly fictional fixtures with compact navigation, KPI cards, detailed records and screen-specific widgets. Parent view omits staff review activity. The 11 outer tabs are interactive; inner search, filters, exports, publishing and payment controls are illustrative. These are design concepts, not implemented academy-management features. The production API remains limited to inquiry persistence.

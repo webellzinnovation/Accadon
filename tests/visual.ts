@@ -26,6 +26,14 @@ try {
     for (const tab of ['Create & register','Draws & scoring','Leagues & standings','Players & teams','Courts & schedule','Batches & attendance','Courses & assessment','Fees & subscriptions','Notices & updates','Parent & player view','Reports & oversight']) {
       await page.getByRole('tab',{name:tab}).click();
       assert(await page.getByRole('tabpanel').isVisible());
+      assert.equal(await page.locator('.dense-metrics>div').count(),4);
+      assert.equal(await page.locator('.dense-review-rail>article').count(),tab==='Parent & player view'?0:3);
+      if(tab==='Parent & player view'){assert.equal(await page.locator('.dense-nav').getByText('Review centre').count(),0);assert.equal(await page.locator('.dense-review-rail').count(),0);}
+      for(const metric of await page.locator('.dense-metrics>div').all()) {
+        assert.equal(await metric.evaluate(el=>getComputedStyle(el).display),'block');
+        assert(await metric.evaluate(el=>el.scrollWidth<=el.clientWidth+1));
+      }
+      for(const cell of await page.locator('.concept-record>div').all()) assert(await cell.evaluate(el=>el.scrollWidth<=el.clientWidth+1));
       if(tab==='Draws & scoring') {
         assert(await page.locator('.football-detail').isVisible());
         assert(await page.locator('.lineup-pitch').isVisible());
