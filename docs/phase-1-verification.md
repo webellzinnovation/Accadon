@@ -36,3 +36,11 @@ Branch handoff only. No main merge or deployment performed by this task.
 - Family checks cover disabled consent before selection, child/sport reset, review/cancel/confirm, independent sport scopes and revoke at 1440/390/320. Unit checks additionally cover unknown child, wrong sport, other academy, another child and wording-version mismatch.
 - Pixel-inspected: owner-opened organizer desktop, family scope selector/context at 390px, consent review dialog at 320px, and timestamped consent result at 320px. Scope text, child/sport identity and confirm/cancel fit; the mobile owner-return banner remains visible. Captures are local fictional data only.
 - Existing 727KB Vite advisory remains. No real authentication, legal consent, membership activation, communication, payment, publishing, merge or deployment.
+
+## Linked family application verification
+
+15 October 2026. Two complete passes: all previous 28 browser/component scripts plus family-membership-visual (29), build/typecheck twice and 44/44 unit/API tests twice.
+
+New tests cover disabled application without scoped consent; review/cancel/confirm; duplicate suppression; two separate child applications; revoked consent blocking acceptance; admin review/cancel/accept; separate Member/Applied sibling statuses reflected back in Parent. Unit cases also reject wrong/replaced consent, wrong guardian ID, wording-version mismatch and unsupported academy sport. No API calls, page errors or viewport overflow at 1440/390/320. Actual pixels inspected: desktop linked queue and 320px linked-acceptance dialog with exact child ID, sport, academy and confirm/cancel. Local queue screenshot at 320px includes the sticky owner-return banner; the separate dialog screenshot provides the complete review content.
+
+No live account/membership, message, fee, permission, publishing, merge or deployment. Existing chunk-size advisory remains.

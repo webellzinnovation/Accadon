@@ -40,3 +40,9 @@ This section supersedes the earlier reset/empty-parent limitations where stated.
 - The old coaching-company `product-spec.txt` remains archived and conflicts with the current SaaS positioning. `consolidated-product-spec-v1.md` preserves the relevant feature reference, not authority to activate live services. Later decisions such as putting super admin in Phase 1 override its old build order.
 
 Remaining: full cross-surface identity/state, configurable real family profiles, academy membership consent integration, full current feature audit, role capabilities, backend/auth/persistence/audit and the rest of the phased product. No phase completion claim.
+
+## Linked family application increment
+
+Parent Memberships can now submit a reviewed fictional application using the selected existing child ID, academy ID, sport and exact consent-record ID. Academy admin's Members section shows a separate linked-family queue with review/cancel/accept/reject. Acceptance rechecks the child/sport, supported academy sport and current non-revoked exact versioned consent. Parent sees the same status on return. Consent alone never creates or accepts a membership, and sibling states remain independent.
+
+This does not merge the old label-only member specimens into the linked queue. No real member, role permission, plan, billing, email or account is created. No verified guardian or legal-policy claim. An already accepted rehearsal record is not silently removed if consent is later revoked; it shows the missing/revoked consent warning. Real suspension/withdrawal policy remains undecided. Rejected rows remain history; new application is an explicit new rehearsal, not an automatic retry. Reload clears all linked records.

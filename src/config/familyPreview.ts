@@ -2,3 +2,6 @@ export const sampleChildren=[{id:'sample-child-a',name:'Sample Child A',sports:[
 export type ConsentRehearsal={id:string;tenantId:string;parentId:string;childId:string;sport:string;version:number;recordedAt:string;revokedAt?:string};
 export function familyScopeValid(childId:string,sport:string){return sampleChildren.some(c=>c.id===childId&&c.sports.includes(sport))}
 export function activeConsent(records:ConsentRehearsal[],tenantId:string,childId:string,sport:string,version:number){return records.find(r=>r.tenantId===tenantId&&r.childId===childId&&r.sport===sport&&r.version===version&&!r.revokedAt)}
+export type FamilyApplication={id:string;tenantId:string;parentId:string;childId:string;sport:string;consentId:string;status:'Applied'|'Member'|'Rejected'};
+export function applicationForScope(rows:FamilyApplication[],tenantId:string,childId:string,sport:string){return rows.find(a=>a.tenantId===tenantId&&a.childId===childId&&a.sport===sport&&a.status!=='Rejected')}
+export function reviewableApplication(a:FamilyApplication,consents:ConsentRehearsal[],academySports:string[]){const c=activeConsent(consents,a.tenantId,a.childId,a.sport,1);return a.status==='Applied'&&familyScopeValid(a.childId,a.sport)&&academySports.includes(a.sport)&&!!c&&c.id===a.consentId&&c.parentId===a.parentId}
