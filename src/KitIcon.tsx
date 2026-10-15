@@ -1,5 +1,6 @@
 /** Icons share a symmetric 24-unit box. Never use a font glyph in icon controls. */
 const paths:Record<string,string>={
+ pin:'M12 22S4 14 4 9a8 8 0 1 1 16 0c0 5-8 13-8 13ZM12 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6',calendar:'M4 5h16v16H4ZM8 2v6M16 2v6M4 10h16M8 14h2M14 14h2M8 18h2M14 18h2',
  up:'M5 15l7-7 7 7',minus:'M5 12h14',close:'M6 6l12 12M18 6L6 18',plus:'M12 5v14M5 12h14',left:'M15 5l-7 7 7 7',right:'M9 5l7 7-7 7',down:'M5 9l7 7 7-7',check:'M5 12l5 5L19 7',arrow:'M6 18L18 6M6 6h12v12',
  spark:'M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z',diamond:'M12 3l9 9-9 9-9-9ZM12 8l4 4-4 4-4-4Z',clock:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M12 7v5l4 2',target:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8',crown:'M3 6l5 5 4-7 4 7 5-5-2 13H5ZM6 22h12',people:'M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6M3 20v-3a6 6 0 0 1 12 0v3M17 4a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 6',bolt:'M14 2L5 14h6l-1 8 9-13h-6Z',type:'M3 19L8 5l5 14M5 14h6M16 10h5v9h-5v-5h5',list:'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',edit:'M4 16L16 4l4 4L8 20H4ZM13 7l4 4',half:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M12 3v18M5 6l7 6-7 6',grid:'M4 4h16v16H4ZM4 9h16M4 14h16M9 4v16M14 4v16',command:'M8 8h8v8H8ZM8 8H5a3 3 0 1 1 3-3ZM16 8V5a3 3 0 1 1 3 3ZM16 16h3a3 3 0 1 1-3 3ZM8 16v3a3 3 0 1 1-3-3Z',competition:'M3 15l6-6 6 6 6-6'
 };

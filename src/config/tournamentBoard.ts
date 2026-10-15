@@ -1,12 +1,12 @@
 import type {BoardFixture} from '../LiveEventCard';
-export type BoardMatch={place:string;category:string;names:string[];scores:string[];state:'In play'|'Up next';detail:string};
-export type TournamentSnapshot={categories:number;entries:number;completed:number;total:number;phase:string;matches:BoardMatch[]};
-const extras:Record<string,{live:BoardMatch;next:BoardMatch;categories:number;entries:number;completed:number;total:number;phase:string}>={
- 'City Circuit Open':{categories:4,entries:64,completed:38,total:52,phase:'Knockout rounds',live:{place:'Table 02',category:'U15 singles / Quarter-final',names:['Rohan P.','Arjun N.'],scores:['6','8'],state:'In play',detail:'Games 1-1 / Best of 5'},next:{place:'Table 01',category:'U13 singles / Semi-final',names:['Meera D.','Anika R.'],scores:[],state:'Up next',detail:'Next on table'}},
- 'Shuttle Weekend':{categories:3,entries:48,completed:21,total:36,phase:'Quarter-finals',live:{place:'Court 01',category:'Men\'s singles / Quarter-final',names:['Kiran V.','Dev R.'],scores:['14','12'],state:'In play',detail:'Game 1 / Best of 3'},next:{place:'Court 03',category:'Mixed doubles / Quarter-final',names:['Ira / Sam','Tia / Arun'],scores:[],state:'Up next',detail:'Next on court'}},
- 'Academy Youth League':{categories:2,entries:12,completed:14,total:22,phase:'Group stage',live:{place:'Pitch 02',category:'U15 / Group A',names:['Northside FC','Riverside FC'],scores:['0','1'],state:'In play',detail:'37 min / First half'},next:{place:'Pitch 01',category:'U17 / Group A',names:['Harbour FC','Hillview FC'],scores:[],state:'Up next',detail:'Next fixture'}},
- 'Weekend T20 Cup':{categories:1,entries:8,completed:8,total:15,phase:'League stage',live:{place:'Ground B',category:'Senior / League stage',names:['Crease XI','Riverside XI'],scores:['86/2','174/6'],state:'In play',detail:'Crease need 89 from 54 / 11.0 overs'},next:{place:'Ground A',category:'Senior / League stage',names:['Hillview XI','Harbour XI'],scores:[],state:'Up next',detail:'Next fixture'}},
- 'Courtside Doubles':{categories:3,entries:32,completed:18,total:26,phase:'Semi-finals',live:{place:'Court 02',category:'Open doubles / Semi-final',names:['Arya / Vi','Ria / Jay'],scores:['5','7'],state:'In play',detail:'Game 2 / Illustrative score'},next:{place:'Court 01',category:'Mixed doubles / Semi-final',names:['Mina / Adi','Isha / Sid'],scores:[],state:'Up next',detail:'Next on court'}},
+export type TournamentSnapshot={categories:number;completed:number;total:number;phase:string;ongoing:string[];upcoming:string[]};
+const snapshots:Record<string,TournamentSnapshot>={
+ 'City Circuit Open':{categories:4,completed:38,total:52,phase:'Knockout rounds',ongoing:['U17 singles','U15 singles'],upcoming:['U13 singles']},
+ 'Shuttle Weekend':{categories:3,completed:21,total:36,phase:'Quarter-finals',ongoing:["Women's doubles","Men's singles"],upcoming:['Mixed doubles']},
+ 'Academy Youth League':{categories:2,completed:14,total:22,phase:'Group stage',ongoing:['U15'],upcoming:['U17']},
+ 'Weekend T20 Cup':{categories:1,completed:8,total:15,phase:'League stage',ongoing:['Senior'],upcoming:[]},
+ 'Courtside Doubles':{categories:3,completed:18,total:26,phase:'Semi-finals',ongoing:['Mixed doubles','Open doubles'],upcoming:[]},
+ 'Junior Rising Stars':{categories:3,completed:0,total:36,phase:'Registration complete',ongoing:[],upcoming:['U13 singles','U15 singles']},
 };
-/** Explicitly fictional tournament-wide snapshots, not a connected feed or full competition graph. */
-export function tournamentSnapshot(f:BoardFixture):TournamentSnapshot{const primary:BoardMatch={place:f.place,category:f.stage,names:f.names,scores:f.tag==='In play'?f.scores:[],state:f.tag==='In play'?'In play':'Up next',detail:f.detail};const x=extras[f.event];return x?{categories:x.categories,entries:x.entries,completed:x.completed,total:x.total,phase:x.phase,matches:[primary,x.live,x.next]}:{categories:3,entries:48,completed:0,total:36,phase:'Registration complete',matches:[primary,{place:'Table 02',category:'U15 singles / Round of 16',names:['Nila S.','Tara K.'],scores:[],state:'Up next',detail:'Opening round'}]}}
+/** Explicit fictional status snapshots, not a feed or a complete competition graph. */
+export function tournamentSnapshot(f:BoardFixture):TournamentSnapshot{return snapshots[f.event]??{categories:1,completed:0,total:1,phase:'Not started',ongoing:[],upcoming:[]}}
