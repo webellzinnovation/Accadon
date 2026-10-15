@@ -8,9 +8,12 @@ Required scope from supplied Playinga settings screenshots and the user's correc
 
 No persistence, collection, payment status, receipt, gateway, tax recommendation or automatic eligibility check. Categories are fictional standalone settings examples, not persisted or synchronized with the unsaved creation wizard. This boundary is deliberate for the first slice. Review total handles once-only charges without duplication. Financial terms and legal handling require confirmation before live activation.
 
+## Second slice: implemented
+
+Custom role name and sport/division scope → independent capability selection → existing fictional people → reviewed local configuration. Role list supports edit and assignment revocation; an action/category probe demonstrates denied-by-default and outside-scope behavior. Score entry still requires accepted exact-match allocation; result certification needs independent review. No real authorization or identity changes. Tested create/edit/assignment/review/probe/revocation/reset at 1440/390/320, with actual mobile review and desktop revoked-state pixels inspected.
+
 ## Following required slices
 
-- Custom roles and permission matrix with sport/division scope, existing sample people, separate scoring and certification, local review only.
 - Contingent/common and division forms, waiver/terms version and registration enforcement policy. No real personal information.
 - Optional sponsor editor with explicit empty state, safe sample assets and local placement preview.
 
