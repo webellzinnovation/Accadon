@@ -5,7 +5,7 @@ export const fixtures=[
  {sport:'Badminton',event:'Shuttle Weekend',academy:'Featherline Sports',city:'Chennai',stage:'Women’s doubles · Quarter-final',place:'Court 02',names:['Maya / Tara','Diya / Riya'],scores:['18','16'],detail:'Games 1–0 · Game 2',tag:'In play',initials:'FS',accent:'green'},
  {sport:'Football',event:'Academy Youth League',academy:'Eastfield Football',city:'Hyderabad',stage:'U15 · Group B',place:'Pitch 01',names:['Eastfield FC','Westpark FC'],scores:['2','1'],detail:'64′ · Second half',tag:'In play',initials:'EF',accent:'blue'},
  {sport:'Cricket',event:'Weekend T20 Cup',academy:'Boundary Club',city:'Pune',stage:'Senior · League stage',place:'Ground A',names:['Boundary XI','Willow XI'],scores:['142/4','156/7'],detail:'Boundary need 15 from 12 · 18.0 overs',tag:'In play',initials:'BC',accent:'clay'},
- {sport:'Pickleball',event:'Courtside Doubles',academy:'Rally Yard',city:'Mumbai',stage:'Mixed doubles · Pool A',place:'Court 04',names:['Neel / Sara','Dev / Isha'],scores:['8','6'],detail:'Game 1 · Illustrative score',tag:'In play',initials:'RY',accent:'green'},
+ {sport:'Pickleball',event:'Courtside Doubles',academy:'Rally Yard',city:'Mumbai',stage:'Mixed doubles · Semi-final',place:'Court 04',names:['Neel / Sara','Dev / Isha'],scores:['8','6'],detail:'Game 1 · Illustrative score',tag:'In play',initials:'RY',accent:'green'},
  {sport:'Table tennis',event:'Junior Rising Stars',academy:'Spinhouse Academy',city:'Coimbatore',stage:'U13 singles · Round of 16',place:'Table 01',names:['Kavin R.','Aditya M.'],scores:['0','0'],detail:'Next on table · Not started',tag:'Up next',initials:'SA',accent:'blue'},
 ];
 export function TournamentHome({workflowUrl,tournamentsUrl}:{workflowUrl:string,tournamentsUrl:string}){

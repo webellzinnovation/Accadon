@@ -23,7 +23,12 @@ try{
  for(let i=0;i<5;i++){
  await page.getByLabel('Select tournament and category').selectOption(String(i));
  for(const tab of ['Overview','Matches','Draws','Players','Results']){await page.getByRole('tab',{name:tab,exact:true}).click();assert(await page.getByRole('tabpanel').isVisible());assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${width}/${i}/${tab}`)}
- await page.getByRole('tab',{name:'Matches',exact:true}).click();await page.getByRole('button',{name:'Expand score detail'}).click();assert(await page.locator('.tour-score-breakdown').isVisible());await page.locator('.tour-detail').screenshot({path:`artifacts/tournaments/detail-${i}-${width}.png`});
+ await page.getByRole('tab',{name:'Matches',exact:true}).click();assert.equal(await page.locator('.competition-match-grid .competition-match').count(),[9,7,6,7,9][i]);await page.locator('.tour-detail').screenshot({path:`artifacts/tournaments/all-matches-${i}-${width}.png`});
+ await page.getByLabel('Match state',{exact:true}).selectOption('Scheduled');assert(await page.locator('.competition-match-grid .competition-match').count()>0);await page.getByLabel('Match state',{exact:true}).selectOption('All states');
+ await page.getByRole('tab',{name:'Draws',exact:true}).click();assert.equal(await page.locator('.competition-group').count(),[2,0,1,1,2][i]);
+ if(i!==2){await page.getByRole('group',{name:'Knockout round'}).getByRole('button',{name:'Final',exact:true}).click();assert(await page.locator('.competition-round.active-round').innerText().then(t=>t.includes('Winner SF1')||t.includes('League rank 1')))}
+ await page.locator('.tour-detail').screenshot({path:`artifacts/tournaments/draws-${i}-${width}.png`});
+ await page.getByRole('tab',{name:'Overview',exact:true}).click();await page.getByRole('button',{name:'Expand score detail'}).click();assert(await page.locator('.tour-score-breakdown').isVisible());await page.locator('.tour-detail').screenshot({path:`artifacts/tournaments/detail-${i}-${width}.png`});
  }
  await page.getByRole('tab',{name:'Overview',exact:true}).click();await page.getByRole('tab',{name:'Overview',exact:true}).press('ArrowRight');assert.equal(await page.getByRole('tab',{name:'Matches',exact:true}).getAttribute('aria-selected'),'true');
  assert.equal(await page.locator('.tour-detail-panel').evaluate(e=>getComputedStyle(e).animationName),'none');assert.equal(api.length,0);assert.equal(errors.length,0,errors.join('\n'));
