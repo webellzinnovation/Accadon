@@ -7,3 +7,5 @@ Rendered: mesh gradient + pastel/semantic palette, humanist system type scale, s
 Typography uses local Trebuchet MS/Arial fallback, not an installed custom font asset. Native date/time picker format follows browser. Competition table/bracket scroll within cards on mobile. Kit actions only change demo state or show inert notices.
 
 Verified interactive tabs/category/form gate/toast/bracket preview and no API/errors/document overflow at 1440/390/320. Pixel-inspected desktop bento, mobile controls/competition. Fixed inherited global button shadow and oversize native radios after first inspection.
+
+Purple-major follow-up: dominant purple mesh, lavender/plum card family, purple metrics/sparklines/icon chips and primary/selected states. Navy retained for banner anchor; semantic statuses still distinct. Scoped kit-only; workflow and component inventory unchanged. Retested at 1440/390/320 and pixel-inspected desktop cards/mobile forms.
