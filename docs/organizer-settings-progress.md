@@ -25,3 +25,6 @@ Build/typecheck; 31 unit/API tests; fee configuration interaction test at 1440, 
 
 ### Forms & waivers delivered as local rehearsal
 Common/contingent and independent sample division fields, text/number/yes-no, required controls, reorder/remove, guardian separation, simulated signup enforcement, optional draft terms/waiver with versioned consent reset, required-field submission gating, fictional completion and reset. Browser memory only; reload clears all. Not integrated into the public sample registration/creation draft, not an identity verifier, not a stored legal consent record. Academy membership/role forms remain a separate module.
+
+### Sponsors delivered as local placement preview
+Optional fictional sponsor add, name/group/HTTPS website/demo initials, review before local save, edit, visibility, ordering, removal confirmation/cancel and footer preview/empty state. No real brand images, upload, endorsement, external navigation or public-page mutation. Unsaved panel memory clears on navigation/reload. Academy sponsors remain separate. Organization settings, tournament Basic/Events/Venues/Publish/Finance and richer participant/fixture controls remain required next work; these four panels do not imply completion of the full screenshot system.
