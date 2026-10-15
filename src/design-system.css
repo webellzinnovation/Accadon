@@ -53,3 +53,15 @@ html.kit-scroll-theme{--kit-scroll-track:#f1e9f8;--kit-scroll-thumb:#ba9bd2;--ki
 /* Icon-only circles use explicit centering, not inherited button line boxes. */
 .kit-score-close,.kit-calendar-header button,.kit-toast button,.kit button.kit-icon,.kit .kit-icon{display:inline-flex;align-items:center;justify-content:center;line-height:1;padding:0;text-indent:0;letter-spacing:0;flex-shrink:0}
 .kit-score-close{position:relative;font-size:0}.kit-score-close::before,.kit-score-close::after{content:'';position:absolute;left:50%;top:50%;width:13px;height:1.5px;background:currentColor;border-radius:2px;transform:translate(-50%,-50%) rotate(45deg)}.kit-score-close::after{transform:translate(-50%,-50%) rotate(-45deg)}
+/* Quiet frosted layer: opaque fallback first, translucent only with blur support. */
+.kit .kit-card,.kit .kit-glass{border-color:#ffffffbd;box-shadow:inset 0 1px 0 #ffffffb3,0 12px 30px #68498a0c}
+.kit-picker-dialog,.kit-match-dialog,.kit .kit-select-menu{background:#f8f2fc;border-color:#ffffffcc;box-shadow:inset 0 1px 0 #fff,0 22px 65px #37214e26,0 3px 12px #70508c14}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+.kit .kit-card:not(.kit-banner),.kit .kit-glass{background:linear-gradient(135deg,#ffffffc7,#faf5ffe0);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.kit-picker-dialog,.kit-match-dialog,.kit .kit-select-menu{background:linear-gradient(135deg,#fffafdE8,#f3eafaE8);backdrop-filter:blur(22px) saturate(110%);-webkit-backdrop-filter:blur(22px) saturate(110%)}
+.kit-picker-dialog::backdrop,.kit-match-dialog::backdrop{background:#36244752;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.kit .kit-cross-dialog .kit-cross-section{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+.kit .kit-cross-modal-header{background:#eee1f799}
+.kit .kit-toast{background:#674385ed;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+}
+@media(prefers-reduced-transparency:reduce){.kit .kit-card:not(.kit-banner),.kit .kit-glass,.kit-picker-dialog,.kit-match-dialog,.kit .kit-select-menu{background:#f8f2fc;backdrop-filter:none;-webkit-backdrop-filter:none}.kit .kit-cross-dialog .kit-cross-section{background:transparent}}
