@@ -19,7 +19,7 @@ Workflow rehearsal only. This increment is not the full phase or a live release.
 
 ## Shared visual corrections
 - Header action pills have distinct label/icon wrappers with flex centering and no legacy span margin. Demo login and Workflows share the rule. Mobile menu edges fit the viewport; tablet navigation opens a menu before the row runs out of space.
-- Tournament board cards use one `LiveEventCard` component. In-play demos have dark scoreboard surfaces, dominant tabular orange scores, match-state panels and a pulsing LIVE DEMO badge. Up-next is a quiet light variant with opponents instead of misleading 0-0 scores. The same source data, filters and popup previews remain.
+- Tournament board cards use one `LiveEventCard` component and fictional tournament-wide snapshots. Each card has entries/teams, category count, concurrent live-match count, phase and completed/total progress, two in-play playing areas and a next fixture. Desktop uses two event cards per row; mobile stacks the playing areas. In-play demos use dark surfaces, tabular orange scores and a pulsing LIVE TOURNAMENT / DEMO badge. Up-next is a light variant with no misleading 0-0 scores. Existing featured-match data is retained; additional courts and event totals are explicit fictional design samples, not a full competition graph. Filters and popup previews remain.
 - Atmosphere uses a pulse, signal meter and fine scanner edge, never fabricated score updates or timestamps. Pause/resume controls stop board animation; reduced-motion removes it. All fictional/no-live-feed labels remain explicit. Orange is energy, never a win/loss signal.
 
 ## Verification and boundaries

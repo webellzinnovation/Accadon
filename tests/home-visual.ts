@@ -24,7 +24,7 @@ try{
  for(const event of ['City Circuit Open','Shuttle Weekend','Academy Youth League','Weekend T20 Cup','Courtside Doubles','Junior Rising Stars']){await page.getByRole('button',{name:`Feature ${event}`}).click();assert.equal(await page.locator('.score-event h2').innerText(),event)}
  await page.getByRole('button',{name:'Feature Weekend T20 Cup'}).click();assert.equal(await page.locator('.score-event h2').innerText(),'Weekend T20 Cup');
  await page.getByRole('group',{name:'Filter tournament examples'}).getByRole('button',{name:'Badminton',exact:true}).click();assert.equal(await page.locator('.home-event-card').count(),1);
- await page.getByRole('button',{name:'Explore event preview',exact:false}).click();assert(await page.locator('.event-preview').isVisible());
+ await page.getByRole('button',{name:'Explore tournament preview',exact:false}).click();assert(await page.locator('.event-preview').isVisible());
  await page.getByRole('button',{name:'Show in match centre'}).click();assert.equal(await page.locator('.score-event h2').innerText(),'Shuttle Weekend');
  await page.locator('.arena-hero').screenshot({path:`artifacts/home/selected-${width}.png`});
  await page.getByRole('button',{name:'Pause tournament ribbon'}).click();assert(await page.locator('.ribbon-track').evaluate(e=>e.classList.contains('is-paused')));
