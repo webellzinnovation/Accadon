@@ -21,3 +21,11 @@ The original drawing placed the net along the visibly longer side and made the t
 Source for dimensions and net orientation: https://ttleagues-api.azurewebsites.net/download/peterborough/ITTF%20Statutes%202024%20-%202.%20The%20Laws%20of%20Table%20Tennis.pdf
 
 Build/typechecks pass; 10/10 API and geometry tests pass; browser checks pass at 1440, 390 and 320px. Desktop and mobile hero pixels inspected again after correction.
+
+## Multi-sport SaaS repositioning
+
+Landing and inquiry are now for academy owners/clubs, not coaching customers. Form collects academy name, sports, city, role and software needs. Migration 002 preserves old inquiry rows while adding sport/role columns and new interest values; city uses the existing locality column and academy name the existing institution column. The active validation accepts only new SaaS inquiry types.
+
+Build/typechecks and all 10 tests pass. Browser checks repeated at 1440/390/320px; actual desktop/full-page and both phone hero screenshots inspected. The corrected table is explicitly one sport illustrated, not the product boundary. Software is clearly marked in development; tournaments, academy claiming, paid coaching, gateways and account access are not falsely presented as available. Product pricing is not invented.
+
+Latest build: 36 modules, JS 362.62 kB (gzip 122.46 kB), CSS 17.12 kB (gzip 4.56 kB), HTML 0.89 kB (gzip 0.47 kB).

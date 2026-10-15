@@ -1,5 +1,7 @@
 # Accadon
 
+**Positioning update, 2026-10-15:** Accadon is multi-sport academy SaaS for academy owners and clubs, not a Bangalore coaching-service website. Free tournament pages are the entry point; coaching management is a separate paid subscription. Each academy uses its own payment gateway. See `docs/saas-positioning.md`; it supersedes the coaching-service language in the original archived spec.
+
 Custom-code website and academy-management foundation. Phase one contains the public landing page and inquiry intake. It is **not** the finished academy system and must not be presented as one.
 
 ## Stack
@@ -22,7 +24,7 @@ npm run dev
 
 Open **http://127.0.0.1:5173**. This exact origin is supported for development. Vite forwards `/api` to Express on 3001. If you prefer `http://localhost:5173`, set `PUBLIC_ORIGIN=http://localhost:5173` in `.env` and restart. With no database URL, you may still review the site; valid inquiry submissions return a clear 503 and keep the form filled. They do not report success or write to localStorage.
 
-The migration is versioned, transactional and serialized using a Postgres advisory lock. It creates only `inquiries` and `crm_activities` plus migration bookkeeping. It seeds no records. Use a database user with only the permissions the app needs at runtime; run migrations under a separate schema-owner identity in production.
+The migration is versioned, transactional and serialized using a Postgres advisory lock. It creates `inquiries` and `crm_activities` plus migration bookkeeping; migration 002 adds sport/role fields and expands interests without discarding earlier records. It seeds no records. Use a database user with only the permissions the app needs at runtime; run migrations under a separate schema-owner identity in production.
 
 ## Verify
 
@@ -53,12 +55,12 @@ Before real data intake: owner must review the draft `/privacy` notice, supply a
 
 - Dark premium public landing: layered original court/net/paddle/ball, desktop parallax, staggered program cards, connected process path, conceptual coaching loop, coaches and contact.
 - Native scroll/anchors, mobile navigation, focus styles, semantic labels and reduced-motion static layout.
-- Four program links prefill `/inquiry?interest=…`; compact form on landing and full form on `/inquiry`.
-- Real `POST /api/inquiries`: name/mobile/optional email, interest/locality, relevant institution, optional learner/age group/message and explicit contact consent.
+- Software-interest links prefill `/inquiry?interest=…`; compact form on landing and full form on `/inquiry`.
+- Real `POST /api/inquiries`: name/mobile/optional email, academy/club, sport, city, role, software interest and optional message and explicit contact consent.
 - Server normalization/validation, strict input shape, body/field size limits, honeypot, same-origin checks, rate limiting and UUID idempotency keys.
 - Inquiry + CRM receipt activity committed in a single transaction. Same-key retries return the original ID; conflicting retry payloads return 409. No automatic email/WhatsApp sends.
 - Success only after confirmed persistence; database/network errors preserve form data, never become fake empty/saved states.
-- No public list/read endpoint for inquiries. No fabricated counts, fees, players, team photos, testimonials, contact details or credentials. ITTF credential is credited only to an unnamed supporting coach.
+- No public list/read endpoint for inquiries. No fabricated counts, fees, players, team photos, testimonials, contact details or credentials. Founder context names Nishchithh as a table tennis coach without making Accadon table-tennis-only.
 
 ## Explicitly unfinished
 
@@ -71,4 +73,4 @@ Before real data intake: owner must review the draft `/privacy` notice, supply a
 3. Onboarding review with idempotent player/guardian linking, actual locations/coaches/batches.
 4. Remaining workflows in `docs/implementation-checklist.md`.
 
-`docs/product-spec.txt` is the full agreed product scope preserved as requirements, not instructions to use Arena. This repository uses custom code only.
+`docs/product-spec.txt` is the archived coaching-service spec, not the current SaaS positioning. `docs/saas-positioning.md` supersedes it wherever audience, business model, tenant scope or product copy differ. This repository uses custom code only.

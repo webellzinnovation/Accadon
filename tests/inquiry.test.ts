@@ -7,10 +7,11 @@ import { randomUUID } from 'node:crypto';
 import { createApp } from '../server/app.js';
 import { PostgresInquiries } from '../server/db.js';
 import type pg from 'pg';
-const input = {name:'Test Person',phone:'9876543210',interest:'communities',locality:'Test locality',institution:'Test community',consent:true};
+const input = {name:'Test Person',phone:'9876543210',interest:'tournaments',city:'Test city',academyName:'Test academy',sport:'Badminton, table tennis',role:'Owner',consent:true};
 async function setup() {
   const db = new PGlite();
   await db.exec(readFileSync('db/migrations/001_inquiries.sql','utf8'));
+  await db.exec(readFileSync('db/migrations/002_academy_inquiries.sql','utf8'));
   const query = async (sql: string, params?: unknown[]) => {
     const r = await db.query(sql, params);
     return { rows: r.rows, rowCount: r.affectedRows ?? r.rows.length };
@@ -24,7 +25,7 @@ test('fresh schema has no fake records; inquiry and activity persist with normal
   const r = await request(app).post('/api/inquiries').set('Idempotency-Key',randomUUID()).send(input);
   assert.equal(r.status,201); assert.equal(r.body.saved,true);
   const row = (await pool.query('SELECT * FROM inquiries')).rows[0];
-  assert.equal(row.phone,'+919876543210'); assert.equal(row.pipeline_status,'New'); assert.equal(row.contact_consent,true);
+  assert.equal(row.phone,'+919876543210'); assert.equal(row.pipeline_status,'New'); assert.equal(row.contact_consent,true); assert.equal(row.sport,'Badminton, table tennis'); assert.equal(row.requester_role,'Owner'); assert.equal(row.institution,'Test academy'); assert.equal(row.locality,'Test city'); assert.equal(row.interest,'tournaments');
   assert.equal((await pool.query('SELECT count(*) FROM crm_activities')).rows[0].count,1);
 });
 test('same-key retries save once; changed payload is rejected', async () => {
@@ -45,8 +46,8 @@ test('storage failures never return success or leak details', async () => {
   const r = await request(createApp({save:async()=>{throw new Error('secret connection string');}})).post('/api/inquiries').set('Idempotency-Key',randomUUID()).send(input);
   assert.equal(r.status,503); assert(!JSON.stringify(r.body).includes('secret'));
 });
-test('invalid phone, no consent, missing institution, honeypot and oversized input are rejected', async () => {
-  for (const invalid of [{phone:'abc'},{consent:false},{institution:''},{website:'spam'},{message:'x'.repeat(2001)}]) {
+test('invalid phone, no consent, missing academy, honeypot and oversized input are rejected', async () => {
+  for (const invalid of [{phone:'abc'},{consent:false},{academyName:''},{website:'spam'},{message:'x'.repeat(2001)}]) {
     const r = await request(createApp()).post('/api/inquiries').set('Idempotency-Key',randomUUID()).send({...input,...invalid});
     assert.equal(r.status,422);
   }

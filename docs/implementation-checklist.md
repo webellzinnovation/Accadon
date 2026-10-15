@@ -1,8 +1,10 @@
 # Product implementation checklist
 
+Current direction: multi-sport academy SaaS, not a coaching-service website. See `saas-positioning.md`.
+
 ## This branch
 - [x] Typed React/Vite and Express scaffold; build and run scripts
-- [x] Full public landing sections and original court artwork
+- [x] Multi-sport SaaS landing, free tournament entry point and original court artwork
 - [x] Desktop scroll motion and static reduced-motion layout
 - [x] Mobile nav and program-prefilled inquiry links
 - [x] Compact/full inquiry form and honest missing-storage errors
@@ -13,7 +15,10 @@
 - [ ] Actual Neon database and production deployment (not authorized in this run)
 
 ## Private foundation
-- [ ] Owner-only protected bootstrap, credentials, secure sessions and recovery
+- [ ] Platform super admin plus tenant-scoped academy admins, credentials, secure sessions and recovery
+- [ ] Academy claiming/setup and isolated academy data model
+- [ ] Free public tournament pages, registration/draws/live scoring
+- [ ] Paid coaching subscription boundaries and each academy's own gateway
 - [ ] Staff invitation/permission model and direct-API role/ID-tampering tests
 - [ ] Separate public/private settings, setup checklist, approved content lifecycle
 - [ ] CRM list/detail/stages/search/follow-ups/assignment and audit history

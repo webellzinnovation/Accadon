@@ -13,9 +13,9 @@ export class PostgresInquiries implements InquiryRepository {
       const id = randomUUID();
       const hash = createHash('sha256').update(JSON.stringify(input)).digest('hex');
       const result = await client.query(
-        `INSERT INTO inquiries (id,idempotency_key,payload_hash,requester_name,phone,email,interest,locality,learner_name,age_group,institution,message,contact_consent,consent_version)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,'contact-inquiry-v1') ON CONFLICT (idempotency_key) DO NOTHING RETURNING id`,
-        [id,key,hash,input.name,input.phone,input.email || null,input.interest,input.locality,input.learnerName || null,input.ageGroup || null,input.institution || null,input.message]);
+        `INSERT INTO inquiries (id,idempotency_key,payload_hash,requester_name,phone,email,interest,locality,sport,requester_role,institution,message,contact_consent,consent_version)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,'academy-inquiry-v2') ON CONFLICT (idempotency_key) DO NOTHING RETURNING id`,
+        [id,key,hash,input.name,input.phone,input.email || null,input.interest,input.city,input.sport,input.role,input.academyName,input.message]);
       if (!result.rowCount) {
         const existing = await client.query('SELECT id,payload_hash FROM inquiries WHERE idempotency_key=$1', [key]);
         if (existing.rows[0]?.payload_hash !== hash) throw new IdempotencyConflict();
