@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SportsScene } from './SportsScene';
+import { TournamentHome } from './TournamentHome';
 import { DashboardPreviews } from './DashboardPreviews';
 import { InquiryForm } from './InquiryForm';
 import './styles.css';
@@ -33,16 +33,6 @@ function Landing() {
     const mm = gsap.matchMedia();
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       const context = gsap.context(() => {
-        gsap.from('.hero-copy > *', { y: 32, opacity: 0, stagger: .11, duration: .9, ease: 'power3.out' });
-        gsap.from('.sports-scene', { opacity: 0, y: 28, duration: 1.4, ease: 'power2.out' });
-        gsap.to('.court-ball', { x: 30, y: 15, duration: 3.2, yoyo: true, repeat: -1, ease: 'sine.inOut', scrollTrigger: { trigger: '.hero', toggleActions: 'play pause resume pause' } });
-        ScrollTrigger.matchMedia({ '(min-width: 800px)': () => {
-          gsap.to('.sport-tile:nth-child(odd)', { y: -22, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 } });
-          gsap.to('.sport-tile:nth-child(even)', { y: 15, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 } });
-          gsap.to('.court-table', { y: -16, scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 } });
-          gsap.to('.court-paddle', { y: -25, rotation: -8, transformOrigin: '760px 270px', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 } });
-          gsap.to('.hero-copy', { y: 45, opacity: .4, scrollTrigger: { trigger: '.hero', start: 'center top', end: 'bottom top', scrub: true } });
-        } });
         gsap.utils.toArray<HTMLElement>('.reveal').forEach(el => gsap.from(el, { y: 28, opacity: 0, duration: .75, scrollTrigger: { trigger: el, start: 'top 92%', once: true } }));
         gsap.from('.program-card', { y: 40, opacity: 0, stagger: .12, duration: .8, scrollTrigger: { trigger: '.program-grid', start: 'top 88%', once: true } });
         gsap.from('.process-line', { scaleX: 0, transformOrigin: 'left', duration: 1.2, scrollTrigger: { trigger: '.steps', start: 'top 85%', once: true } });
@@ -53,7 +43,7 @@ function Landing() {
     return () => mm.revert();
   }, []);
   return <div ref={root}>
-    <section className="hero" aria-labelledby="hero-title"><div className="hero-copy"><div className="eyebrow"><span className="status-dot"/> SOFTWARE FOR EVERY SPORT</div><h1 id="hero-title">Your academy.<br/><em>In your hands.</em></h1><p className="hero-description">Run your academy on Accadon. Start with free tournament pages. Bring coaching, players and parents together when you are ready.</p><div className="hero-actions"><a className="button primary" href={appUrl('/inquiry?interest=tournaments')}>Explore free tournaments <span>↗</span></a><a className="secondary-link" href="#coaching">See the coaching tools <span>↓</span></a></div><div className="hero-bottom"><span className="tiny-line"/> ONE ACADEMY. MANY SPORTS. ONE SYSTEM.</div></div><div className="hero-scene"><span className="scene-label">BUILT AROUND THE WAY YOU PLAY</span><SportsScene/></div><a className="scroll-cue" href="#tournaments">EXPLORE THE PLATFORM <span>↓</span></a></section>
+    <TournamentHome workflowUrl={appUrl('/workflows')}/>
     <div className="manifesto"><span>Tournaments free forever.</span><span>Coaching management when you're ready.</span><span className="manifesto-ball" aria-hidden="true">●</span></div>
     <div className="build-notice">Platform in development. These are the planned product features. Tournament creation and academy accounts are not open yet.</div>
     <section className="section programs" id="tournaments"><div className="section-heading reveal"><div className="eyebrow">01 / YOUR FREE WAY IN</div><div className="heading-row"><h2>Make the tournament<br/><em>yours.</em></h2><p>Your academy. Your event. A public tournament page that brings your sporting community together.</p></div></div><div className="program-grid">{programs.map((p,i) => <a key={i} className="program-card" href={appUrl('/inquiry?interest=tournaments')}><div className="card-top"><span>{p.number}</span><span className="program-icon" aria-hidden="true">{p.icon}</span></div><h3>{p.title}</h3><p>{p.text}</p><div className="card-bottom"><span>Explore tournaments</span><span className="circle-arrow">↗</span></div></a>)}</div><p className="small-print">Free tournament tools are the entry point. Coaching management is a separate paid subscription. Pricing has not been announced.</p></section>

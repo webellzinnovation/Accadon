@@ -14,9 +14,9 @@ try {
     const page = await browser.newPage({viewport:{width,height},reducedMotion:'reduce'});
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto('http://127.0.0.1:5173');await page.waitForTimeout(200);
-    assert(await page.locator('h1').innerText().then(s=>s.includes('Your academy')));
-    for (const sport of ['BADMINTON','FOOTBALL','CRICKET','TABLE TENNIS']) assert(await page.locator('.sport-caption').filter({hasText:sport}).isVisible());
-    assert.equal(await page.locator('.sport-tile').count(),4);
+    assert(await page.locator('h1').innerText().then(s=>s.includes('All in play')));
+    assert.equal(await page.locator('.home-event-card').count(),6);
+    assert(await page.locator('.score-stage').isVisible());
     // All page/app surfaces remain light, including responsive navigation and form.
     for(const selector of ['body','.product-preview','.preview-window','.form-panel','footer']) {
       const bg = await page.locator(selector).first().evaluate(el=>getComputedStyle(el).backgroundColor);
@@ -39,12 +39,12 @@ try {
         assert(await page.locator('.lineup-pitch').isVisible());
         assert.equal(await page.locator('.stat-comparison').count(),4);
         for(const sport of ['Badminton','Table tennis','Cricket']) {
-          await page.getByRole('button',{name:new RegExp(sport)}).click();
+          await page.getByRole('group',{name:'Match sport',exact:true}).getByRole('button',{name:new RegExp(sport)}).click();
           assert(await page.locator('.sport-match-detail').isVisible());
           for(const el of await page.locator('.sport-match-detail *').all()) assert(await el.evaluate(e=>e.scrollWidth<=e.clientWidth+1),`${sport} internal overflow`);
           assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
         }
-        await page.getByRole('button',{name:/Football/}).click();
+        await page.getByRole('group',{name:'Match sport',exact:true}).getByRole('button',{name:/Football/}).click();
       }
       if(tab==='Leagues & standings') {
         for(const format of ['Round robin','Single elimination','Groups + elimination','Double elimination','Swiss system','League + playoffs']) {
