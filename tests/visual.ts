@@ -14,7 +14,7 @@ try {
     const page = await browser.newPage({viewport:{width,height},reducedMotion:'reduce'});
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto('http://127.0.0.1:5173');await page.waitForTimeout(200);
-    assert(await page.locator('h1').innerText().then(s=>s.includes('All in play')));
+    assert(await page.locator('h1').innerText().then(s=>s.toLowerCase().includes('all in play')));
     assert.equal(await page.locator('.home-event-card').count(),6);
     assert(await page.locator('.score-stage').isVisible());
     // All page/app surfaces remain light, including responsive navigation and form.

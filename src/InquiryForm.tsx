@@ -1,3 +1,4 @@
+import {KitIcon} from './KitIcon';
 import { useRef, useState } from 'react';
 export function InquiryForm({ interest = 'tournaments', full = false }: { interest?: string; full?: boolean }) {
   const [busy, setBusy] = useState(false);
@@ -22,7 +23,7 @@ export function InquiryForm({ interest = 'tournaments', full = false }: { intere
     finally { setBusy(false); }
   }
   const fieldError = (name: string) => fields[name] ? <span className="field-error" id={`${name}-error`}>{fields[name][0]}</span> : null;
-  if (saved) return <div className="saved" role="status"><span className="success-mark">✓</span><h3>Inquiry received.</h3><p>Your details have been saved for Accadon to review. This does not create an academy account or start a paid subscription.</p><button className="text-link" onClick={() => { setSaved(false); key.current = null; hasSent.current = false; }}>Send another inquiry ↗</button></div>;
+  if (saved) return <div className="saved" role="status"><span className="success-mark"><KitIcon name="check"/></span><h3>Inquiry received.</h3><p>Your details have been saved for Accadon to review. This does not create an academy account or start a paid subscription.</p><button className="text-link" onClick={() => { setSaved(false); key.current = null; hasSent.current = false; }}>Send another inquiry ↗</button></div>;
   return <form onSubmit={submit} onChange={change} className="inquiry-form" aria-label="Academy software inquiry">
     <div className="form-grid">
       <label>Your name<input required name="name" autoComplete="name" minLength={2} maxLength={100} aria-invalid={!!fields.name} aria-describedby={fields.name ? 'name-error' : undefined}/>{fieldError('name')}</label>
@@ -38,7 +39,7 @@ export function InquiryForm({ interest = 'tournaments', full = false }: { intere
     <div className="honey" aria-hidden="true"><label>Leave blank<input name="website" tabIndex={-1} autoComplete="off"/></label></div>
     <label className="consent"><input name="consent" type="checkbox" required/><span>I agree that Accadon may use these details to contact me about this inquiry. <a href={`${import.meta.env.BASE_URL}${import.meta.env.BASE_URL==='/'?'':'#/'}privacy`}>How we use your details</a></span></label>
     {error && <div className="form-error" role="alert">{error}</div>}
-    <button className="button primary submit" type="submit" disabled={busy}>{busy ? 'Saving your inquiry…' : 'Send inquiry'}<span aria-hidden="true">↗</span></button>
+    <button className="button primary submit" type="submit" disabled={busy}>{busy ? 'Saving your inquiry…' : 'Send inquiry'}<span aria-hidden="true"><KitIcon name="arrow"/></span></button>
     <p className="form-note">An inquiry is not an account signup or paid subscription.</p>
   </form>;
 }

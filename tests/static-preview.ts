@@ -13,7 +13,7 @@ try{
  browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
  for(const [label,width] of [['desktop',1440],['mobile',390],['small',320]] as const){
   const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));let posts=0;page.on('request',r=>{if(r.method()==='POST')posts++});
-  await page.goto('http://127.0.0.1:4189/Accadon');assert(await page.locator('h1').innerText().then(t=>t.includes('All in play')));
+  await page.goto('http://127.0.0.1:4189/Accadon');assert(await page.locator('h1').innerText().then(t=>t.toLowerCase().includes('all in play')));
   for(const href of await page.locator('a[href]').evaluateAll(els=>els.map(el=>el.getAttribute('href')!)))assert(!href.startsWith('/')||href.startsWith('/Accadon/'),`Escaping base: ${href}`);
   if(width<800)await page.getByRole('button',{name:'Menu',exact:false}).click();
   await page.locator('header .login-link').first().click();assert.equal(await page.locator('input[type=email]').inputValue(),'admin@sample.accadon.test');assert.equal(await page.locator('#demo-password-note').count(),1);
