@@ -20,7 +20,9 @@
     "test:parent": "tsx tests/parent-visual.ts",
     "test:workflows": "tsx tests/workflow-visual.ts",
     "test:home": "tsx tests/home-visual.ts",
-    "test:tournaments": "tsx tests/tournaments-visual.ts"
+    "test:tournaments": "tsx tests/tournaments-visual.ts",
+    "test:officials": "tsx tests/officials-visual.ts",
+    "test:organizer": "tsx tests/organizer-visual.ts"
   },
   "dependencies": {
     "dotenv": "^16.6.1",
