@@ -62,6 +62,10 @@ Before real data intake: owner must review the draft `/privacy` notice, supply a
 - Success only after confirmed persistence; database/network errors preserve form data, never become fake empty/saved states.
 - No public list/read endpoint for inquiries. No fabricated counts, fees, players, team photos, testimonials, contact details or credentials. Founder context names Nishchithh as a table tennis coach without making Accadon table-tennis-only.
 
+## Product concept previews
+
+The landing includes tabbed tournament, coaching-workspace and assessment screen concepts. All are clearly labelled and contain fictional sample data, never real academy records. They are explanatory UI previews only, not operational dashboards.
+
 ## Explicitly unfinished
 
 `/login`, `/admin`, `/coach`, `/member` and `/onboarding` explain that they are not available yet. They do not offer mock credentials, accept enrollment or expose private data. Authentication, invitations/recovery, server-side staff/member permissions, settings, inquiry CRM read/edit screens, onboarding review, players/guardians, scheduling/attendance, courses/assessments, subscriptions/manual payments and the member portal are **not implemented**. No rubric or plans are seeded. No gateway is connected. No credentials are hardcoded.

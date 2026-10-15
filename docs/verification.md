@@ -35,3 +35,9 @@ Latest build: 36 modules, JS 362.62 kB (gzip 122.46 kB), CSS 17.12 kB (gzip 4.56
 Replaced the standalone table-tennis hero with four equal original SVG scenes: badminton rackets/shuttlecock, football/pitch, cricket bat/ball/wickets, and the corrected table-tennis table. Matched dark green/orange/cream art direction, staggered panels and scroll layers. All four sport labels are browser-asserted visible at 1440, 390 and 320px. Actual desktop hero, full-page mobile and readable 320px artwork detail inspected: every sport recognizable; no clipping or collision with copy/controls. Reduced-motion view keeps the complete static composition.
 
 Build/typechecks pass; API/geometry 10/10 and browser suite pass. Latest output: 37 modules, JS 368.47 kB / gzip 123.98 kB, CSS 18.90 kB / gzip 4.95 kB. No external assets added.
+
+## Dashboard concept windows
+
+Added switchable dashboard concept previews: tournament draw/scoring, coaching batches/attendance, and player courses/assessment. Every window is labelled Concept Preview / Design Preview Only, with fictional Player A/B/C data, no connected account or live records. Sample scoring is explicitly illustrative; assessment rubric remains unconfigured with no fabricated player score. UI chrome/sidebar are illustrative, not non-working buttons masquerading as real tools. Only the outer screen tabs are interactive, including arrow-key/Home/End navigation.
+
+Browser suite checks all three previews and keyboard switching at 1440/390/320px without overflow. Actual desktop previews and phone tournament/assessment/coaching captures inspected; mobile stacks brackets and course panels, hides decorative sidebar and keeps all content within the viewport. Build/typechecks pass; 10 API/geometry tests remain unchanged. Latest output: 38 modules; JS 376.18 kB / gzip 125.71 kB, CSS 26.24 kB / gzip 6.39 kB. These previews add no working dashboard backend.
