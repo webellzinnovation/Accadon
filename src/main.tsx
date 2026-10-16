@@ -18,6 +18,8 @@ import './styles.css';
 import './app-theme.css';
 import { WorkflowReview } from './WorkflowReview';
 import { LiveWorkspace } from './LiveWorkspace';
+import { PartnerRegister } from './PartnerRegister';
+import { PartnerOnboarding } from './PartnerOnboarding';
 import { DemoAccess } from './DemoAccess';
 gsap.registerPlugin(ScrollTrigger);
 const appBase = import.meta.env.BASE_URL;
@@ -78,6 +80,9 @@ function App() {
   else if (route==='/workflows') content = <WorkflowReview/>;
   else if (['/app','/app/login'].includes(route)) content = <LiveWorkspace/>;
   else if (route==='/superadmin') content = <LiveWorkspace portal="superadmin"/>;
+  else if (route==='/partner') content = <LiveWorkspace portal="partner"/>;
+  else if (route==='/partner/register') content = <PartnerRegister/>;
+  else if (route==='/partner/onboarding') content = <PartnerOnboarding/>;
   else if (route==='/super-admin') content = <SuperAdminWorkspace/>;
   else if (route==='/live-preview') content = <LiveWorkspace/>;
   else if (['/login','/member','/admin','/coach'].includes(route)) content = <DemoAccess/>;
