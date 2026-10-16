@@ -1,3 +1,4 @@
+import {siteTemplateIds} from './siteTemplates.js';
 import express from 'express';
 import {parentRouter} from './parent.js';
 import {rateLimit} from 'express-rate-limit';
@@ -57,6 +58,18 @@ export function liveRouter(pool?:pg.Pool){
     res.status(201).json({created:true,next:'approval'});
   }
  }catch(e){next(e)}});
+
+ // Public academy websites (no session): only published sites for published academies.
+ router.get('/sites/:slug',async(req,res,next)=>{try{
+  const slug=z.string().regex(/^[a-z0-9][a-z0-9-]{1,60}$/).parse(req.params.slug);
+  const site=(await pool!.query("SELECT w.academy_id,w.template_id,w.sections,w.slug,a.name,a.city FROM academy_websites w JOIN academies a ON a.id=w.academy_id WHERE w.slug=$1 AND w.published AND a.published",[slug])).rows[0];
+  if(!site)throw new HttpError(404,'This academy site is not published yet.');
+  const aid=site.academy_id;
+  const[sports,events,coaches]=await Promise.all([
+   pool!.query('SELECT DISTINCT sport FROM academy_memberships WHERE academy_id=$1 ORDER BY sport',[aid]),
+   pool!.query("SELECT name,sport,starts_on,venue FROM tournaments WHERE academy_id=$1 AND status='published' ORDER BY starts_on ASC NULLS LAST LIMIT 12",[aid]),
+   pool!.query("SELECT display_name FROM app_users WHERE academy_id=$1 AND role IN('academy_admin','organizer') AND active=true ORDER BY created_at LIMIT 8",[aid])]);
+  res.json({site:{template_id:site.template_id,sections:site.sections,slug:site.slug,name:site.name,city:site.city,sports:sports.rows.map((r:{sport:string})=>r.sport),tournaments:events.rows,coaches:coaches.rows.map((r:{display_name:string})=>r.display_name)}})}catch(e){next(e)}});
  router.use(async(req,res,next)=>{try{
   const cookie=req.get('cookie')?.split(';').map(s=>s.trim()).find(s=>s.startsWith('accadon_session='))?.split('=')[1];
   if(!cookie||!/^[A-Za-z0-9_-]{43}$/.test(cookie))throw new HttpError(401,'Sign in to your live workspace.');
@@ -99,6 +112,32 @@ router.put('/console/academies/:id/subscription',async(req,res,next)=>{try{const
 router.post('/console/academies/:id/impersonate',async(req,res,next)=>{try{const a=res.locals.actor as Actor;requireRole(a,['superadmin']);const id=z.uuid().parse(req.params.id);const target=(await pool!.query("SELECT id,email FROM app_users WHERE academy_id=$1 AND role='academy_admin' AND active=true ORDER BY created_at LIMIT 1",[id])).rows[0];if(!target)throw new HttpError(422,'No active academy admin to open as. Create one in People & access first.');const current=req.get('cookie')?.split(';').map(s=>s.trim()).find(s=>s.startsWith('accadon_session='))?.split('=')[1];if(!current)throw new HttpError(401,'Sign in again.');const token=randomBytes(32).toString('base64url');await transaction(pool!,async c=>{await c.query('DELETE FROM app_sessions WHERE expires_at<=now()');await c.query("INSERT INTO app_sessions(token_hash,user_id,expires_at,impersonator_id) VALUES($1,$2,now()+interval '2 hours',$3)",[digest(token),target.id,a.id]);await audit(c,a,'impersonation_started',target.id,id)});const secure=process.env.NODE_ENV==='production'?'; Secure':'';res.setHeader('Set-Cookie',[`accadon_impersonator=${current}; HttpOnly; SameSite=Strict; Path=/; Max-Age=7200${secure}`,`accadon_session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=7200${secure}`]);res.json({impersonating:true,as:target.email})}catch(e){next(e)}});
 router.post('/console/impersonation/end',async(req,res,next)=>{try{const cookies=req.get('cookie')?.split(';').map(s=>s.trim())||[];const restore=cookies.find(s=>s.startsWith('accadon_impersonator='))?.split('=')[1];if(!restore)throw new HttpError(409,'No academy view is active.');const current=cookies.find(s=>s.startsWith('accadon_session='))?.split('=')[1];const session=current?(await pool!.query('SELECT user_id,impersonator_id FROM app_sessions WHERE token_hash=$1',[digest(current)])).rows[0]:null;if(!session?.impersonator_id)throw new HttpError(409,'No academy view is active.');await transaction(pool!,async c=>{await c.query('DELETE FROM app_sessions WHERE token_hash=$1',[digest(current!)]);await audit(c,{id:session.impersonator_id} as Actor,'impersonation_ended',session.user_id,null)});const secure=process.env.NODE_ENV==='production'?'; Secure':'';res.setHeader('Set-Cookie',[`accadon_session=${restore}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200${secure}`,`accadon_impersonator=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0${secure}`]);res.json({restored:true})}catch(e){next(e)}});
 router.get('/partner/subscription',async(_req,res,next)=>{try{const a=res.locals.actor as Actor;requireRole(a,['academy_admin']);const sub=(await pool!.query('SELECT s.status,s.tournaments_credit,s.started_at,s.plan_id,p.name AS plan_name,p.monthly_price_inr,p.limits FROM academy_subscriptions s JOIN plans p ON p.id=s.plan_id WHERE s.academy_id=$1',[a.academy_id])).rows[0];const used=(await pool!.query("SELECT count(*)::int AS n FROM tournaments WHERE academy_id=$1 AND status IN('published','completed')",[a.academy_id])).rows[0].n;res.json({subscription:sub||null,used_tournaments:used})}catch(e){next(e)}});
+
+ router.get('/partner/website',async(_req,res,next)=>{try{const a=res.locals.actor as Actor;requireRole(a,['academy_admin']);
+  const site=(await pool!.query('SELECT template_id,slug,published,sections FROM academy_websites WHERE academy_id=$1',[a.academy_id])).rows[0]||null;
+  const sub=(await pool!.query('SELECT p.limits FROM academy_subscriptions s JOIN plans p ON p.id=s.plan_id WHERE s.academy_id=$1',[a.academy_id])).rows[0];
+  const ac=(await pool!.query('SELECT name,city,published FROM academies WHERE id=$1',[a.academy_id])).rows[0];
+  res.json({site,website_included:(sub?.limits as {website?:boolean}|undefined)?.website===true,academy:ac})}catch(e){next(e)}});
+ router.put('/partner/website',async(req,res,next)=>{try{const a=res.locals.actor as Actor;requireRole(a,['academy_admin']);
+  const i=z.object({template_id:z.string().regex(/^[a-z0-9-]{2,40}$/),slug:z.string().regex(/^[a-z0-9][a-z0-9-]{1,60}$/),sections:z.record(z.string(),z.unknown())}).parse(req.body);
+  if(!siteTemplateIds.includes(i.template_id))throw new HttpError(422,'Unknown template.');
+  await transaction(pool!,async c=>{
+   const ac=(await c.query('SELECT id,published FROM academies WHERE id=$1 FOR UPDATE',[a.academy_id])).rows[0];if(!ac)throw new HttpError(404,'Academy not found.');
+   const clash=(await c.query('SELECT academy_id FROM academy_websites WHERE slug=$1 AND academy_id<>$2',[i.slug,a.academy_id])).rows[0];if(clash)throw new HttpError(409,'That site address is taken. Choose another.');
+   await c.query(`INSERT INTO academy_websites(academy_id,template_id,slug,sections) VALUES($1,$2,$3,$4) ON CONFLICT(academy_id) DO UPDATE SET template_id=$2,slug=$3,sections=$4,updated_at=now()`,[a.academy_id,i.template_id,i.slug,JSON.stringify(i.sections)]);
+   await audit(c,a,'website_saved',a.academy_id!,a.academy_id)});
+  res.json({saved:true})}catch(e){next(e)}});
+ router.post('/partner/website/publish',async(req,res,next)=>{try{const a=res.locals.actor as Actor;requireRole(a,['academy_admin']);
+  const i=z.object({published:z.boolean()}).parse(req.body);
+  await transaction(pool!,async c=>{
+   const site=(await c.query('SELECT id,published FROM academy_websites WHERE academy_id=$1 FOR UPDATE',[a.academy_id])).rows[0];if(!site)throw new HttpError(422,'Save your site settings first.');
+   if(i.published){
+    const sub=(await c.query('SELECT p.limits,p.name FROM academy_subscriptions s JOIN plans p ON p.id=s.plan_id WHERE s.academy_id=$1',[a.academy_id])).rows[0];
+    if(!sub||(sub.limits as {website?:boolean}).website!==true)throw new HttpError(402,`The ${sub?.name||'current'} plan does not include the website builder. The platform admin can upgrade this academy's plan.`);
+    const ac=(await c.query('SELECT published FROM academies WHERE id=$1',[a.academy_id])).rows[0];if(!ac?.published)throw new HttpError(409,'Finish academy onboarding before publishing the site.');}
+   await c.query('UPDATE academy_websites SET published=$2,updated_at=now() WHERE id=$1',[site.id,i.published]);
+   await audit(c,a,i.published?'website_published':'website_unpublished',a.academy_id!,a.academy_id)});
+  res.json({saved:true})}catch(e){next(e)}});
  router.use((err:unknown,_req:express.Request,res:express.Response,_next:express.NextFunction)=>{if(err instanceof z.ZodError){res.status(422).json({error:'Check the fields and try again.',fields:z.flattenError(err).fieldErrors});return}if(err instanceof HttpError){res.status(err.status).json({error:err.message});return}const code=typeof err==='object'&&err&&'code'in err?err.code:null;if(code==='23505'){res.status(409).json({error:'That record already exists. Email addresses must be unique.'});return}if(code==='23503'){res.status(422).json({error:'The selected linked record does not exist.'});return}console.error('Live workspace failed',{type:err instanceof Error?err.name:'unknown'});res.status(503).json({error:'Storage could not confirm the action. Reload to check before trying again.'})});
  return router;
 }

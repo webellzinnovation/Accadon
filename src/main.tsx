@@ -59,6 +59,8 @@ function Landing() {
   </div>;
 }
 
+import {SitePage} from './SitePage';
+
 function SimplePage({ children }: { children: React.ReactNode }) { return <main className="simple-page"><a className="secondary-link" href={appUrl('/')}>← Back to Accadon</a>{children}</main>; }
 function App() {
   const [,refresh] = useState(0);
@@ -85,9 +87,11 @@ function App() {
   else if (route==='/partner/onboarding') content = <PartnerOnboarding/>;
   else if (route==='/super-admin') content = <SuperAdminWorkspace/>;
   else if (route==='/live-preview') content = <LiveWorkspace/>;
+  else if (route.startsWith('/sites/')) content = <SitePage slug={route.slice('/sites/'.length)}/>;
   else if (['/login','/member','/admin','/coach'].includes(route)) content = <DemoAccess/>;
   else if (['/onboarding'].includes(route)) content = <SimplePage><div className="eyebrow">COMING IN THE NEXT BUILD PHASE</div><h1>{route === '/onboarding' ? 'Onboarding' : 'Member & staff access'}<br/><em>is not open yet.</em></h1><p>{route === '/onboarding' ? 'The secure onboarding and review workflow is not available in this phase. No enrollment details have been collected here.' : 'Secure login and private academy tools are still being built. No demo login or shared access code is enabled.'}</p><a className="button primary" href={appUrl('/inquiry')}>Enquire about Accadon ↗</a></SimplePage>;
   else content = <SimplePage><h1>Page not found.</h1><p>Use the link above to return to Accadon.</p></SimplePage>;
+  if (route.startsWith('/sites/')) return content;
   return <><a href="#main" className="skip-link">Skip to content</a><Header kit={route==='/design-system'}/>{route === '/' ? content : <div>{content}</div>}<Footer/></>;
 }
 createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
