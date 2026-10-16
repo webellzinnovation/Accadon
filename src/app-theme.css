@@ -172,3 +172,6 @@ h1,h2,h3,h4{font-family:'Trebuchet MS',Arial,sans-serif!important;font-weight:80
 .onboarding-review dd{margin:0}
 .live-onboarding .live-wide-form{max-width:720px}
 @media(max-width:720px){.onboarding-steps li{font-size:10px;padding:7px 10px}.onboarding-review div{flex-direction:column;gap:4px}}
+/* Full-bleed login hero: dark section spans the viewport; content stays centered at the kit width (his call 2026-10-16, "why side space"). */
+.live-login{max-width:none}
+@media(min-width:1241px){.live-login{padding-left:calc((100% - 1240px)/2);padding-right:calc((100% - 1240px)/2)}}

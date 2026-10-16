@@ -15,8 +15,8 @@ try{
   const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));let posts=0;page.on('request',r=>{if(r.method()==='POST')posts++});
   await page.goto('http://127.0.0.1:4189/Accadon');assert(await page.locator('h1').innerText().then(t=>t.toLowerCase().includes('all in play')));
   for(const href of await page.locator('a[href]').evaluateAll(els=>els.map(el=>el.getAttribute('href')!)))assert(!href.startsWith('/')||href.startsWith('/Accadon/'),`Escaping base: ${href}`);
-  if(width<800)await page.getByRole('button',{name:'Menu',exact:false}).click();
-  await page.locator('header .login-link').first().click();assert.equal(await page.locator('input[type=email]').inputValue(),'admin@sample.accadon.test');assert.equal(await page.locator('#demo-password-note').count(),1);
+  if(width<800){await page.getByRole('button',{name:'Menu',exact:false}).click();await page.locator('header nav.open').waitFor();await page.getByRole('button',{name:'Close',exact:false}).click();}
+  await page.goto('http://127.0.0.1:4189/Accadon/#/login');await page.locator('input[type=email]').waitFor();assert.equal(await page.locator('input[type=email]').inputValue(),'admin@sample.accadon.test');assert.equal(await page.locator('#demo-password-note').count(),1);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`artifacts/demo-login-${label}.png`,fullPage:true});
   await page.getByRole('button',{name:'Enter demo workspace'}).click();assert(await page.locator('.showcase-card').first().isVisible());assert.equal(posts,0);
   for(const tab of ['Draws & scoring','Batches & attendance','Fees & subscriptions']){await page.getByRole('button',{name:/Open the window/}).filter({hasText:tab}).click();assert(await page.getByRole('dialog').isVisible());assert(await page.locator('.workspace-demo-notice').isVisible());await page.keyboard.press('Escape');assert.equal(await page.locator('.showcase-overlay').count(),0)}
