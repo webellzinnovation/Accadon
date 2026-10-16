@@ -1,4 +1,5 @@
 import {siteTemplateIds} from './siteTemplates.js';
+import {roundRobin,singleElimination,roundRobinStandings,supportedDrawFormats} from './draws.js';
 import express from 'express';
 import {parentRouter} from './parent.js';
 import {rateLimit} from 'express-rate-limit';
@@ -131,6 +132,67 @@ router.get('/partner/subscription',async(_req,res,next)=>{try{const a=res.locals
    await c.query('UPDATE academy_websites SET published=$2,updated_at=now() WHERE id=$1',[site.id,i.published]);
    await audit(c,a,i.published?'website_published':'website_unpublished',a.academy_id!,a.academy_id)});
   res.json({saved:true})}catch(e){next(e)}});
+
+ const loadTournament=async(c:pg.PoolClient,id:string,a:Actor)=>{const t=(await c.query('SELECT * FROM tournaments WHERE id=$1 FOR UPDATE',[id])).rows[0];if(!t||(a.role!=='superadmin'&&t.academy_id!==a.academy_id)||(a.role==='organizer'&&t.owner_id!==a.id))throw new HttpError(404,'Tournament not found in your permitted workspace.');return t};
+ router.post('/tournaments/:id/draw',async(req,res,next)=>{try{const a=res.locals.actor as Actor;requireRole(a,['superadmin','academy_admin','organizer']);const id=z.uuid().parse(req.params.id);
+  let result:{drawId:string;matches:number;entries:number}|null=null;
+  await transaction(pool!,async c=>{const t=await loadTournament(c,id,a);
+   if(!supportedDrawFormats.includes(t.format))throw new HttpError(422,`Draw generation for ${t.format.replaceAll('_',' ')} is not available yet. Round robin and single elimination are supported.`);
+   const entries=(await c.query("SELECT e.player_id,u.display_name FROM tournament_entries e JOIN app_users u ON u.id=e.player_id WHERE e.tournament_id=$1 AND e.status='accepted' ORDER BY e.created_at",[id])).rows;
+   if(entries.length<2)throw new HttpError(422,'A draw needs at least 2 accepted entries. Review entries first.');
+   const specs=t.format==='round_robin'?roundRobin(entries.map(e=>e.player_id)):singleElimination(entries.map(e=>e.player_id));
+   await c.query("UPDATE tournament_draws SET status='archived' WHERE tournament_id=$1 AND status='active'",[id]);
+   const drawId=randomUUID();
+   await c.query('INSERT INTO tournament_draws(id,tournament_id,format,created_by) VALUES($1,$2,$3,$4)',[drawId,id,t.format,a.id]);
+   for(const m of specs)await c.query('INSERT INTO tournament_matches(id,draw_id,round,position,player_a,player_b,status,winner_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',[randomUUID(),drawId,m.round,m.position,m.player_a,m.player_b,m.status,m.winner_id]);
+   // advance bye winners into round 2 immediately
+   for(const m of specs.filter(m=>m.status==='bye'&&m.round===1&&specs.some(x=>x.round===2))){
+    const np=Math.ceil(m.position/2);
+    await c.query(`UPDATE tournament_matches SET ${m.position%2?'player_a':'player_b'}=$3 WHERE draw_id=$1 AND round=2 AND position=$2`,[drawId,np,m.winner_id]);}
+   await audit(c,a,'draw_generated',drawId,t.academy_id);result={drawId,matches:specs.length,entries:entries.length}});
+  res.status(201).json(result)}catch(e){next(e)}});
+ router.get('/tournaments/:id/draw',async(req,res,next)=>{try{const a=res.locals.actor as Actor;const id=z.uuid().parse(req.params.id);
+  const t=(await pool!.query('SELECT * FROM tournaments WHERE id=$1',[id])).rows[0];
+  const entered=(await pool!.query('SELECT 1 FROM tournament_entries WHERE tournament_id=$1 AND player_id=$2',[id,a.id])).rowCount;
+  if(!t||(a.role!=='superadmin'&&t.academy_id!==a.academy_id&&!entered))throw new HttpError(404,'Tournament not found in your permitted workspace.');
+  const draw=(await pool!.query("SELECT * FROM tournament_draws WHERE tournament_id=$1 AND status='active'",[id])).rows[0];
+  if(!draw)throw new HttpError(404,'No draw has been generated for this tournament yet.');
+  const matches=(await pool!.query(`SELECT m.*,pa.display_name AS player_a_name,pb.display_name AS player_b_name,w.display_name AS winner_name FROM tournament_matches m LEFT JOIN app_users pa ON pa.id=m.player_a LEFT JOIN app_users pb ON pb.id=m.player_b LEFT JOIN app_users w ON w.id=m.winner_id WHERE m.draw_id=$1 ORDER BY m.round,m.position`,[draw.id])).rows;
+  res.json({draw,matches})}catch(e){next(e)}});
+ router.post('/matches/:id/score',async(req,res,next)=>{try{const a=res.locals.actor as Actor;requireRole(a,['superadmin','academy_admin','organizer']);const id=z.uuid().parse(req.params.id);
+  const i=z.object({score_a:z.number().int().min(0).max(999),score_b:z.number().int().min(0).max(999)}).parse(req.body);
+  await transaction(pool!,async c=>{
+   const m=(await c.query('SELECT m.*,t.academy_id,t.owner_id,t.format,t.id AS tournament_id,t.name AS tournament_name FROM tournament_matches m JOIN tournament_draws d ON d.id=m.draw_id JOIN tournaments t ON t.id=d.tournament_id WHERE m.id=$1 FOR UPDATE',[id])).rows[0];
+   if(!m||(a.role!=='superadmin'&&m.academy_id!==a.academy_id)||(a.role==='organizer'&&m.owner_id!==a.id))throw new HttpError(404,'Match not found in your permitted workspace.');
+   if(m.status==='bye')throw new HttpError(422,'A bye has no score to record.');
+   if(!m.player_a||!m.player_b)throw new HttpError(422,'Both players must be known before a score is recorded.');
+   if(m.format==='single_elimination'&&i.score_a===i.score_b)throw new HttpError(422,'Knockout matches need a winner. Enter the deciding score.');
+   const winner=i.score_a===i.score_b?null:(i.score_a>i.score_b?m.player_a:m.player_b);
+   // a completed knockout match may only be edited while the next round is unplayed
+   if(m.status==='completed'&&m.format==='single_elimination'){
+    const nxt=(await c.query('SELECT id,status FROM tournament_matches WHERE draw_id=$1 AND round=$2 AND position=$3',[m.draw_id,m.round+1,Math.ceil(m.position/2)])).rows[0];
+    if(nxt&&nxt.status==='completed')throw new HttpError(409,'The next round has already been played. This result is locked.');}
+   await c.query("UPDATE tournament_matches SET score_a=$2,score_b=$3,status='completed',winner_id=$4,played_at=now(),updated_at=now() WHERE id=$1",[id,i.score_a,i.score_b,winner]);
+   if(m.format==='single_elimination'&&winner){
+    const np=Math.ceil(m.position/2);
+    const nxt=(await c.query('SELECT id,round FROM tournament_matches WHERE draw_id=$1 AND round=$2 AND position=$3',[m.draw_id,m.round+1,np])).rows[0];
+    if(nxt)await c.query(`UPDATE tournament_matches SET ${m.position%2?'player_a':'player_b'}=$2,updated_at=now() WHERE id=$1`,[nxt.id,winner]);
+    else await c.query("UPDATE tournaments SET status='completed',updated_at=now() WHERE id=$1",[m.tournament_id]);}
+   await audit(c,a,'match_scored',id,m.academy_id)});
+  res.json({saved:true})}catch(e){next(e)}});
+ router.get('/tournaments/:id/results',async(req,res,next)=>{try{const a=res.locals.actor as Actor;const id=z.uuid().parse(req.params.id);
+  const t=(await pool!.query('SELECT * FROM tournaments WHERE id=$1',[id])).rows[0];
+  const entered=(await pool!.query('SELECT 1 FROM tournament_entries WHERE tournament_id=$1 AND player_id=$2',[id,a.id])).rowCount;
+  if(!t||(a.role!=='superadmin'&&t.academy_id!==a.academy_id&&!entered))throw new HttpError(404,'Tournament not found in your permitted workspace.');
+  const draw=(await pool!.query("SELECT * FROM tournament_draws WHERE tournament_id=$1 AND status='active'",[id])).rows[0];
+  if(!draw)throw new HttpError(404,'No results yet - a draw has not been generated for this tournament.');
+  const matches=(await pool!.query(`SELECT m.*,pa.display_name AS player_a_name,pb.display_name AS player_b_name,w.display_name AS winner_name FROM tournament_matches m LEFT JOIN app_users pa ON pa.id=m.player_a LEFT JOIN app_users pb ON pb.id=m.player_b LEFT JOIN app_users w ON w.id=m.winner_id WHERE m.draw_id=$1 ORDER BY m.round,m.position`,[draw.id])).rows;
+  if(draw.format==='round_robin'){
+   const names=Object.fromEntries(matches.flatMap(m=>[[m.player_a,m.player_a_name],[m.player_b,m.player_b_name]]).filter(([k])=>k));
+   res.json({format:draw.format,standings:roundRobinStandings(matches).map(r=>({...r,name:names[r.player_id]||'Unknown player'})),complete:matches.every(m=>m.status!=='scheduled')});return}
+  const final=matches.filter(m=>!matches.some(n=>n.round===m.round+1));
+  const champion=final.find(m=>m.status==='completed')?.winner_name||null;
+  res.json({format:draw.format,standings:[],complete:matches.every(m=>m.status!=='scheduled'),champion,rounds:[...new Set(matches.map(m=>m.round))].map(r=>({round:r,matches:matches.filter(m=>m.round===r).map(m=>({position:m.position,player_a_name:m.player_a_name,player_b_name:m.player_b_name,score_a:m.score_a,score_b:m.score_b,status:m.status,winner_name:m.winner_name}))}))})}catch(e){next(e)}});
  router.use((err:unknown,_req:express.Request,res:express.Response,_next:express.NextFunction)=>{if(err instanceof z.ZodError){res.status(422).json({error:'Check the fields and try again.',fields:z.flattenError(err).fieldErrors});return}if(err instanceof HttpError){res.status(err.status).json({error:err.message});return}const code=typeof err==='object'&&err&&'code'in err?err.code:null;if(code==='23505'){res.status(409).json({error:'That record already exists. Email addresses must be unique.'});return}if(code==='23503'){res.status(422).json({error:'The selected linked record does not exist.'});return}console.error('Live workspace failed',{type:err instanceof Error?err.name:'unknown'});res.status(503).json({error:'Storage could not confirm the action. Reload to check before trying again.'})});
  return router;
 }
