@@ -22,10 +22,12 @@ export function liveRouter(pool?:pg.Pool){
  router.use((req,_res,next)=>{if(!['GET','HEAD','OPTIONS'].includes(req.method)){const origin=req.get('origin');const expected=process.env.PUBLIC_ORIGIN||(process.env.NODE_ENV!=='production'?'http://127.0.0.1:5173':undefined);if(!origin||!expected||origin!==expected){next(new HttpError(403,'Use the configured Accadon website.'));return}if(!req.is('application/json')){next(new HttpError(415,'JSON required.'));return}}next()});
  router.use((_req,_res,next)=>{if(!pool){next(new HttpError(503,'Live workspace storage is not configured. Nothing has been saved.'));return}next()});
  router.post('/login',rateLimit({windowMs:15*60*1000,limit:20,standardHeaders:'draft-8',legacyHeaders:false}),async(req,res,next)=>{try{
-  const input=z.object({email:z.email().max(254),password:z.string().min(1).max(128)}).parse(req.body);
+  const input=z.object({email:z.email().max(254),password:z.string().min(1).max(128),portal:z.enum(['workspace','superadmin']).optional()}).parse(req.body);
   const found=await pool!.query('SELECT * FROM app_users WHERE email=$1 AND active=true',[input.email.toLowerCase()]);const user=found.rows[0];
   // Equal-cost derivation even for unknown accounts.
   const valid=await verifyPassword(input.password,user?.password_hash||'scrypt:00000000000000000000000000000000:'+ '00'.repeat(64));if(!user||!valid)throw new HttpError(401,'Email or password is incorrect.');
+  // Superadmin credentials are only honoured on the dedicated superadmin portal, and that portal signs in nobody else. Same generic error either way.
+  if((user.role==='superadmin')!==(input.portal==='superadmin'))throw new HttpError(401,'Email or password is incorrect.');
   const token=randomBytes(32).toString('base64url');await pool!.query('DELETE FROM app_sessions WHERE expires_at<=now()');
   await pool!.query("INSERT INTO app_sessions(token_hash,user_id,expires_at) VALUES($1,$2,now()+interval '12 hours')",[digest(token),user.id]);
   res.setHeader('Set-Cookie',`accadon_session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200${process.env.NODE_ENV==='production'?'; Secure':''}`);res.json({signedIn:true});
