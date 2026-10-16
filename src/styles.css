@@ -99,9 +99,9 @@ h1,h2,h3,h4,.tour-list-card h2,.tour-detail-heading h2,.tour-context-rail h3,.sc
 
 /* Sign-in menu in the site header: one pill opening the portal links. */
 .login-menu{position:relative;margin-left:13px}
-.login-menu summary.login-link{list-style:none;cursor:pointer;display:inline-flex;align-items:center;margin-left:0}
+.login-menu summary.login-link{list-style:none;cursor:pointer;display:inline-flex;align-items:center;margin-left:0;border-radius:3px}
 .login-menu summary.login-link::-webkit-details-marker{display:none}
-.login-menu-list{position:absolute;right:0;top:calc(100% + 10px);min-width:220px;display:grid;gap:2px;background:var(--app-surface,#fff);border:1px solid var(--line,#dce2d7);border-radius:16px;padding:8px;box-shadow:0 18px 40px rgba(20,20,20,.18);z-index:60}
-.login-menu-list a{padding:11px 14px;border-radius:10px;font-size:13px}
+.login-menu-list{position:absolute;right:0;top:calc(100% + 10px);min-width:220px;display:grid;gap:2px;background:var(--app-surface,#fff);border:1px solid var(--line,#dce2d7);border-radius:6px;padding:8px;box-shadow:0 18px 40px rgba(20,20,20,.18);z-index:60}
+.login-menu-list a{padding:11px 14px;border-radius:3px;font-size:13px}
 .login-menu-list a:hover{background:rgba(0,0,0,.06);color:var(--orange)}
 @media (max-width:900px){.login-menu{margin-left:0}.login-menu-list{position:static;box-shadow:none;border:none;background:transparent;padding:4px 0 4px 18px}}
