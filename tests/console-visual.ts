@@ -28,7 +28,7 @@ for(const width of [1440,390]){const page=await browser.newPage({viewport:{width
  await page.screenshot({path:`artifacts/console/plans-${width}.png`,fullPage:true});
  // users & roles: seeded superadmin listed, filters present
  await nav.getByRole('button',{name:'Users & roles'}).click();
- assert(await page.getByText('synthetic-admin@example.test').isVisible());
+ assert(await page.locator('.live-main').getByText('synthetic-admin@example.test').first().isVisible());
  await page.screenshot({path:`artifacts/console/users-${width}.png`,fullPage:true});
  assert.deepEqual(errors,[]);
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
