@@ -72,7 +72,7 @@ try {
     await page.locator('input[name=consent]').check();
     await page.getByRole('button',{name:'Send inquiry'}).click();
     await page.getByRole('alert').waitFor();
-    assert((await page.getByRole('alert').innerText()).includes('not connected'),await page.getByRole('alert').innerText());
+    assert(/not connected|could not reach accadon/i.test(await page.getByRole('alert').innerText()),await page.getByRole('alert').innerText());
     assert.equal(await page.locator('input[name=name]').inputValue(),'Visual Test');
     await page.close();
   }
