@@ -125,3 +125,38 @@ h1,h2,h3,h4{font-family:'Trebuchet MS',Arial,sans-serif!important;font-weight:80
 :is(.live-shell,.live-login) button:focus-visible,:is(.live-shell,.live-login) a:focus-visible{outline-color:#bdf522}
 @media(max-width:650px){.live-sidebar{background:#231139}.live-sidebar nav button{background:#3b205966}}
 .live-form-card .accadon-brand,.live-sidebar .accadon-brand{color:#f0e7fb}
+/* Showcase window kit: trimmed product tour - concept cards open the demo as a real window. */
+.showcase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:34px}
+.showcase-card{text-align:left;background:#fff;border:1px solid var(--app-line);border-radius:16px;padding:22px;cursor:pointer;display:grid;gap:10px;transition:border-color .2s,transform .2s,box-shadow .2s;font:inherit;color:inherit}
+.showcase-card:hover{border-color:var(--app-purple);transform:translateY(-2px);box-shadow:0 18px 45px rgba(41,21,77,.14)}
+.showcase-card:focus-visible{outline:2px solid #7a2d12;outline-offset:3px}
+.showcase-eyebrow{font-size:9px;letter-spacing:1.6px;color:var(--app-purple);font-weight:600}
+.showcase-card h3{font-size:19px;letter-spacing:-.4px;margin:0;color:var(--app-ink)}
+.showcase-card p{font-size:12px;line-height:1.6;color:var(--app-muted);margin:0}
+.showcase-open{font-size:12px;font-weight:600;color:#7a2d12;display:flex;align-items:center;gap:8px;margin-top:6px}
+.showcase-overlay{position:fixed;inset:0;background:rgba(23,8,40,.8);backdrop-filter:blur(6px);z-index:80;display:flex;align-items:center;justify-content:center;padding:26px}
+.showcase-window{width:min(1240px,100%);height:min(880px,92dvh);display:flex;flex-direction:column;background:#231139!important;border:1px solid #644681!important;border-radius:18px!important;box-shadow:0 40px 120px rgba(10,3,20,.65)!important;--app-surface:#1c102c;--app-line:#583c70;--app-ink:#f0e7fb;--app-muted:#c9b3dd;--app-tint:#3b2059;--app-soft-ink:#a98cc4}
+.showcase-window .window-chrome{flex-shrink:0;background:#1c102c;border-bottom:1px solid #583c70;color:#bda6cf;padding:14px 18px}
+.showcase-window .window-dots{color:#7c5f96}
+.showcase-window .concept-pill{border-color:#583c70;color:#bda6cf}
+.showcase-close{margin-left:14px;background:#fe8616;color:#231139;border:0;border-radius:8px;padding:8px 12px;font-size:10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.showcase-close:focus-visible{outline:2px solid #bdf522;outline-offset:2px}
+.showcase-window-scroll{overflow-y:auto;min-height:0;flex:1;overscroll-behavior:contain}
+.showcase-window .tour-app-bar{background:#1c102c}
+.showcase-window .workspace-demo-notice{border-color:#8a6a20;background:#3a2c10;color:#f5d78a}
+.showcase-window .dense-nav{background:#1c102c}
+.showcase-window .dense-nav small{color:#a98cc4}
+.showcase-window .nav-workspace-card{background:#2b1744;border-color:#583c70}
+.showcase-window .preview-window,.showcase-window.preview-window{background:#231139!important;border-color:#644681!important}
+.showcase-window .preview-content,.showcase-window .rich-content{background:#231139}
+.showcase-window .data-panel,.showcase-window .compact-detail,.showcase-window .dense-review-rail article{background:#2b1744}
+.showcase-window .row-avatar{background:#3b2059;color:#e9dbf8}
+.showcase-window .workspace-primary{background:#fe8616;color:#231139}
+.showcase-window .ui-chip.green{background:#1e3a26;border-color:#3f7a4e;color:#a6efbd}
+.showcase-window .ui-chip.amber{background:#3a2c10;border-color:#8a6a20;color:#f5d78a}
+.showcase-window .ui-chip.red{background:#4a1f2e;border-color:#8a3a4d;color:#ffb3c7}
+.showcase-window .check-indicator{color:#bdf522}
+.showcase-window .record-identity i{background:#3b2059;color:#e9dbf8}
+.showcase-window .window-chrome .showcase-close{font-family:inherit}
+@media(max-width:900px){.showcase-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.showcase-grid{grid-template-columns:1fr;gap:12px}.showcase-overlay{padding:0}.showcase-window{width:100%;height:100dvh;border-radius:0!important;border:0!important}.showcase-window .window-chrome{padding:13px 12px}.showcase-card h3{font-size:18px}}

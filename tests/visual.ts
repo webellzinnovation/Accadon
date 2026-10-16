@@ -18,14 +18,15 @@ try {
     assert.equal(await page.locator('.home-event-card').count(),5);
     assert(await page.locator('.score-stage').isVisible());
     // All page/app surfaces remain light, including responsive navigation and form.
-    for(const selector of ['body','.product-preview','.preview-window','.form-panel','footer']) {
+    for(const selector of ['body','.product-preview','.form-panel','footer']) {
       const bg = await page.locator(selector).first().evaluate(el=>getComputedStyle(el).backgroundColor);
       if(bg !== 'rgba(0, 0, 0, 0)') assert(bg.match(/\d+/g)!.slice(0,3).map(Number).every(v=>v>175),`${selector} is not light: ${bg}`);
     }
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${label} has overflow`);
-    for (const tab of ['Create & register','Draws & scoring','Leagues & standings','Players & teams','Courts & schedule','Batches & attendance','Courses & assessment','Fees & subscriptions','Notices & updates','Parent & player view','Reports & oversight']) {
-      await page.getByRole('tab',{name:tab}).click();
-      assert(await page.getByRole('tabpanel').isVisible());
+    for (const tab of ['Create & register','Draws & scoring','Batches & attendance','Parent & player view','Fees & subscriptions','Reports & oversight']) {
+      await page.getByRole('button',{name:new RegExp('Open the window'),exact:false}).filter({hasText:tab}).click();
+      assert(await page.getByRole('dialog').isVisible());
+      assert.equal(await page.locator('.showcase-window').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(35, 17, 57)','showcase window is not dark');
       assert.equal(await page.locator('.dense-metrics>div').count(),4);
       assert.equal(await page.locator('.dense-review-rail>article').count(),tab==='Parent & player view'?0:3);
       if(tab==='Parent & player view'){assert.equal(await page.locator('.dense-nav').getByText('Review centre').count(),0);assert.equal(await page.locator('.dense-review-rail').count(),0);}
@@ -46,22 +47,15 @@ try {
         }
         await page.getByRole('group',{name:'Match sport',exact:true}).getByRole('button',{name:/Football/}).click();
       }
-      if(tab==='Leagues & standings') {
-        for(const format of ['Round robin','Single elimination','Groups + elimination','Double elimination','Swiss system','League + playoffs']) {
-          await page.getByRole('group',{name:'Tournament format',exact:true}).getByRole('button',{name:new RegExp(format.replace('+','\\+'))}).click();
-          assert(await page.locator('.format-canvas').isVisible());
-          for(const el of await page.locator('.format-canvas *').all()) assert(await el.evaluate(e=>e.scrollWidth<=e.clientWidth+1),`${format} internal overflow: ${await el.evaluate(e=>e.className)}`);
-          assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-        }
-      }
       if(tab==='Create & register') assert(await page.locator('.create-wizard').isVisible());
+      await page.keyboard.press('Escape');
+      assert.equal(await page.locator('.showcase-overlay').count(),0);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
     }
-    await page.getByRole('tab',{name:'Create & register'}).click();
-    await page.getByRole('tab',{name:'Create & register'}).press('ArrowRight');
-    assert.equal(await page.getByRole('tab',{name:'Draws & scoring'}).getAttribute('aria-selected'),'true');
-    await page.getByRole('tab',{name:'Create & register'}).click();
+    await page.getByRole('button',{name:/Open the window/}).filter({hasText:'Create & register'}).click();
+    assert(await page.getByRole('dialog').isVisible());
     if(label!=='small') await page.screenshot({path:`artifacts/${label}.png`,fullPage:true});
+    await page.keyboard.press('Escape');assert.equal(await page.locator('.showcase-overlay').count(),0);
     if(label==='mobile') {
       await page.getByRole('button',{name:'Menu'}).click();
       await page.getByRole('navigation').getByRole('link',{name:'Coaching tools',exact:true}).click();
