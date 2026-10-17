@@ -239,3 +239,5 @@ h1,h2,h3,h4{font-family:'Trebuchet MS',Arial,sans-serif!important;font-weight:80
 .draw-standings th,.draw-standings td{text-align:left;padding:8px 10px;border-bottom:1px solid #644681}
 .draw-standings th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;opacity:.75}
 @media(max-width:640px){.draw-matches{grid-template-columns:1fr}}
+
+.coach-monogram{background:linear-gradient(145deg,#3b2059,#2b1744);border:1px solid #644681;border-radius:16px;color:#bdf522}
