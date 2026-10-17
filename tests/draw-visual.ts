@@ -29,6 +29,7 @@ for(const width of [1440,390]){const server=spawn('node',['--import','tsx','test
  const ppage=await(await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce'})).newPage();
  await ppage.goto('http://127.0.0.1:5173/app');
  await ppage.getByLabel('Email',{exact:true}).fill('draws-p1@example.test');await ppage.getByLabel('Password',{exact:true}).fill('Browser-test-only-password');await ppage.getByRole('button',{name:'Sign in ↗',exact:true}).click();
+ await ppage.getByRole('button',{name:'Sign out'}).waitFor();
  await ppage.locator('.live-record').filter({hasText:'Winter Round Robin'}).getByRole('button',{name:'Draw & results ↗'}).click();
  await ppage.getByRole('heading',{name:'Standings'}).waitFor();
  assert.equal(await ppage.getByRole('button',{name:/Generate draw/}).count(),0);
