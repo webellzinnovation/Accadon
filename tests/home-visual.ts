@@ -31,7 +31,7 @@ try{
  await page.getByRole('button',{name:'Resume tournament ribbon'}).click();
  const anchors=await page.locator('a[href]').evaluateAll(es=>es.map(e=>e.getAttribute('href')!));for(const href of anchors)assert(!href.startsWith('/')||href.startsWith('/Accadon/'),href);
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.equal(errors.length,0,errors.join('\n'));assert.equal(api.length,0);
- await page.getByRole('link',{name:'See the workflows'}).click();await page.getByLabel('View as').waitFor();await page.close();
+ await page.close();
  }
  const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'no-preference'});await page.goto('http://127.0.0.1:4193/Accadon/');
  assert.equal(await page.locator('.ribbon-track').evaluate(e=>getComputedStyle(e).animationName),'score-ribbon');

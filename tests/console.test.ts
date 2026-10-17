@@ -1,6 +1,6 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import request from 'supertest';import {PGlite} from '@electric-sql/pglite';import {readFileSync} from 'node:fs';import {randomUUID} from 'node:crypto';import type pg from 'pg';import {createApp} from '../server/app.js';import {hashPassword} from '../server/live.js';
 const origin='http://127.0.0.1:5173';const pw='Synthetic-test-only-password';
-async function setup(){const db=new PGlite();for(const f of ['003_live_foundation','004_parent_workspace','005_partner_portals','006_superadmin_console'])await db.exec(readFileSync(`db/migrations/${f}.sql`,'utf8'));const query=async(sql:string,p?:unknown[])=>{const r=await db.query(sql,p);return{rows:r.rows,rowCount:r.rows.length||r.affectedRows||0}};const pool={query,connect:async()=>({query,release(){}})} as unknown as pg.Pool;const a=randomUUID(),b=randomUUID(),empty=randomUUID();await query('INSERT INTO academies(id,name) VALUES($1,$2),($3,$4),($5,$6)',[a,'Synthetic academy A',b,'Synthetic academy B',empty,'No-admin academy']);const hash=await hashPassword(pw);const ids:Record<string,string>={};for(const [name,role,academy]of [['root','superadmin',null],['admin','academy_admin',a],['org','organizer',a],['family','family',a],['adminb','academy_admin',b]]){const id=randomUUID();ids[name!]=id;await query('INSERT INTO app_users(id,email,display_name,password_hash,role,academy_id) VALUES($1,$2,$3,$4,$5,$6)',[id,`${name}@example.test`,name,hash,role,academy])}const app=createApp(undefined,pool);const portalFor:Record<string,string>={root:'superadmin',admin:'partner',org:'partner',adminb:'partner',family:'workspace'};async function login(name:string){const r=await request(app).post('/api/live/login').set('Origin',origin).send({email:`${name}@example.test`,password:pw,portal:portalFor[name]||'workspace'});assert.equal(r.status,200,JSON.stringify(r.body));return r.headers['set-cookie'][0].split(';')[0]}return{db,pool,app,a,b,empty,ids,login}}
+async function setup(){const db=new PGlite();for(const f of ['003_live_foundation','004_parent_workspace','005_partner_portals','006_superadmin_console','008_independent_organizers'])await db.exec(readFileSync(`db/migrations/${f}.sql`,'utf8'));const query=async(sql:string,p?:unknown[])=>{const r=await db.query(sql,p);return{rows:r.rows,rowCount:r.rows.length||r.affectedRows||0}};const pool={query,connect:async()=>({query,release(){}})} as unknown as pg.Pool;const a=randomUUID(),b=randomUUID(),empty=randomUUID();await query('INSERT INTO academies(id,name) VALUES($1,$2),($3,$4),($5,$6)',[a,'Synthetic academy A',b,'Synthetic academy B',empty,'No-admin academy']);const hash=await hashPassword(pw);const ids:Record<string,string>={};for(const [name,role,academy]of [['root','superadmin',null],['admin','academy_admin',a],['org','organizer',null],['family','family',a],['adminb','academy_admin',b]]){const id=randomUUID();ids[name!]=id;await query('INSERT INTO app_users(id,email,display_name,password_hash,role,academy_id) VALUES($1,$2,$3,$4,$5,$6)',[id,`${name}@example.test`,name,hash,role,academy])}await query("INSERT INTO organizer_subscriptions(id,organizer_id,plan_id,status,tournaments_credit) VALUES($1,$2,'free','trial',2)",[randomUUID(),ids.org!]);const app=createApp(undefined,pool);const portalFor:Record<string,string>={root:'superadmin',admin:'partner',org:'partner',adminb:'partner',family:'workspace'};async function login(name:string){const r=await request(app).post('/api/live/login').set('Origin',origin).send({email:`${name}@example.test`,password:pw,portal:portalFor[name]||'workspace'});assert.equal(r.status,200,JSON.stringify(r.body));return r.headers['set-cookie'][0].split(';')[0]}return{db,pool,app,a,b,empty,ids,login}}
 const event=(a:string)=>({name:'Synthetic event',academy_id:a,sport:'badminton',format:'round_robin',status:'draft',venue:'Test venue',starts_on:'2026-12-01'});
 
 test('console endpoints reject anonymous and non-superadmin callers',async()=>{const s=await setup();try{
@@ -17,12 +17,12 @@ test('console endpoints reject anonymous and non-superadmin callers',async()=>{c
 test('console overview, academy detail/edit and plans reflect seeded data',async()=>{const s=await setup();try{
  const root=await s.login('root');
  const overview=(await request(s.app).get('/api/live/console/overview').set('Cookie',root)).body;
- assert.equal(overview.academies.total,3);assert.equal(overview.users.total,5);assert(overview.tournaments.total===0);
+ assert.equal(overview.academies.total,3);assert.equal(overview.users.total,5);assert.equal(overview.organizers.total,1);assert(overview.tournaments.total===0);
  const plans=(await request(s.app).get('/api/live/console/plans').set('Cookie',root)).body.plans;
  assert.deepEqual(plans.map((p:{id:string})=>p.id),['free','pro','premium']);
  assert.equal(plans[0].limits.tournaments,2);assert.equal(plans[1].limits.website,true);assert.equal(plans[2].limits.custom_domain,true);
  const detail=(await request(s.app).get(`/api/live/console/academies/${s.a}`).set('Cookie',root)).body;
- assert.equal(detail.academy.name,'Synthetic academy A');assert.equal(detail.staff.length,3);assert.equal(detail.subscription,null);
+ assert.equal(detail.academy.name,'Synthetic academy A');assert.equal(detail.staff.length,2);assert.equal(detail.subscription,null);
  assert.equal((await request(s.app).get(`/api/live/console/academies/${randomUUID()}`).set('Cookie',root)).status,404);
  assert.equal((await request(s.app).patch(`/api/live/console/academies/${s.a}`).set('Origin',origin).set('Cookie',root).send({name:'Renamed academy',city:'Test city',published:true})).status,200);
  const renamed=(await request(s.app).get(`/api/live/console/academies/${s.a}`).set('Cookie',root)).body.academy;
@@ -41,13 +41,21 @@ test('console user management: filters, deactivation revokes sessions, self and 
  const root=await s.login('root'),org=await s.login('org');
  const byRole=(await request(s.app).get('/api/live/console/users?role=organizer').set('Cookie',root)).body.users;
  assert(byRole.length>=1&&byRole.every((u:{role:string})=>u.role==='organizer'));
+ assert.equal(byRole[0].organizer_plan_id,'free');
  const bySearch=(await request(s.app).get('/api/live/console/users?q=admin@').set('Cookie',root)).body.users;
  assert(bySearch.some((u:{email:string})=>u.email==='admin@example.test')&&!bySearch.some((u:{email:string})=>u.email==='org@example.test'));
  assert(!JSON.stringify(byRole).includes('password_hash'));
  assert.equal((await request(s.app).patch('/api/live/console/users/'+s.ids.root).set('Origin',origin).set('Cookie',root).send({active:false})).status,409);
  assert.equal((await request(s.app).patch(`/api/live/console/users/${s.ids.org}`).set('Origin',origin).set('Cookie',root).send({role:'player'})).status,200);
- assert.equal((await request(s.app).patch(`/api/live/console/users/${s.ids.org}`).set('Origin',origin).set('Cookie',root).send({role:'organizer'})).status,422);
- assert.equal((await request(s.app).patch(`/api/live/console/users/${s.ids.org}`).set('Origin',origin).set('Cookie',root).send({role:'organizer',academy_id:s.a})).status,200);
+ // academy_admin and family need an academy; organizer is always independent (academy forced null)
+ assert.equal((await request(s.app).patch(`/api/live/console/users/${s.ids.org}`).set('Origin',origin).set('Cookie',root).send({role:'academy_admin'})).status,422);
+ assert.equal((await request(s.app).patch(`/api/live/console/users/${s.ids.org}`).set('Origin',origin).set('Cookie',root).send({role:'organizer'})).status,200);
+ assert.equal((await s.pool.query('SELECT academy_id FROM app_users WHERE id=$1',[s.ids.org])).rows[0].academy_id,null);
+ // organizer plan management from the console
+ assert.equal((await request(s.app).put(`/api/live/console/organizers/${s.ids.org}/subscription`).set('Origin',origin).set('Cookie',root).send({plan_id:'missing',status:'active'})).status,422);
+ assert.equal((await request(s.app).put(`/api/live/console/organizers/${s.ids.admin}/subscription`).set('Origin',origin).set('Cookie',root).send({plan_id:'pro',status:'active'})).status,404);
+ assert.equal((await request(s.app).put(`/api/live/console/organizers/${s.ids.org}/subscription`).set('Origin',origin).set('Cookie',root).send({plan_id:'pro',status:'active'})).status,200);
+ assert.equal((await s.pool.query('SELECT plan_id FROM organizer_subscriptions WHERE organizer_id=$1',[s.ids.org])).rows[0].plan_id,'pro');
  assert.equal((await request(s.app).patch(`/api/live/console/users/${s.ids.org}`).set('Origin',origin).set('Cookie',root).send({active:false})).status,200);
  assert.equal((await request(s.app).get('/api/live/me').set('Cookie',org)).status,401);
 }finally{await s.db.close()}});

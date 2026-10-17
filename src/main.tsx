@@ -1,10 +1,6 @@
-import {SuperAdminWorkspace} from './SuperAdminWorkspace';
 import {KitIcon} from './KitIcon';
 import {DesignSystem} from './DesignSystem';
 import './design-system.css';
-import {AcademyWorkspace} from './AcademyWorkspace';
-import {OrganizerSettings} from './OrganizerSettings';
-import {OrganizerBuilder} from './OrganizerBuilder';
 import {Brand} from './Brand';
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -16,11 +12,9 @@ import { DashboardPreviews } from './DashboardPreviews';
 import { InquiryForm } from './InquiryForm';
 import './styles.css';
 import './app-theme.css';
-import { WorkflowReview } from './WorkflowReview';
 import { LiveWorkspace } from './LiveWorkspace';
 import { PartnerRegister } from './PartnerRegister';
 import { PartnerOnboarding } from './PartnerOnboarding';
-import { DemoAccess } from './DemoAccess';
 gsap.registerPlugin(ScrollTrigger);
 const appBase = import.meta.env.BASE_URL;
 const appUrl = (path:string) => {
@@ -30,9 +24,9 @@ const appUrl = (path:string) => {
 
 function Header({kit=false}:{kit?:boolean}) {
   const [open, setOpen] = useState(false);
-  return <header className="header" data-kit-header={kit||undefined}><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><Brand/></a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span><KitIcon name={open?'close':'plus'}/></span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/tournaments')} onClick={() => setOpen(false)}>Tournaments</a><a href={appUrl('/organizer')} onClick={() => setOpen(false)}>Organize</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/app')}><span className="pill-label">Player/parent login</span><span className="pill-icon"><KitIcon name="arrow"/></span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/partner')}><span className="pill-label">Partner login</span><span className="pill-icon"><KitIcon name="arrow"/></span></a></nav></header>;
+  return <header className="header" data-kit-header={kit||undefined}><a className="wordmark" href={appUrl('/')} aria-label="Accadon home"><Brand/></a><button className="menu-toggle" aria-expanded={open} aria-controls="navigation" onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span><KitIcon name={open?'close':'plus'}/></span></button><nav id="navigation" className={open ? 'open' : ''} aria-label="Main"><a href={appUrl('/tournaments')} onClick={() => setOpen(false)}>Tournaments</a><a href={appUrl('/#how-it-works')} onClick={() => setOpen(false)}>How it works</a><a href={appUrl('/#coaching')} onClick={() => setOpen(false)}>Coaching tools</a><a href={appUrl('/#contact')} onClick={() => setOpen(false)}>Contact</a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/app')}><span className="pill-label">Player/parent login</span><span className="pill-icon"><KitIcon name="arrow"/></span></a><a className="login-link" onClick={()=>setOpen(false)} href={appUrl('/partner')}><span className="pill-label">Partner login</span><span className="pill-icon"><KitIcon name="arrow"/></span></a></nav></header>;
 }
-function Footer() { return <footer><a className="wordmark" href={appUrl('/')}><Brand/></a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/tournaments')}>Tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a><a href={appUrl('/#/login')}>Demo login</a><a href={appUrl('/academy')}>Academy demo</a><a href={appUrl('/workflows')}>Workflows</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
+function Footer() { return <footer><a className="wordmark" href={appUrl('/')}><Brand/></a><p>Your sport. Your academy. Your system.</p><div><a href={appUrl('/tournaments')}>Tournaments</a><a href={appUrl('/inquiry')}>Enquire</a><a href={appUrl('/privacy')}>Privacy</a></div><span className="footer-place">Multi-sport academy software</span></footer>; }
 function Landing() {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -49,7 +43,7 @@ function Landing() {
     return () => mm.revert();
   }, []);
   return <div ref={root}>
-    <TournamentHome workflowUrl={appUrl('/workflows')} tournamentsUrl={appUrl('/tournaments')}/>
+    <TournamentHome tournamentsUrl={appUrl('/tournaments')}/>
     <section className="section software-experience software-stage" id="software-experience"><div className="software-stage-head"><div><div className="eyebrow">THE ACCADON SOFTWARE EXPERIENCE</div><h2>Run the academy.<br/><em>Not the paperwork.</em></h2></div><p>Less chasing details.<br/>More time on court.</p></div><div className="software-feature-strip">{[{n:'01',icon:'list',title:'Attendance, without the chase.',tag:'BATCHES + SESSIONS',marks:['Foundation / 4:00 PM','Development / 5:30 PM'],state:'Session roster'},{n:'02',icon:'grid',title:'Every family. One connection.',tag:'PARENTS + PLAYERS',marks:['One parent profile','Separate player journeys'],state:'Linked, not mixed'},{n:'03',icon:'target',title:'See the progress. Coach better.',tag:'COURSES + ASSESSMENT',marks:['Foundation → Development','Coach-led reviews'],state:'Progress by sport'},{n:'04',icon:'arrow',title:'Your fees. Your control.',tag:'ACADEMY PAYMENTS',marks:['Your payment gateway','Your academy receives fees'],state:'No shared wallet'}].map(f=><a className="software-feature" href="#product-preview" key={f.n}><div className="software-feature-top"><span>{f.n} / {f.tag}</span><KitIcon name={f.icon}/></div><h3>{f.title}</h3><div className="software-mini-ui">{f.marks.map((m,i)=><div key={m}><i className={i?'':'active'}/><span>{m}</span><KitIcon name="arrow"/></div>)}<span className="software-feature-state">{f.state}</span></div><div className="software-feature-bottom">Explore the workspace <KitIcon name="arrow"/></div></a>)}</div><div className="software-stage-footer"><span>FOUR PARTS. ONE ACADEMY WORKSPACE.</span><a className="button primary" href={appUrl('/workflows')}>Try the role workflows <KitIcon name="arrow"/></a></div><p className="software-stage-note">Interactive design preview. Fictional data. Planned paid coaching workspace; pricing not announced. No live accounts or payments.</p></section>
     <DashboardPreviews/>
     <section className="section system" id="coaching"><div className="system-copy reveal"><div className="eyebrow">YOUR DAILY ACADEMY WORKSPACE</div><h2>More time coaching.<br/><em>Less chasing details.</em></h2><p>A paid workspace for the day-to-day work of your academy, across the sports you teach.</p><ul><li><span><KitIcon name="arrow"/></span><div><h3>Batches, sessions & attendance</h3><p>Allocate players, plan sessions and keep attendance connected.</p></div></li><li><span><KitIcon name="arrow"/></span><div><h3>Players & parents, together</h3><p>Individual profiles and one parent login for linked children.</p></div></li><li><span><KitIcon name="arrow"/></span><div><h3>Courses & coach-led assessment</h3><p>Build courses with levels and lessons. Configure assessment to suit your sport.</p></div></li><li><span><KitIcon name="arrow"/></span><div><h3>Your fees. Your payment gateway.</h3><p>Connect your academy's own gateway. Academy fee payments go to your academy, not a shared platform wallet.</p></div></li></ul></div><div className="system-diagram reveal" aria-label="Concept: academy admin connects coaching, families and academy payments"><div className="diagram-label">YOUR ACADEMY WORKSPACE <span><KitIcon name="arrow"/></span></div><div className="system-node"><span className="node-icon"><KitIcon name="list"/></span><div><small>YOUR ADMIN, IN CONTROL</small><h3>Sports, batches & coaches</h3></div><span>01</span></div><div className="node-connector"><KitIcon name="down"/></div><div className="system-node"><span className="node-icon"><KitIcon name="competition"/></span><div><small>YOUR COACHING STRUCTURE</small><h3>Courses & player progress</h3></div><span>02</span></div><div className="node-connector"><KitIcon name="down"/></div><div className="system-node"><span className="node-icon"><KitIcon name="arrow"/></span><div><small>YOUR ACADEMY RELATIONSHIPS</small><h3>Parents, players & fees</h3></div><span>03</span></div><p className="diagram-note">Planned workflow illustration, not live academy data.</p></div></section>
@@ -73,22 +67,16 @@ function App() {
   let content;
   if (route === '/') content = <main id="main"><Landing/></main>;
   else if (route === '/design-system') content = <DesignSystem/>;
-  else if (route === '/academy') content = <AcademyWorkspace/>;
-  else if (route === '/organizer/settings') content = <OrganizerSettings/>;
-  else if (route === '/organizer') content = <OrganizerBuilder/>;
-  else if (route === '/tournaments') content = <TournamentsPage workflowUrl={appUrl('/workflows')}/>;
+  else if (route === '/tournaments') content = <TournamentsPage/>;
   else if (route === '/inquiry') content = <SimplePage><div className="eyebrow">LET'S TALK ABOUT YOUR ACADEMY</div><h1>Start with<br/><em>a conversation.</em></h1><p>Tell us about your academy or sports club, the sports you offer and what you need from Accadon.</p><div className="form-panel"><h2>Academy software inquiry</h2><InquiryForm interest={validInterest} full/></div></SimplePage>;
   else if (route === '/privacy') content = <SimplePage><div className="eyebrow">DRAFT NOTICE / OWNER REVIEW REQUIRED</div><h1>Your inquiry<br/><em>details.</em></h1><p>This notice describes the phase-one inquiry form. It needs owner review before accepting real inquiries.</p><h2>What the form collects</h2><p>Your name, mobile number, academy or club name, sport or sports, city, role, software interest, consent and any optional email or message.</p><h2>Why it is collected</h2><p>To save your inquiry for Accadon to review and contact you about the academy software. An inquiry does not create an academy account, enroll a player or process payment. Do not include medical details, identity documents or payment information.</p><h2>Where it goes</h2><p>Inquiry details and a record of contact consent are stored in the configured Postgres database. This form does not send automatic email or WhatsApp messages. The website host handles network requests as part of serving this website.</p><h2>Before public launch</h2><p>The owner must approve this notice, configure a contact for privacy requests and decide retention and deletion practices. Those details are not yet configured. The site must not accept real personal information until that review is complete.</p></SimplePage>;
-  else if (route==='/workflows') content = <WorkflowReview/>;
   else if (['/app','/app/login'].includes(route)) content = <LiveWorkspace/>;
   else if (route==='/superadmin') content = <LiveWorkspace portal="superadmin"/>;
   else if (route==='/partner') content = <LiveWorkspace portal="partner"/>;
   else if (route==='/partner/register') content = <PartnerRegister/>;
   else if (route==='/partner/onboarding') content = <PartnerOnboarding/>;
-  else if (route==='/super-admin') content = <SuperAdminWorkspace/>;
   else if (route==='/live-preview') content = <LiveWorkspace/>;
   else if (route.startsWith('/sites/')) content = <SitePage slug={route.slice('/sites/'.length)}/>;
-  else if (['/login','/member','/admin','/coach'].includes(route)) content = <DemoAccess/>;
   else if (['/onboarding'].includes(route)) content = <SimplePage><div className="eyebrow">COMING IN THE NEXT BUILD PHASE</div><h1>{route === '/onboarding' ? 'Onboarding' : 'Member & staff access'}<br/><em>is not open yet.</em></h1><p>{route === '/onboarding' ? 'The secure onboarding and review workflow is not available in this phase. No enrollment details have been collected here.' : 'Secure login and private academy tools are still being built. No demo login or shared access code is enabled.'}</p><a className="button primary" href={appUrl('/inquiry')}>Enquire about Accadon ↗</a></SimplePage>;
   else content = <SimplePage><h1>Page not found.</h1><p>Use the link above to return to Accadon.</p></SimplePage>;
   if (route.startsWith('/sites/')) return content;

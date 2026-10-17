@@ -16,16 +16,8 @@ try{
   await page.goto('http://127.0.0.1:4189/Accadon');assert(await page.locator('h1').innerText().then(t=>t.toLowerCase().includes('all in play')));
   for(const href of await page.locator('a[href]').evaluateAll(els=>els.map(el=>el.getAttribute('href')!)))assert(!href.startsWith('/')||href.startsWith('/Accadon/'),`Escaping base: ${href}`);
   if(width<800){await page.getByRole('button',{name:'Menu',exact:false}).click();await page.locator('header nav.open').waitFor();await page.getByRole('button',{name:'Close',exact:false}).click();}
-  await page.goto('http://127.0.0.1:4189/Accadon/#/login');await page.locator('input[type=email]').waitFor();assert.equal(await page.locator('input[type=email]').inputValue(),'admin@sample.accadon.test');assert.equal(await page.locator('#demo-password-note').count(),1);
-  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:`artifacts/demo-login-${label}.png`,fullPage:true});
-  await page.getByRole('button',{name:'Enter demo workspace'}).click();assert(await page.locator('.showcase-card').first().isVisible());assert.equal(posts,0);
-  for(const tab of ['Draws & scoring','Batches & attendance','Fees & subscriptions']){await page.getByRole('button',{name:/Open the window/}).filter({hasText:tab}).click();assert(await page.getByRole('dialog').isVisible());assert(await page.locator('.workspace-demo-notice').isVisible());await page.keyboard.press('Escape');assert.equal(await page.locator('.showcase-overlay').count(),0)}
-  await page.getByRole('button',{name:/Open the window/}).filter({hasText:'Draws & scoring'}).click();await page.getByRole('button',{name:/Cricket/}).click();await page.screenshot({path:`artifacts/demo-workspace-${label}.png`,fullPage:true});await page.keyboard.press('Escape');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-  await page.getByRole('button',{name:'Exit demo'}).click();assert(await page.getByRole('button',{name:'Enter demo workspace'}).isVisible());
-  await page.goto('http://127.0.0.1:4189/Accadon/#/organizer');await page.locator('.builder-content').waitFor();assert(await page.getByLabel('Tournament name').isVisible());
-  await page.goto('http://127.0.0.1:4189/Accadon/#/workflows');await page.getByLabel('View as').selectOption('Parent');await page.getByRole('button',{name:/Child sport page/}).click();assert(await page.locator('.workflow-child-title').isVisible());await page.getByLabel('View as').selectOption('Academy admin');await page.getByRole('button',{name:/Select sport/}).click();assert(await page.getByRole('heading',{name:'Membership preview'}).isVisible());
   await page.goto('http://127.0.0.1:4189/Accadon/#/inquiry?interest=coaching');assert.equal(await page.locator('select[name=interest]').inputValue(),'coaching');
   await page.getByRole('link',{name:'How we use your details'}).click();await page.waitForFunction(()=>document.querySelector('h1')?.textContent?.includes('details')); assert.equal(errors.length,0);await page.close();
  }
- console.log('PASS: file-only static host /Accadon and /Accadon/, base-scoped links, prefilled demo entry/exit, no auth POST, workspace tabs, inquiry query and privacy at 1440/390/320.');
+ console.log('PASS: file-only static host /Accadon and /Accadon/, base-scoped links, no auth POST, inquiry query and privacy at 1440/390/320.');
 }finally{await browser?.close();server.kill();execFileSync('node',['node_modules/vite/bin/vite.js','build'],{stdio:'inherit'})}
