@@ -29,7 +29,7 @@ export function liveRouter(pool?:pg.Pool){
   // Equal-cost derivation even for unknown accounts.
   const valid=await verifyPassword(input.password,user?.password_hash||'scrypt:00000000000000000000000000000000:'+ '00'.repeat(64));if(!user||!valid)throw new HttpError(401,'Email or password is incorrect.');
   // Each sign-in portal honours only its own roles; everything else gets the same generic error.
-  const portalRoles:Record<string,Actor['role'][]>={workspace:['player','parent','family'],partner:['academy_admin','organizer'],superadmin:['superadmin']};
+  const portalRoles:Record<string,Actor['role'][]>={workspace:['player','parent','family','coach'],partner:['academy_admin','organizer'],superadmin:['superadmin']};
   if(!portalRoles[input.portal||'workspace'].includes(user.role))throw new HttpError(401,'Email or password is incorrect.');
   const token=randomBytes(32).toString('base64url');await pool!.query('DELETE FROM app_sessions WHERE expires_at<=now()');
   await pool!.query("INSERT INTO app_sessions(token_hash,user_id,expires_at) VALUES($1,$2,now()+interval '12 hours')",[digest(token),user.id]);
