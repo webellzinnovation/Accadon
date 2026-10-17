@@ -6,7 +6,7 @@ case "$group" in
  2) tests='parent-visual live-visual';;
  3) tests='kit-visual kit-icons kit-qualifiers kit-theme';;
  4) tests='console-visual site-visual';;
- 5) tests='header-alignment live-board-visual draw-visual';;
+ 5) tests='header-alignment live-board-visual draw-visual coach-visual';;
  *) exit 2;;
 esac
 for test in $tests; do

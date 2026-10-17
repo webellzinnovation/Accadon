@@ -21,5 +21,15 @@ await query("INSERT INTO academy_subscriptions(id,academy_id,plan_id,status) VAL
 await query("INSERT INTO tournaments(id,academy_id,owner_id,name,sport,format,status,venue,starts_on) VALUES($1,$2,$3,'Winter Round Robin','badminton','round_robin','published','Hall A','2026-12-05'),($4,$2,$3,'Winter Knockout','badminton','single_elimination','published','Hall B','2026-12-12')",[rrT,dAcad,dAdm,seT]);
 for(let i=0;i<5;i++){const p=randomUUID();await query(`INSERT INTO app_users(id,email,display_name,password_hash,role) VALUES($1,$2,$3,$4,'player')`,[p,`draws-p${i+1}@example.test`,`Draws Player ${i+1}`,await hashPassword('Browser-test-only-password')]);if(i<4)await query("INSERT INTO tournament_entries(id,tournament_id,player_id,status) VALUES($1,$2,$3,'accepted')",[randomUUID(),rrT,p]);await query("INSERT INTO tournament_entries(id,tournament_id,player_id,status) VALUES($1,$2,$3,'accepted')",[randomUUID(),seT,p]);}
 }
+if(process.env.FIXTURE_COACH==='1'){
+const cAcad=randomUUID(),cAdm=randomUUID(),cCoach=randomUUID();
+await query("INSERT INTO academies(id,name,city) VALUES($1,'Coaching Test Academy','Bengaluru')",[cAcad]);
+await query("INSERT INTO app_users(id,email,display_name,password_hash,role,academy_id) VALUES($1,'coach-admin@example.test','Coaching Admin',$2,'academy_admin',$3),($4,'coach@example.test','Kavya Coach',$2,'coach',$3)",[cAdm,await hashPassword('Browser-test-only-password'),cAcad,cCoach]);
+await query("INSERT INTO academy_subscriptions(id,academy_id,plan_id,status) VALUES($1,$2,'pro','active')",[randomUUID(),cAcad]);
+const profs:string[]=[];
+for(let i=0;i<3;i++){const u=randomUUID(),pr=randomUUID();profs.push(pr);await query(`INSERT INTO app_users(id,email,display_name,password_hash,role) VALUES($1,$2,$3,$4,'player')`,[u,`coachp${i+1}@example.test`,`Trainee Player ${i+1}`,await hashPassword('Browser-test-only-password')]);await query("INSERT INTO player_profiles(id,account_id,display_name) VALUES($1,$2,$3)",[pr,u,`Trainee Player ${i+1}`]);await query("INSERT INTO academy_memberships(id,academy_id,profile_id,sport,status,invited_by,accepted_at) VALUES($1,$2,$3,'badminton','active',$4,now())",[randomUUID(),cAcad,pr,cAdm])}
+const bt=randomUUID();await query("INSERT INTO batches(id,academy_id,name,sport,coach_id,schedule_label,venue) VALUES($1,$2,'U-13 Badminton','badminton',$3,'Mon/Wed 5-6 PM','Court 2')",[bt,cAcad,cCoach]);
+for(const pr of profs.slice(0,2))await query("INSERT INTO batch_members(id,batch_id,membership_id,added_by) SELECT $1,$2,id,$3 FROM academy_memberships WHERE profile_id=$4",[randomUUID(),bt,cAdm,pr]);
+}
 const server=createApp(undefined,pool).listen(3001,'127.0.0.1',()=>console.log('TEST FIXTURE READY'));
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>{server.close(()=>{void db.close().then(()=>process.exit(0))})});
