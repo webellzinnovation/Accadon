@@ -26,14 +26,15 @@ for(const width of [1440,390]){const page=await browser.newPage({viewport:{width
  await page.getByRole('heading',{name:'Final',exact:true}).waitFor();
  await page.screenshot({path:`artifacts/draws/knockout-${width}.png`,fullPage:true});
  // player view: read-only, no generate, no score inputs
- await page.goto('http://127.0.0.1:5173/app');
- await page.getByLabel('Email',{exact:true}).fill('draws-p1@example.test');await page.getByLabel('Password',{exact:true}).fill('Browser-test-only-password');await page.getByRole('button',{name:'Sign in ↗',exact:true}).click();
- await page.locator('.live-record').filter({hasText:'Winter Round Robin'}).getByRole('button',{name:'Draw & results ↗'}).click();
- await page.getByRole('heading',{name:'Standings'}).waitFor();
- assert.equal(await page.getByRole('button',{name:/Generate draw/}).count(),0);
- assert.equal(await page.locator('.draw-score').count(),0,'no score inputs for players');
- assert.equal(await page.locator('.draw-match.done').count(),1,'the scored match visible');
- await page.screenshot({path:`artifacts/draws/player-view-${width}.png`,fullPage:true});
+ const ppage=await(await browser.newContext({viewport:{width,height:1000},reducedMotion:'reduce'})).newPage();
+ await ppage.goto('http://127.0.0.1:5173/app');
+ await ppage.getByLabel('Email',{exact:true}).fill('draws-p1@example.test');await ppage.getByLabel('Password',{exact:true}).fill('Browser-test-only-password');await ppage.getByRole('button',{name:'Sign in ↗',exact:true}).click();
+ await ppage.locator('.live-record').filter({hasText:'Winter Round Robin'}).getByRole('button',{name:'Draw & results ↗'}).click();
+ await ppage.getByRole('heading',{name:'Standings'}).waitFor();
+ assert.equal(await ppage.getByRole('button',{name:/Generate draw/}).count(),0);
+ assert.equal(await ppage.locator('.draw-score').count(),0,'no score inputs for players');
+ assert.equal(await ppage.locator('.draw-match.done').count(),1,'the scored match visible');
+ await ppage.screenshot({path:`artifacts/draws/player-view-${width}.png`,fullPage:true});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal scroll');
  assert.deepEqual(errors,[]);
  await page.close();console.log('PASS draw visual',width)}
