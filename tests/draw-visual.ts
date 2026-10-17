@@ -1,7 +1,7 @@
 import {chromium} from 'playwright';import {spawn} from 'node:child_process';import assert from 'node:assert/strict';import {mkdir} from 'node:fs/promises';
-const server=spawn('node',['--import','tsx','tests/live-fixture-server.ts'],{stdio:['ignore','pipe','inherit'],env:{...process.env,FIXTURE_DRAWS:'1'}});const vite=spawn('node',['node_modules/vite/bin/vite.js','--host','127.0.0.1'],{stdio:'ignore'});let browser;
-try{await new Promise<void>((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('Fixture timeout')),20000);server.stdout.on('data',d=>{if(String(d).includes('READY')){clearTimeout(timer);resolve()}})});await mkdir('artifacts/draws',{recursive:true});browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
-for(const width of [1440,390]){const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
+const vite=spawn('node',['node_modules/vite/bin/vite.js','--host','127.0.0.1'],{stdio:'ignore'});let browser;
+try{await mkdir('artifacts/draws',{recursive:true});browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox']});
+for(const width of [1440,390]){const server=spawn('node',['--import','tsx','tests/live-fixture-server.ts'],{stdio:['ignore','pipe','inherit'],env:{...process.env,FIXTURE_DRAWS:'1'}});await new Promise<void>((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('Fixture timeout')),20000);server.stdout.on('data',d=>{if(String(d).includes('READY')){clearTimeout(timer);resolve()}})});try{const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
  // organizer: generate a round robin draw, score a match, check standings
  await page.goto('http://127.0.0.1:5173/partner');
  await page.getByLabel('Email',{exact:true}).fill('draws-admin@example.test');await page.getByLabel('Password',{exact:true}).fill('Browser-test-only-password');await page.getByRole('button',{name:'Sign in ↗',exact:true}).click();
@@ -37,5 +37,5 @@ for(const width of [1440,390]){const page=await browser.newPage({viewport:{width
  await ppage.screenshot({path:`artifacts/draws/player-view-${width}.png`,fullPage:true});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal scroll');
  assert.deepEqual(errors,[]);
- await page.close();console.log('PASS draw visual',width)}
-}finally{await browser?.close();vite.kill();server.kill()}
+ await page.close();console.log('PASS draw visual',width)}finally{server.kill();await new Promise(r=>setTimeout(r,500))}}
+}finally{await browser?.close();vite.kill()}
