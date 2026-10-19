@@ -105,3 +105,5 @@ h1,h2,h3,h4,.tour-list-card h2,.tour-detail-heading h2,.tour-context-rail h3,.sc
 .login-menu-list a{padding:11px 14px;border-radius:3px;font-size:13px}
 .login-menu-list a:hover{background:rgba(0,0,0,.06);color:var(--orange)}
 @media (max-width:900px){.login-menu{margin-left:0}.login-menu-list{position:static;box-shadow:none;border:none;background:transparent;padding:4px 0 4px 18px}}
+
+.parent-child-sections>section.parent-training{grid-column:1/-1}.parent-match-list{display:grid;gap:8px;margin-top:12px}.parent-match-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--app-muted);border-top:1px solid var(--app-line);padding-top:8px}.parent-match-row .ui-chip{font-size:10px}

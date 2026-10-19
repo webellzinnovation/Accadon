@@ -31,5 +31,30 @@ for(let i=0;i<3;i++){const u=randomUUID(),pr=randomUUID();profs.push(pr);await q
 const bt=randomUUID();await query("INSERT INTO batches(id,academy_id,name,sport,coach_id,schedule_label,venue) VALUES($1,$2,'U-13 Badminton','badminton',$3,'Mon/Wed 5-6 PM','Court 2')",[bt,cAcad,cCoach]);
 for(const pr of profs.slice(0,2))await query("INSERT INTO batch_members(id,batch_id,membership_id,added_by) SELECT $1,$2,id,$3 FROM academy_memberships WHERE profile_id=$4",[randomUUID(),bt,cAdm,pr]);
 }
+if(process.env.FIXTURE_HISTORY==='1'){
+const hAcad=randomUUID(),hAdm=randomUUID(),hCoach=randomUUID(),hPar=randomUUID(),hKid=randomUUID(),hRR=randomUUID(),hOpen=randomUUID(),hDraw=randomUUID(),hBatch=randomUUID(),hMem=randomUUID();
+const hHash=await hashPassword('Browser-test-only-password');
+await query("INSERT INTO academies(id,name,city) VALUES($1,'History Test Academy','Bengaluru')",[hAcad]);
+await query("INSERT INTO app_users(id,email,display_name,password_hash,role,academy_id) VALUES($1,'history-admin@example.test','History Admin',$2,'academy_admin',$3),($4,'history-coach@example.test','Rekha',$2,'coach',$3)",[hAdm,hHash,hAcad,hCoach]);
+await query("INSERT INTO academy_subscriptions(id,academy_id,plan_id,status) VALUES($1,$2,'pro','active')",[randomUUID(),hAcad]);
+await query("INSERT INTO app_users(id,email,display_name,password_hash,role) VALUES($1,'history-parent@example.test','History Parent',$2,'parent')",[hPar,hHash]);
+await query("INSERT INTO parent_profiles(account_id,name,location) VALUES($1,'History Parent','Bengaluru')",[hPar]);
+await query("INSERT INTO player_profiles(id,display_name) VALUES($1,'Aarav Kumar')",[hKid]);
+await query("INSERT INTO guardian_profile_links(guardian_account_id,child_profile_id,relationship,status,verified_at) VALUES($1,$2,'parent','verified',now())",[hPar,hKid]);
+await query("INSERT INTO profile_sports(profile_id,sport_id) VALUES($1,'badminton')",[hKid]);
+await query("INSERT INTO tournaments(id,academy_id,owner_id,name,sport,format,status,venue,starts_on) VALUES($1,$2,$3,'Winter League','badminton','round_robin','published','Court 1','2026-11-05'),($4,$2,$3,'Monsoon Open','badminton','single_elimination','published','Court 3','2026-12-10')",[hRR,hAcad,hAdm,hOpen]);
+const opp:string[]=[];
+for(let i=0;i<3;i++){const u=randomUUID();opp.push(u);await query("INSERT INTO app_users(id,email,display_name,password_hash,role) VALUES($1,$2,$3,$4,'player')",[u,`history-rival${i+1}@example.test`,`Rival ${i+1}`,hHash]);await query("INSERT INTO tournament_entries(id,tournament_id,player_id,status) VALUES($1,$2,$3,'accepted')",[randomUUID(),hRR,u])}
+await query("INSERT INTO tournament_entries(id,tournament_id,player_id,profile_id,status) VALUES($1,$2,$3,$4,'accepted')",[randomUUID(),hRR,hPar,hKid]);
+await query("INSERT INTO tournament_entries(id,tournament_id,player_id,profile_id,status) VALUES($1,$2,$3,$4,'accepted')",[randomUUID(),hOpen,hPar,hKid]);
+await query("INSERT INTO tournament_draws(id,tournament_id,format,status,created_by) VALUES($1,$2,'round_robin','active',$3)",[hDraw,hRR,hAdm]);
+const[p1,p2,p3]=opp;
+const ms:[number,number,string,string,number,number,string][]=[[1,1,hPar,p3,21,10,hPar],[1,2,p1,p2,19,21,p2],[2,1,hPar,p2,15,21,p2],[2,2,p3,p1,12,21,p1],[3,1,hPar,p1,21,18,hPar],[3,2,p2,p3,21,8,p2]];
+for(const[r,pos,ma,mb,sa,sb,w]of ms)await query("INSERT INTO tournament_matches(id,draw_id,round,position,player_a,player_b,score_a,score_b,status,winner_id,played_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,'completed',$9,now())",[randomUUID(),hDraw,r,pos,ma,mb,sa,sb,w]);
+await query("INSERT INTO academy_memberships(id,academy_id,profile_id,sport,status,invited_by,accepted_at) VALUES($1,$2,$3,'badminton','active',$4,now())",[hMem,hAcad,hKid,hAdm]);
+await query("INSERT INTO batches(id,academy_id,name,sport,coach_id,schedule_label,venue) VALUES($1,$2,'U-13 Badminton','badminton',$3,'Mon/Wed 5-6 PM','Court 2')",[hBatch,hAcad,hCoach]);
+await query("INSERT INTO batch_members(id,batch_id,membership_id,added_by) VALUES($1,$2,$3,$4)",[randomUUID(),hBatch,hMem,hAdm]);
+await query("INSERT INTO assessments(id,academy_id,profile_id,batch_id,coach_id,assessed_on,rating,strengths,focus) VALUES($1,$2,$3,$4,$5,'2026-10-10',4,'Fast footwork and steady clears','Net shots under pressure')",[randomUUID(),hAcad,hKid,hBatch,hCoach]);
+}
 const server=createApp(undefined,pool).listen(3001,'127.0.0.1',()=>console.log('TEST FIXTURE READY'));
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>{server.close(()=>{void db.close().then(()=>process.exit(0))})});
