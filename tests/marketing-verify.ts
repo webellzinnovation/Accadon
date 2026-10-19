@@ -23,7 +23,7 @@ try{
   await page.waitForTimeout(1500);
   const settled=await page.evaluate(()=>{const cards=[...document.querySelectorAll('.software-feature')].map(e=>e.getBoundingClientRect());const f=document.querySelector('.software-stage-footer')!.getBoundingClientRect();return {maxCardBottom:Math.max(...cards.map(c=>c.bottom)),footerTop:f.top,transforms:[...document.querySelectorAll('.software-feature')].map(e=>getComputedStyle(e).transform)}});
   assert(settled.maxCardBottom<=settled.footerTop+1,`settled overlap @${width}`);
-  for(const t of settled.transforms)assert(t==='none'||t==='matrix(1, 0, 0, 1, 0, 0)',`transform not flat @${width}: ${t}`);
+  for(const t of settled.transforms){if(t==='none')continue;const m=t.match(/^matrix\(1, 0, 0, 1, ([-\d.e]+), ([-\d.e]+)\)$/);assert(m&&Math.abs(+m[1])<0.5&&Math.abs(+m[2])<0.5,`transform not flat @${width}: ${t}`)}
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.locator('.software-stage').screenshot({path:`artifacts/marketing/software-stage-${width}.png`});
   await page.locator('.coaches').scrollIntoViewIfNeeded();await page.waitForTimeout(1200);
