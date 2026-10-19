@@ -10,7 +10,7 @@ export function createApp(repository?: InquiryRepository, pool?:pg.Pool) {
   const app = express();
   app.disable('x-powered-by');
   // Deliberately not trusting arbitrary forwarding headers. Configure a trusted proxy at deployment.
-  app.use(helmet({ contentSecurityPolicy: { directives: { 'script-src': ["'self'"], 'style-src': ["'self'", "'unsafe-inline'"], 'img-src': ["'self'", 'data:'], 'connect-src': ["'self'"], 'upgrade-insecure-requests': process.env.NODE_ENV === 'production' ? [] : null } } }));
+  app.use(helmet({ contentSecurityPolicy: { directives: { 'script-src': ["'self'", 'https://checkout.razorpay.com'], 'style-src': ["'self'", "'unsafe-inline'"], 'img-src': ["'self'", 'data:'], 'connect-src': ["'self'", 'https://api.razorpay.com', 'https://lumberjack.razorpay.com'], 'upgrade-insecure-requests': process.env.NODE_ENV === 'production' ? [] : null } } }));
   app.use(express.json({ limit: '16kb' }));
   app.get('/api/health', (_req, res) => res.json({ service: 'accadon', inquiryStorageConfigured: Boolean(repository) }));
   app.use('/api/inquiries', rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: 'draft-8', legacyHeaders: false, message: { error: 'Too many attempts. Please try again in 15 minutes.' } }));

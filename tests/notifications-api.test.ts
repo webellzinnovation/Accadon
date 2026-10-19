@@ -9,7 +9,7 @@ import {createApp} from '../server/app.js';
 import {hashPassword} from '../server/live.js';
 
 const origin='http://127.0.0.1:5173';const pw='Browser-test-only-password';
-async function setup(){const db=new PGlite();for(const f of ['001_inquiries','002_academy_inquiries','003_live_foundation','004_parent_workspace','005_partner_portals','006_superadmin_console','007_websites','008_independent_organizers','009_draws','010_coaching','011_notifications'])await db.exec(readFileSync(`db/migrations/${f}.sql`,'utf8'));
+async function setup(){const db=new PGlite();for(const f of ['001_inquiries','002_academy_inquiries','003_live_foundation','004_parent_workspace','005_partner_portals','006_superadmin_console','007_websites','008_independent_organizers','009_draws','010_coaching','011_notifications', '012_payments'])await db.exec(readFileSync(`db/migrations/${f}.sql`,'utf8'));
  const query=async(sql:string,p?:unknown[])=>{const r=await db.query(sql,p);return{rows:r.rows,rowCount:r.rows.length||r.affectedRows||0}};const pool={query,connect:async()=>({query,release(){}})} as unknown as pg.Pool;
  const a=randomUUID();await query("INSERT INTO academies(id,name) VALUES($1,'Notify academy')",[a]);const hash=await hashPassword(pw);
  const admin=randomUUID();await query("INSERT INTO app_users(id,email,display_name,password_hash,role,academy_id) VALUES($1,'admin@example.test','Admin',$2,'academy_admin',$3)",[admin,hash,a]);

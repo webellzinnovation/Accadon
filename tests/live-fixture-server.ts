@@ -1,6 +1,6 @@
 // TEST-ONLY: isolated embedded Postgres for browser verification. Never imported by production.
 import {PGlite} from '@electric-sql/pglite';import {readFileSync} from 'node:fs';import {randomUUID} from 'node:crypto';import type pg from 'pg';import {createApp} from '../server/app.js';import {hashPassword} from '../server/live.js';
-const db=new PGlite();for(const f of ['001_inquiries','002_academy_inquiries','003_live_foundation','004_parent_workspace','005_partner_portals','006_superadmin_console','007_websites','008_independent_organizers','009_draws','010_coaching', '011_notifications'])await db.exec(readFileSync(`db/migrations/${f}.sql`,'utf8'));
+const db=new PGlite();for(const f of ['001_inquiries','002_academy_inquiries','003_live_foundation','004_parent_workspace','005_partner_portals','006_superadmin_console','007_websites','008_independent_organizers','009_draws','010_coaching', '011_notifications', '012_payments'])await db.exec(readFileSync(`db/migrations/${f}.sql`,'utf8'));
 const query=async(sql:string,p?:unknown[])=>{const r=await db.query(sql,p);return{rows:r.rows,rowCount:r.rows.length||r.affectedRows||0}};const pool={query,connect:async()=>({query,release(){}})} as unknown as pg.Pool;
 const id=randomUUID();await query("INSERT INTO app_users(id,email,display_name,password_hash,role) VALUES($1,$2,$3,$4,'superadmin')",[id,'synthetic-admin@example.test','Synthetic test admin',await hashPassword('Browser-test-only-password')]);
 if(process.env.FIXTURE_WEBSITE==='1'){
@@ -55,6 +55,21 @@ await query("INSERT INTO academy_memberships(id,academy_id,profile_id,sport,stat
 await query("INSERT INTO batches(id,academy_id,name,sport,coach_id,schedule_label,venue) VALUES($1,$2,'U-13 Badminton','badminton',$3,'Mon/Wed 5-6 PM','Court 2')",[hBatch,hAcad,hCoach]);
 await query("INSERT INTO batch_members(id,batch_id,membership_id,added_by) VALUES($1,$2,$3,$4)",[randomUUID(),hBatch,hMem,hAdm]);
 await query("INSERT INTO assessments(id,academy_id,profile_id,batch_id,coach_id,assessed_on,rating,strengths,focus) VALUES($1,$2,$3,$4,$5,'2026-10-10',4,'Fast footwork and steady clears','Net shots under pressure')",[randomUUID(),hAcad,hKid,hBatch,hCoach]);
+}
+if(process.env.FIXTURE_PAYMENTS==='1'){
+const pAcad=randomUUID(),pAcad2=randomUUID(),pAdm=randomUUID(),pPlay=randomUUID(),pProf=randomUUID(),pT=randomUUID(),pT2=randomUUID(),pT3=randomUUID(),pEntry=randomUUID(),pEntry2=randomUUID(),pEntry3=randomUUID();
+const pHash=await hashPassword('Browser-test-only-password');
+await query("INSERT INTO academies(id,name,city) VALUES($1,'Payments Test Academy','Bengaluru'),($2,'No-Gateway Academy','Mysuru')",[pAcad,pAcad2]);
+await query("INSERT INTO app_users(id,email,display_name,password_hash,role,academy_id) VALUES($1,'pay-admin@example.test','Payments Admin',$2,'academy_admin',$3)",[pAdm,pHash,pAcad]);
+await query("INSERT INTO academy_subscriptions(id,academy_id,plan_id,status) VALUES($1,$2,'pro','active'),($3,$4,'pro','active')",[randomUUID(),pAcad,randomUUID(),pAcad2]);
+await query("INSERT INTO app_users(id,email,display_name,password_hash,role) VALUES($1,'pay-player@example.test','Fee Player',$2,'player')",[pPlay,pHash]);
+await query("INSERT INTO player_profiles(id,account_id,display_name) VALUES($1,$2,'Fee Player')",[pProf,pPlay]);
+await query("INSERT INTO tournaments(id,academy_id,owner_id,name,sport,format,status,venue,starts_on,entry_fee_paise) VALUES($1,$2,$3,'Diwali Open','badminton','round_robin','published','Court 1','2026-11-15',50000),($4,$2,$3,'Monsoon Pairs','badminton','single_elimination','published','Court 2','2026-12-01',20000),($5,$6,$3,'Charity Cup','badminton','round_robin','published','Hall C','2026-12-20',15000)",[pT,pAcad,pAdm,pT2,pT3,pAcad2]);
+await query("INSERT INTO academy_payment_settings(academy_id,key_id,key_secret) VALUES($1,'rzp_test_DEMO1234','test-secret-demo')",[pAcad]);
+await query("INSERT INTO tournament_entries(id,tournament_id,player_id,profile_id,status) VALUES($1,$2,$3,$4,'accepted'),($5,$6,$3,$4,'submitted'),($7,$8,$3,$4,'submitted')",[pEntry,pT,pPlay,pProf,pEntry2,pT2,pEntry3,pT3]);
+await query("INSERT INTO payments(id,academy_id,tournament_id,entry_id,account_id,amount_paise,status,provider_order_id,provider_payment_id,receipt_no,paid_at) VALUES($1,$2,$3,$4,$5,50000,'paid','order_demoPAID1','pay_demoPAID1','RCPT-DEMOPAID01',now())",[randomUUID(),pAcad,pT,pEntry,pPlay]);
+await query("INSERT INTO payments(id,academy_id,tournament_id,entry_id,account_id,amount_paise,status,provider_order_id) VALUES($1,$2,$3,$4,$5,20000,'created','order_demoOPEN1')",[randomUUID(),pAcad,pT2,pEntry2,pPlay]);
+await query("INSERT INTO payments(id,academy_id,tournament_id,entry_id,account_id,amount_paise,status,error) VALUES($1,$2,$3,$4,$5,15000,'skipped_no_config','This academy has not connected its payment gateway yet. The entry is recorded and no payment was taken.')",[randomUUID(),pAcad2,pT3,pEntry3,pPlay]);
 }
 const server=createApp(undefined,pool).listen(3001,'127.0.0.1',()=>console.log('TEST FIXTURE READY'));
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>{server.close(()=>{void db.close().then(()=>process.exit(0))})});
