@@ -34,7 +34,7 @@ function Landing() {
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       const context = gsap.context(() => {
         gsap.utils.toArray<HTMLElement>('.reveal').forEach(el => gsap.from(el, { y: 28, opacity: 0, duration: .75, scrollTrigger: { trigger: el, start: 'top 92%', once: true } }));
-        gsap.from('.software-feature', { y: 28, opacity: 0, stagger: .13, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '.software-feature-strip', start: 'top 86%', once: true } });
+        gsap.from('.software-feature', { y: 28, opacity: 0, stagger: .13, duration: .8, ease: 'power3.out', immediateRender: false, scrollTrigger: { trigger: '.software-feature-strip', start: 'top 86%' } });
         gsap.from('.process-line', { scaleX: 0, transformOrigin: 'left', duration: 1.2, scrollTrigger: { trigger: '.steps', start: 'top 85%', once: true } });
         gsap.from('.system-node', { y: 25, opacity: 0, stagger: .2, duration: .8, scrollTrigger: { trigger: '.system-diagram', start: 'top 85%', once: true } });
       }, root);
